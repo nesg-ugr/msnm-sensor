@@ -6,7 +6,7 @@ has a MSNMSensor instance and a netflow data source active. The BR is
 in charge of gathering the information comming from the other on the lower hierarchy level (R1, R2 and R3). BR also computes
  new statistics (LbRtn, QbRtn) which are in turn obtained by joining all the data sources.
 
-![Simple example functional architecture](scenario_4/arquitectura.png "Functional architecture")
+![Simple example functional architecture](scenario_4/arquitecture.png "Functional architecture")
 
 - Activate the python 2.7 environment (see [How to install](../README.md))
 - Go into **scripts/netflow/** folder
