@@ -1,0 +1,293 @@
+2019-01-30 20:08:25,029 WARNING - MainThread - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2019-01-30 20:08:25,078 DEBUG - MainThread - mod: model, method: calibrate, msg: UCLq obtained: 197.06473780336015
+2019-01-30 20:08:25,079 DEBUG - MainThread - mod: model, method: calibrate, msg: UCLd obtained: 9.099630302277125
+2019-01-30 20:08:25,079 INFO - MainThread - mod: datautils, method: model2json, msg: Packaging model json format.
+2019-01-30 20:08:25,683 INFO - MainThread - mod: datautils, method: save2json, msg: Saving json file in /home/roberto/data/calibration/model_201901302008.json
+2019-01-30 20:08:26,057 DEBUG - MainThread - mod: msnmsensor, method: main, msg: UCLd = 9.099630302277125
+2019-01-30 20:08:26,057 DEBUG - MainThread - mod: msnmsensor, method: main, msg: UCLq = 197.06473780336015
+2019-01-30 20:08:26,058 DEBUG - MainThread - mod: msnmsensor, method: main, msg: Loading 1 local sources ['Netflow'].
+2019-01-30 20:08:26,071 WARNING - MainThread - mod: netflow, method: start, msg: nfcapd must have been initiated before!
+2019-01-30 20:08:26,071 WARNING - MainThread - mod: msnmsensor, method: main, msg: There are no remote sources configured: 'remote'
+2019-01-30 20:08:26,072 INFO - TCPServer - mod: networking, method: run, msg: Running the TCP server
+2019-01-30 20:08:26,072 INFO - MainThread - mod: datautils, method: sort_dictionary, msg: Sorting dict ...
+2019-01-30 20:08:26,072 INFO - MainThread - mod: datautils, method: sort_dictionary, msg: Ending sorting dict ...
+2019-01-30 20:08:26,072 INFO - SourceManagerMasterThread - mod: manager, method: run, msg: Running Source Master Manager ...
+2019-01-30 20:08:26,073 INFO - IntervalThread_1 - mod: manager, method: run, msg: Monitoring sources from 2019-01-30 20:08:26.073235 to 2019-01-30 20:09:26.073235 with maximum time until 2019-01-30 20:09:31.073235
+2019-01-30 20:08:26,073 DEBUG - SourceManagerMasterThread - mod: manager, method: run, msg: Waiting for the next interval ...
+2019-01-30 20:08:26,073 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Checking sources at 201901302008 time interval.
+2019-01-30 20:08:26,073 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:27,074 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:28,076 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:29,078 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:30,079 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:31,081 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:32,083 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:33,083 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:34,085 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:35,087 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:36,088 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:37,090 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:38,091 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:39,094 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:40,096 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:41,098 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:42,100 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:43,101 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:44,104 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:45,106 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:46,108 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:47,110 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:48,112 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:49,114 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:50,116 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:51,118 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:52,121 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:53,122 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:54,124 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:55,126 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:56,129 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:57,130 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:58,132 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:08:59,135 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:00,136 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:01,138 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:02,140 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:03,142 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:04,144 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:05,145 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:06,147 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:07,150 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:08,152 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:09,154 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:10,156 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:11,158 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:12,160 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:13,162 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:14,164 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:15,166 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:16,169 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:17,171 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:18,173 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:19,175 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:20,178 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:21,180 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:22,182 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:23,184 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:24,186 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:25,188 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:26,134 INFO - IntervalThread_2 - mod: manager, method: run, msg: Monitoring sources from 2019-01-30 20:09:26.133654 to 2019-01-30 20:10:26.133654 with maximum time until 2019-01-30 20:10:31.133654
+2019-01-30 20:09:26,135 DEBUG - SourceManagerMasterThread - mod: manager, method: run, msg: Waiting for the next interval ...
+2019-01-30 20:09:26,136 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Checking sources at 201901302009 time interval.
+2019-01-30 20:09:26,137 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:26,190 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:27,138 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:27,192 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:28,140 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:28,194 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:29,142 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:29,196 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:30,144 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:30,198 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:31,146 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:31,200 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 201901302008: ['Netflow']
+2019-01-30 20:09:31,201 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready: ['Netflow']
+2019-01-30 20:09:31,215 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Files generated for source Netflow at 201901302008: {'201901302008': None}
+2019-01-30 20:09:31,215 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: Launch monitoring for 201901302008 
+2019-01-30 20:09:31,215 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: Building the observation at 201901302008 for ['Netflow'] sources.
+2019-01-30 20:09:31,216 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: Source Netflow has 150 variables.
+2019-01-30 20:09:31,216 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: File generated of source Netflow at 201901302008: None
+2019-01-30 20:09:31,217 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: Invoking averageDataImputation method for data imputation for observation at 201901302008
+2019-01-30 20:09:31,217 DEBUG - IntervalThread_1 - mod: datautils, method: averageDataImputation, msg: Doing average based data imputation ...
+2019-01-30 20:09:31,234 WARNING - IntervalThread_1 - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2019-01-30 20:09:31,237 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: Observation generated of 150 variables at 201901302008.
+2019-01-30 20:09:31,237 INFO - IntervalThread_1 - mod: sensor, method: do_monitoring, msg: Running do_monitoring ...
+2019-01-30 20:09:31,237 DEBUG - IntervalThread_1 - mod: sensor, method: do_monitoring, msg: Preprocessing the observation of (1, 150).
+2019-01-30 20:09:31,238 DEBUG - IntervalThread_1 - mod: sensor, method: do_monitoring, msg: Computing statistics ...
+2019-01-30 20:09:31,238 DEBUG - IntervalThread_1 - mod: sensor, method: do_monitoring, msg: Qst obtained: 0.0
+2019-01-30 20:09:31,240 DEBUG - IntervalThread_1 - mod: sensor, method: do_monitoring, msg: Dst obtained: 0.0
+2019-01-30 20:09:31,240 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: MONITORING --> UCLd: 9.099630302277125 | Dst: 0.0
+2019-01-30 20:09:31,241 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: MONITORING --> UCLq: 197.06473780336015 | Qst: 0.0
+2019-01-30 20:09:31,243 INFO - IntervalThread_1 - mod: sensor, method: do_diagnosis, msg: Running do_monitoring ...
+2019-01-30 20:09:31,243 DEBUG - IntervalThread_1 - mod: sensor, method: do_diagnosis, msg: Preprocessing the observation of (1, 150).
+2019-01-30 20:09:31,244 DEBUG - IntervalThread_1 - mod: sensor, method: do_diagnosis, msg: Computing oMEDA ...
+2019-01-30 20:09:31,244 WARNING - IntervalThread_1 - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2019-01-30 20:09:31,248 WARNING - IntervalThread_1 - mod: manager, method: run, msg: There are no remote addresses configured. This sensor should be the root in the sensor hierarchy.
+2019-01-30 20:09:32,149 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:33,150 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:34,152 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:35,154 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:36,155 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:37,157 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:38,159 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:39,161 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:40,163 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:41,164 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:42,167 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:43,169 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:44,171 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:45,173 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:46,175 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:47,177 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:48,179 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:49,182 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:50,184 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:51,186 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:52,187 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:53,189 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:54,191 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:55,193 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:56,195 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:57,197 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:58,200 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:09:59,202 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:00,204 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:01,206 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:02,208 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:03,210 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:04,212 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:05,214 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:06,217 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:07,219 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:08,220 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:09,222 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:10,224 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:11,226 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:12,229 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:13,231 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:14,233 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:15,235 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:16,237 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:17,239 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:18,242 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:19,244 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:20,246 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:21,248 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:22,250 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:23,252 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:24,254 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:25,256 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:26,189 INFO - IntervalThread_3 - mod: manager, method: run, msg: Monitoring sources from 2019-01-30 20:10:26.188452 to 2019-01-30 20:11:26.188452 with maximum time until 2019-01-30 20:11:31.188452
+2019-01-30 20:10:26,189 DEBUG - SourceManagerMasterThread - mod: manager, method: run, msg: Waiting for the next interval ...
+2019-01-30 20:10:26,190 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Checking sources at 201901302010 time interval.
+2019-01-30 20:10:26,191 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:26,258 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:27,192 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:27,260 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:28,194 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:28,262 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:29,196 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:29,264 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:30,197 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:30,266 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:31,199 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:31,268 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 201901302009: ['Netflow']
+2019-01-30 20:10:31,269 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready: ['Netflow']
+2019-01-30 20:10:31,269 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Files generated for source Netflow at 201901302009: {'201901302008': None, '201901302009': None}
+2019-01-30 20:10:31,270 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: Launch monitoring for 201901302009 
+2019-01-30 20:10:31,270 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: Building the observation at 201901302009 for ['Netflow'] sources.
+2019-01-30 20:10:31,271 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: Source Netflow has 150 variables.
+2019-01-30 20:10:31,271 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: File generated of source Netflow at 201901302009: None
+2019-01-30 20:10:31,271 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: Invoking averageDataImputation method for data imputation for observation at 201901302009
+2019-01-30 20:10:31,272 DEBUG - IntervalThread_2 - mod: datautils, method: averageDataImputation, msg: Doing average based data imputation ...
+2019-01-30 20:10:31,285 WARNING - IntervalThread_2 - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2019-01-30 20:10:31,287 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: Observation generated of 150 variables at 201901302009.
+2019-01-30 20:10:31,287 INFO - IntervalThread_2 - mod: sensor, method: do_monitoring, msg: Running do_monitoring ...
+2019-01-30 20:10:31,288 DEBUG - IntervalThread_2 - mod: sensor, method: do_monitoring, msg: Preprocessing the observation of (1, 150).
+2019-01-30 20:10:31,288 DEBUG - IntervalThread_2 - mod: sensor, method: do_monitoring, msg: Computing statistics ...
+2019-01-30 20:10:31,289 DEBUG - IntervalThread_2 - mod: sensor, method: do_monitoring, msg: Qst obtained: 0.0
+2019-01-30 20:10:31,290 DEBUG - IntervalThread_2 - mod: sensor, method: do_monitoring, msg: Dst obtained: 0.0
+2019-01-30 20:10:31,291 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: MONITORING --> UCLd: 9.099630302277125 | Dst: 0.0
+2019-01-30 20:10:31,291 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: MONITORING --> UCLq: 197.06473780336015 | Qst: 0.0
+2019-01-30 20:10:31,293 INFO - IntervalThread_2 - mod: sensor, method: do_diagnosis, msg: Running do_monitoring ...
+2019-01-30 20:10:31,293 DEBUG - IntervalThread_2 - mod: sensor, method: do_diagnosis, msg: Preprocessing the observation of (1, 150).
+2019-01-30 20:10:31,294 DEBUG - IntervalThread_2 - mod: sensor, method: do_diagnosis, msg: Computing oMEDA ...
+2019-01-30 20:10:31,295 WARNING - IntervalThread_2 - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2019-01-30 20:10:31,299 WARNING - IntervalThread_2 - mod: manager, method: run, msg: There are no remote addresses configured. This sensor should be the root in the sensor hierarchy.
+2019-01-30 20:10:32,201 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:33,202 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:34,204 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:35,206 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:36,208 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:37,210 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:38,213 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:39,216 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:40,218 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:41,219 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:42,221 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:43,222 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:44,224 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:45,226 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:46,228 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:47,230 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:48,232 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:49,234 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:50,235 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:51,237 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:52,239 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:53,241 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:54,243 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:55,245 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:56,247 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:57,249 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:58,070 INFO - MainThread - mod: msnmsensor, method: main, msg: KeyboardInterrupt received ...
+2019-01-30 20:10:58,070 INFO - MainThread - mod: msnmsensor, method: main, msg: Stopping all services ...
+2019-01-30 20:10:58,071 INFO - MainThread - mod: networking, method: on_stop, msg: Shutdown the TCP server ...
+2019-01-30 20:10:58,251 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:10:58,290 DEBUG - MainThread - mod: msnmsensor, method: main, msg: Waiting for IntervalThread_3 thread ...
+2019-01-30 20:10:59,253 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:00,255 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:01,256 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:02,259 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:03,261 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:04,262 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:05,263 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:06,265 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:07,267 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:08,268 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:09,270 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:10,272 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:11,274 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:12,276 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:13,278 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:14,280 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:15,295 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:16,297 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:17,300 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:18,301 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:19,303 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:20,305 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:21,307 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:22,309 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:23,311 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:24,313 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:25,315 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:26,317 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:27,318 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:28,320 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:29,322 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:30,325 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:31,327 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 201901302010: ['Netflow']
+2019-01-30 20:11:31,327 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready: ['Netflow']
+2019-01-30 20:11:31,328 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Files generated for source Netflow at 201901302010: {'201901302008': None, '201901302009': None, '201901302010': None}
+2019-01-30 20:11:31,329 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: Launch monitoring for 201901302010 
+2019-01-30 20:11:31,329 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: Building the observation at 201901302010 for ['Netflow'] sources.
+2019-01-30 20:11:31,329 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: Source Netflow has 150 variables.
+2019-01-30 20:11:31,330 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: File generated of source Netflow at 201901302010: None
+2019-01-30 20:11:31,330 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: Invoking averageDataImputation method for data imputation for observation at 201901302010
+2019-01-30 20:11:31,331 DEBUG - IntervalThread_3 - mod: datautils, method: averageDataImputation, msg: Doing average based data imputation ...
+2019-01-30 20:11:31,342 WARNING - IntervalThread_3 - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2019-01-30 20:11:31,345 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: Observation generated of 150 variables at 201901302010.
+2019-01-30 20:11:31,345 INFO - IntervalThread_3 - mod: sensor, method: do_monitoring, msg: Running do_monitoring ...
+2019-01-30 20:11:31,345 DEBUG - IntervalThread_3 - mod: sensor, method: do_monitoring, msg: Preprocessing the observation of (1, 150).
+2019-01-30 20:11:31,346 DEBUG - IntervalThread_3 - mod: sensor, method: do_monitoring, msg: Computing statistics ...
+2019-01-30 20:11:31,346 DEBUG - IntervalThread_3 - mod: sensor, method: do_monitoring, msg: Qst obtained: 0.0
+2019-01-30 20:11:31,347 DEBUG - IntervalThread_3 - mod: sensor, method: do_monitoring, msg: Dst obtained: 0.0
+2019-01-30 20:11:31,348 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: MONITORING --> UCLd: 9.099630302277125 | Dst: 0.0
+2019-01-30 20:11:31,348 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: MONITORING --> UCLq: 197.06473780336015 | Qst: 0.0
+2019-01-30 20:11:31,350 INFO - IntervalThread_3 - mod: sensor, method: do_diagnosis, msg: Running do_monitoring ...
+2019-01-30 20:11:31,350 DEBUG - IntervalThread_3 - mod: sensor, method: do_diagnosis, msg: Preprocessing the observation of (1, 150).
+2019-01-30 20:11:31,351 DEBUG - IntervalThread_3 - mod: sensor, method: do_diagnosis, msg: Computing oMEDA ...
+2019-01-30 20:11:31,351 WARNING - IntervalThread_3 - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2019-01-30 20:11:31,354 WARNING - IntervalThread_3 - mod: manager, method: run, msg: There are no remote addresses configured. This sensor should be the root in the sensor hierarchy.
+2019-01-30 20:11:32,356 DEBUG - MainThread - mod: msnmsensor, method: main, msg: Waiting for SourceManagerMasterThread thread ...
+2019-01-30 20:11:32,357 INFO - MainThread - mod: msnmsensor, method: main, msg: Exiting ...

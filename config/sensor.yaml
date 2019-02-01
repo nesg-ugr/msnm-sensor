@@ -1,0 +1,108 @@
+#
+# Sensor configuration file
+#
+#-----------------------------------------------------------------------
+
+DataSources:
+  local:
+    Netflow:
+      type: local
+      # Module containing the local data source class for managing it
+      moduleName: msnm.modules.source.netflow
+      # nfapd netflow captures
+      captures: /home/roberto/netflow_captures
+      # nfcapd netflow captures (a copyt of the previous ones)
+      raw: data/sources/local/netflow/raw/
+      # nfdump exported files (CSV)
+      processed: data/sources/local/netflow/processed/
+      # parser output
+      parsed: data/sources/local/netflow/parsed/
+      # parser general config
+      parserConfig: config/fcparser_configuration.yaml
+      # parser netflow config
+      parserContents: config/fcparser_netflow.yaml
+      # When True, tries to automatize start and stop nfcapd process
+      nfcapdAutomatize: False
+
+Sensor:
+  observation: data/monitoring/observation/
+  output: data/monitoring/output/
+  model: data/calibration/
+  diagnosis: data/diagnosis/
+  # Latent variables for the PCA model
+  lv: 2
+  # Data preprocessing method
+  # 0: no preprocessing
+  # 1: mean-centering
+  # 2: auto-scaling
+  prep: 2
+  # Choose the phase to compute UCLd:
+  # 1: Phase I
+  # 2: Phase II
+  phase: 1
+
+  # Missing data imputation
+  missingData:
+    # Missing data module
+    missingDataModule: msnm.utils.datautils
+    # Methods
+    # average
+    missingDataMethods:
+      average: averageDataImputation
+      zero: zeroDataImputation
+
+    # selected method
+    selected: average
+
+  # Local unique sensor identifier
+  sid: S2
+
+  # Static calibration
+  # Random calibration?
+  randomCalibration: True
+  randomCalibrationObs: 300
+  # These ones are useless when randomCalibration is enabled
+  calibrationFile: cal_file.mat
+  calibrationMatrix: complete_matrix
+  calibrationVariables: var_l
+
+  # EWMA dynamic calibration parameters
+  dynamiCalibration:
+    # Batch of observations
+    B: 2
+    # Forgetting factor
+    lambda: 0.1
+    # enabled?
+    enabled: False
+
+  # Server configuration. To listen other sensors queries
+  server_address:
+    ip: 127.0.0.1
+    port: 9002
+  # List of sensor to send data packets
+  remote_addresses:
+    #S4:
+      #ip: 127.0.0.1
+      #port: 9004
+    #S5:
+      #ip: 127.0.0.1
+      #port: 9005
+
+GeneralParams:
+  # root files path - All created folders are under this one
+  rootPath: /home/roberto/
+  # Date formats
+  dateFormat: '%Y-%m-%d %H:%M:%S'
+  dateFormatNfcapdFiles: '%Y%m%d%H%M'
+  # Data format for timestamps
+  tsDateFormat: '%Y%m%d%H%M'
+  # Time interval in seconds to get data from local sources
+  dataSourcesScheduling: 60
+  # Polling time interval in seconds for polling data sources
+  dataSourcesPolling: 1
+  # Timeout in seconds to wait the other not ready data sources
+  dataSourcesNotReadyWaitingTime: 5
+  valuesFormat: '%1.5f'
+  serverConnectionTimeout: 15
+  # logging/profiling config file
+  logConfigFile: config/logging.yaml

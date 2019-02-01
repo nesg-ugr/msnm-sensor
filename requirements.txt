@@ -1,0 +1,7 @@
+numpy>=1.14
+pandas>=0.22
+scipy>=1.0
+pyyaml>=3.12
+IPy>=0.83
+watchdog>=0.8.3
+#git+https://github.com/josecamachop/FCParser

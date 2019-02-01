@@ -1,0 +1,802 @@
+#-----------------------------------------------------------------------
+#
+# Netflow- Configuration File
+#
+#-----------------------------------------------------------------------
+#
+# tag: tag asociated with the files
+#
+# structured: Boolean ver to indicate if datasource is structured or not.
+#
+# timestamp_format: format of the timestamp of the logs in the files of 
+#                   this dataSource in python datetime format, see https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior
+#
+# timestamp_regexp: regular expresion that matches the date format of the source (only needed for unstructured sources)
+#
+# separator: chars that delimitates the log entries of the source (only needed in unstructured sources)
+#
+# timearg: position of the timestamp in the log entry (only needed in structured sources)
+#
+# VARIABLES:
+#   - name:      Variable name.
+#     matchtype:      Variable matchtype {string, number, counter, ip, time, duration}.
+#     where:       Position of the field in the line (starts with 0).
+#
+#   - ...
+#
+# FEATURES:
+#   - name:      Feature name.
+#     variable:  Feature from which the feature is calculated.
+#     matchtype:      Feature matchtype {single, multiple, range, default}
+#     value:     Value of the field that defines the feature.
+#                If the matchtype is 'single' use a single value.
+#                If the matchtype is 'multiple', use a list of values.
+#                If the matchtype is 'range', use a list of two values.
+#                If the matchtype is 'default', the value must be empty.
+#   - ...
+#-----------------------------------------------------------------------
+
+tag: netflow
+
+structured: True
+
+timestamp_format: "%Y-%m-%d %H:%M:%S"
+
+# timestamp_regexp:  
+  
+# separator:  
+
+timearg: 0
+
+
+## Variable Section
+VARIABLES:
+- name: duration
+  matchtype: number
+  where: 2
+- name: src_ip
+  matchtype: ip
+  where: 3
+- name: dst_ip
+  matchtype: ip
+  where: 4
+- name: src_port
+  matchtype: number
+  where: 5
+- name: dst_port
+  matchtype: number
+  where: 6
+- name: protocol
+  matchtype: string
+  where: 7
+- name: tcp_flags
+  matchtype: string
+  where: 8
+- name: src_tos
+  matchtype: number
+  where: 10
+- name: in_packets
+  matchtype: number
+  where: 11
+- name: in_bytes
+  matchtype: number
+  where: 12
+- name: out_packets
+  matchtype: number
+  where: 13
+- name: out_bytes
+  matchtype: number
+  where: 14
+- name: in_interface
+  matchtype: number
+  where: 15
+- name: out_interface
+  matchtype: number
+  where: 16
+
+
+## Features Section
+FEATURES:
+# source IP
+- name: src_ip_private
+  variable: src_ip
+  matchtype: single
+  value: private
+- name: src_ip_public
+  variable: src_ip
+  matchtype: single
+  value: public
+- name: src_ip_default
+  variable: src_ip
+  matchtype: default
+  value: 
+
+# destination IP
+- name: dst_ip_private
+  variable: dst_ip
+  matchtype: single
+  value: private
+- name: dst_ip_public
+  variable: dst_ip
+  matchtype: single
+  value: public
+- name: dst_ip_default
+  variable: dst_ip
+  matchtype: default
+  value: 
+
+
+# source port
+- name: sport_zero
+  variable: src_port
+  matchtype: single
+  value: 0
+- name: sport_multiplex
+  variable: src_port
+  matchtype: single
+  value: 1
+- name: sport_echo
+  variable: src_port
+  matchtype: single
+  value: 7
+- name: sport_discard
+  variable: src_port
+  matchtype: single
+  value: 9
+- name: sport_daytime
+  variable: src_port
+  matchtype: single
+  value: 13
+- name: sport_quote
+  variable: src_port
+  matchtype: single
+  value: 17
+- name: sport_chwhereen
+  variable: src_port
+  matchtype: single
+  value: 19
+- name: sport_ftp_data
+  variable: src_port
+  matchtype: single
+  value: 20
+- name: sport_ftp_control
+  variable: src_port
+  matchtype: single
+  value: 21
+- name: sport_ssh
+  variable: src_port
+  matchtype: single
+  value: 22
+- name: sport_telnet
+  variable: src_port
+  matchtype: single
+  value: 23
+- name: sport_smtp
+  variable: src_port
+  matchtype: single
+  value: 25
+- name: sport_dns
+  variable: src_port
+  matchtype: single
+  value: 53
+- name: sport_bootp
+  variable: src_port
+  matchtype: multiple
+  value:
+  - 67
+  - 68
+- name: sport_gopher
+  variable: src_port
+  matchtype: single
+  value: 70
+- name: sport_finger
+  variable: src_port
+  matchtype: single
+  value: 79
+- name: sport_http
+  variable: src_port
+  matchtype: single
+  value: 80
+- name: sport_kerberos
+  variable: src_port
+  matchtype: single
+  value: 88
+- name: sport_pop3
+  variable: src_port
+  matchtype: single
+  value: 110
+- name: sport_nntp
+  variable: src_port
+  matchtype: single
+  value: 119
+- name: sport_ntp
+  variable: src_port
+  matchtype: single
+  value: 123
+- name: sport_netbios
+  variable: src_port
+  matchtype: multiple
+  value:
+  - 137
+  - 138
+  - 139
+- name: sport_imap4
+  variable: src_port
+  matchtype: single
+  value: 143
+- name: sport_snmp
+  variable: src_port
+  matchtype: single
+  value: 161
+- name: sport_ldap
+  variable: src_port
+  matchtype: single
+  value: 389
+- name: sport_https
+  variable: src_port
+  matchtype: single
+  value: 443
+- name: sport_mds
+  variable: src_port
+  matchtype: single
+  value: 445
+- name: sport_kpasswd
+  variable: src_port
+  matchtype: single
+  value: 464
+- name: sport_smtp_ssl
+  variable: src_port
+  matchtype: single
+  value: 465
+- name: sport_syslog
+  variable: src_port
+  matchtype: single
+  value: 514
+- name: sport_smtp
+  variable: src_port
+  matchtype: single
+  value: 587
+- name: sport_ldaps
+  variable: src_port
+  matchtype: single
+  value: 636
+- name: sport_cups
+  variable: src_port
+  matchtype: single
+  value: 631
+- name: sport_imap4
+  variable: src_port
+  matchtype: single
+  value: 993
+- name: sport_socks
+  variable: src_port
+  matchtype: single
+  value: 1080
+- name: sport_openvpn
+  variable: src_port
+  matchtype: single
+  value: 1194
+- name: sport_mssql
+  variable: src_port
+  matchtype: multiple
+  value:
+  - 1433
+  - 1434
+- name: sport_citrix
+  variable: src_port
+  matchtype: single
+  value: 1494
+- name: sport_oracle
+  variable: src_port
+  matchtype: single
+  value: 1521
+- name: sport_rapservice
+  variable: src_port
+  matchtype: single
+  value: 1530
+- name: sport_msnmessenger
+  variable: src_port
+  matchtype: single
+  value: 1863
+- name: sport_mgc
+  variable: src_port
+  matchtype: single
+  value: 3268
+- name: sport_mysql
+  variable: src_port
+  matchtype: single
+  value: 3306
+- name: sport_metasploit
+  variable: src_port
+  matchtype: single
+  value: 4444
+- name: sport_emule
+  variable: src_port
+  matchtype: single
+  value: 4662
+- name: sport_xmpp
+  variable: src_port
+  matchtype: single
+  value: 5222
+- name: sport_bittorrent
+  variable: src_port
+  matchtype: single
+  value: 6881
+- name: sport_http2
+  variable: src_port
+  matchtype: single
+  value: 8080
+- name: sport_reserved
+  variable: src_port
+  matchtype: range
+  value:
+  - 0
+  - 1023
+- name: sport_register
+  variable: src_port
+  matchtype: range
+  value:
+  - 1024
+  - 49151
+- name: sport_private
+  variable: src_port
+  matchtype: range
+  value:
+  - 49152
+  - 65535
+
+
+# destination port
+- name: dport_zero
+  variable: dst_port
+  matchtype: single
+  value: 0
+- name: dport_multiplex
+  variable: dst_port
+  matchtype: single
+  value: 1
+- name: dport_echo
+  variable: dst_port
+  matchtype: single
+  value: 7
+- name: dport_discard
+  variable: dst_port
+  matchtype: single
+  value: 9
+- name: dport_daytime
+  variable: dst_port
+  matchtype: single
+  value: 13
+- name: dport_quote
+  variable: dst_port
+  matchtype: single
+  value: 17
+- name: dport_chwhereen
+  variable: dst_port
+  matchtype: single
+  value: 19
+- name: dport_ftp_data
+  variable: dst_port
+  matchtype: single
+  value: 20
+- name: dport_ftp_control
+  variable: dst_port
+  matchtype: single
+  value: 21
+- name: dport_ssh
+  variable: dst_port
+  matchtype: single
+  value: 22
+- name: dport_telnet
+  variable: dst_port
+  matchtype: single
+  value: 23
+- name: dport_smtp
+  variable: dst_port
+  matchtype: single
+  value: 25
+- name: dport_dns
+  variable: dst_port
+  matchtype: single
+  value: 53
+- name: dport_bootp
+  variable: dst_port
+  matchtype: multiple
+  value:
+  - 67
+  - 68
+- name: dport_gopher
+  variable: dst_port
+  matchtype: single
+  value: 70
+- name: dport_finger
+  variable: dst_port
+  matchtype: single
+  value: 79
+- name: dport_http
+  variable: dst_port
+  matchtype: single
+  value: 80
+- name: dport_kerberos
+  variable: dst_port
+  matchtype: single
+  value: 88
+- name: dport_pop3
+  variable: dst_port
+  matchtype: single
+  value: 110
+- name: dport_nntp
+  variable: dst_port
+  matchtype: single
+  value: 119
+- name: dport_ntp
+  variable: dst_port
+  matchtype: single
+  value: 123
+- name: dport_netbios
+  variable: dst_port
+  matchtype: multiple
+  value:
+  - 137
+  - 138
+  - 139
+- name: dport_imap4
+  variable: dst_port
+  matchtype: single
+  value: 143
+- name: dport_snmp
+  variable: dst_port
+  matchtype: single
+  value: 161
+- name: dport_ldap
+  variable: dst_port
+  matchtype: single
+  value: 389
+- name: dport_https
+  variable: dst_port
+  matchtype: single
+  value: 443
+- name: dport_mds
+  variable: dst_port
+  matchtype: single
+  value: 445
+- name: dport_kpasswd
+  variable: dst_port
+  matchtype: single
+  value: 464
+- name: dport_smtp_ssl
+  variable: dst_port
+  matchtype: single
+  value: 465
+- name: dport_syslog
+  variable: dst_port
+  matchtype: single
+  value: 514
+- name: dport_smtp
+  variable: dst_port
+  matchtype: single
+  value: 587
+- name: dport_ldaps
+  variable: dst_port
+  matchtype: single
+  value: 636
+- name: dport_cups
+  variable: dst_port
+  matchtype: single
+  value: 631
+- name: dport_imap4
+  variable: dst_port
+  matchtype: single
+  value: 993
+- name: dport_socks
+  variable: dst_port
+  matchtype: single
+  value: 1080
+- name: dport_openvpn
+  variable: dst_port
+  matchtype: single
+  value: 1194
+- name: dport_mssql
+  variable: dst_port
+  matchtype: multiple
+  value:
+  - 1433
+  - 1434
+- name: dport_citrix
+  variable: dst_port
+  matchtype: single
+  value: 1494
+- name: dport_oracle
+  variable: dst_port
+  matchtype: single
+  value: 1521
+- name: dport_rapservice
+  variable: dst_port
+  matchtype: single
+  value: 1530
+- name: dport_msnmessenger
+  variable: dst_port
+  matchtype: single
+  value: 1863
+- name: dport_mgc
+  variable: dst_port
+  matchtype: single
+  value: 3268
+- name: dport_mysql
+  variable: dst_port
+  matchtype: single
+  value: 3306
+- name: dport_metasploit
+  variable: dst_port
+  matchtype: single
+  value: 4444
+- name: dport_emule
+  variable: dst_port
+  matchtype: single
+  value: 4662
+- name: dport_xmpp
+  variable: dst_port
+  matchtype: single
+  value: 5222
+- name: dport_bittorrent
+  variable: dst_port
+  matchtype: single
+  value: 6881
+- name: dport_http2
+  variable: dst_port
+  matchtype: single
+  value: 8080
+- name: dport_reserved
+  variable: dst_port
+  matchtype: range
+  value:
+  - 0
+  - 1023
+- name: dport_register
+  variable: dst_port
+  matchtype: range
+  value:
+  - 1024
+  - 49151
+- name: dport_private
+  variable: dst_port
+  matchtype: range
+  value:
+  - 49152
+  - 65535
+
+
+# protocol
+- name: protocol_tcp
+  variable: protocol
+  matchtype: single
+  value: TCP
+- name: protocol_udp
+  variable: protocol
+  matchtype: single
+  value: UDP
+- name: protocol_icmp
+  variable: protocol
+  matchtype: single
+  value: ICMP
+- name: protocol_igmp
+  variable: protocol
+  matchtype: single
+  value: IGMP
+- name: protocol_other
+  variable: protocol
+  matchtype: default
+  value: 
+
+
+# TCP flags
+- name: tcpflags_URG
+  variable: tcp_flags
+  matchtype: regexp
+  value: 'U'
+- name: tcpflags_ACK
+  variable: tcp_flags
+  matchtype: regexp
+  value: 'A'
+- name: tcpflags_PSH
+  variable: tcp_flags
+  matchtype: regexp
+  value: 'P'
+- name: tcpflags_RST
+  variable: tcp_flags
+  matchtype: regexp
+  value: 'R'
+- name: tcpflags_SYN
+  variable: tcp_flags
+  matchtype: regexp
+  value: 'S'
+- name: tcpflags_FIN
+  variable: tcp_flags
+  matchtype: regexp
+  value: 'F'
+
+
+# source Type of Service
+- name: srctos_zero
+  variable: src_tos
+  matchtype: single
+  value: 0
+- name: srctos_192
+  variable: src_tos
+  matchtype: single
+  value: 192
+- name: srctos_other
+  variable: src_tos
+  matchtype: default
+  value: 
+
+
+# Input packets
+- name: in_npackets_verylow
+  variable: in_packets
+  matchtype: range
+  value:
+  - 0
+  - 3
+- name: in_npackets_low
+  variable: in_packets
+  matchtype: range
+  value:
+  - 3
+  - 20
+- name: in_npackets_medium
+  variable: in_packets
+  matchtype: range
+  value:
+  - 20
+  - 100
+- name: in_npackets_high
+  variable: in_packets
+  matchtype: range
+  value:
+  - 100
+  - 1000
+- name: in_npackets_veryhigh
+  variable: in_packets
+  matchtype: range
+  value:
+  - 1000
+  - Inf
+
+
+# Output packets
+- name: out_npackets_verylow
+  variable: out_packets
+  matchtype: range
+  value:
+  - 0
+  - 3
+- name: out_npackets_low
+  variable: out_packets
+  matchtype: range
+  value:
+  - 3
+  - 20
+- name: out_npackets_medium
+  variable: out_packets
+  matchtype: range
+  value:
+  - 20
+  - 100
+- name: out_npackets_high
+  variable: out_packets
+  matchtype: range
+  value:
+  - 100
+  - 1000
+- name: out_npackets_veryhigh
+  variable: out_packets
+  matchtype: range
+  value:
+  - 1000
+  - Inf
+
+
+# Input Bytes
+- name: in_nbytes_verylow
+  variable: in_bytes
+  matchtype: range
+  value:
+  - 0
+  - 150
+- name: in_nbytes_low
+  variable: in_bytes
+  matchtype: range
+  value:
+  - 150
+  - 1000
+- name: in_nbytes_medium
+  variable: in_bytes
+  matchtype: range
+  value:
+  - 1000
+  - 10000
+- name: in_nbytes_high
+  variable: in_bytes
+  matchtype: range
+  value:
+  - 10000
+  - 100000
+- name: in_nbytes_veryhigh
+  variable: in_bytes
+  matchtype: range
+  value:
+  - 100000
+  - Inf
+
+
+# Output Bytes
+- name: out_nbytes_verylow
+  variable: out_bytes
+  matchtype: range
+  value:
+  - 0
+  - 150
+- name: out_nbytes_low
+  variable: out_bytes
+  matchtype: range
+  value:
+  - 150
+  - 1000
+- name: out_nbytes_medium
+  variable: out_bytes
+  matchtype: range
+  value:
+  - 1000
+  - 10000
+- name: out_nbytes_high
+  variable: out_bytes
+  matchtype: range
+  value:
+  - 10000
+  - 100000
+- name: out_nbytes_veryhigh
+  variable: out_bytes
+  matchtype: range
+  value:
+  - 100000
+  - Inf
+
+
+# Input Interface
+- name: in_interface_1
+  variable: in_interface
+  matchtype: single
+  value: 1
+- name: in_interface_2
+  variable: in_interface
+  matchtype: single
+  value: 2
+- name: in_interface_3
+  variable: in_interface
+  matchtype: single
+  value: 3
+- name: in_interface_65535
+  variable: in_interface
+  matchtype: single
+  value: 65535
+
+# Input Interface
+- name: out_interface_1
+  variable: out_interface
+  matchtype: single
+  value: 1
+- name: out_interface_2
+  variable: out_interface
+  matchtype: single
+  value: 2
+- name: out_interface_3
+  variable: out_interface
+  matchtype: single
+  value: 3
+- name: out_interface_65535
+  variable: out_interface
+  matchtype: single
+  value: 65535
+
+

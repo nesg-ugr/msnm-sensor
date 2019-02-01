@@ -1,0 +1,54 @@
+#-----------------------------------------------------------------------
+#
+# Parser - Configuration File
+#
+#-----------------------------------------------------------------------
+# DataSources:
+#   Source1:     DataSource name
+#     config:      Configuration file for this datasource.
+#     data:        Input files (csv format).
+#   Source2:
+#     ...
+#   SourceN:
+#     ...
+#
+# Key:          Key variable to aggregate dataSources
+#
+# Output:
+#   dir:        Output directory to write the output parsed data.
+#   stats:      Log file to write the stats (lines, records, matches).
+#
+# Deparsing_output:
+#  dir:          Output directory for deparsing process
+#
+# SPLIT:        split info for temporal samplig
+#   Time:
+#     window    time windows for sampling in seconds
+#     start:    start and end time for sampling interval
+#     end:
+#
+#    Output:    Output directory for split data
+#
+#-----------------------------------------------------------------------
+
+DataSources:
+
+  netflow:
+    config: config/fcparser_netflow.yaml
+    data: ./data/sources/local/netflow/parsed/netflow_*.csv
+
+Keys:  #Empty, so no aggregation is made. So, analyzed by timestamp
+
+Output:
+  dir: ./data/sources/local/netflow/parsed/
+  stats: stats.log
+
+Deparsing_output:
+
+SPLIT:
+  Time:
+    window:
+    start:
+    end:
+
+  Output:

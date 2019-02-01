@@ -1,0 +1,807 @@
+#
+# Iptables log - Configuration File
+#
+#-----------------------------------------------------------------------
+# 
+# tag: tag asociated with the files, used in deparsing process
+# 
+# timestamp_format: formats of the timestamp of the logs in the files of 
+#                   this dataSource. python datetime format, see https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior
+# 
+# Separator:   For unstructured sources, string used to diferenciate logs, usually '\n' o '\n\n'
+#
+# Timearg:     For structured sources, position of the timestamp in the line  
+#
+# variableS:
+#   - name:    variable name.
+#     matchtype:    variable type {string, number, counter, ip, time, duration}.
+#     where:     Position of the variable in the line (starts with 0).
+# 
+#   - ...
+#
+# VARIABLES:
+#   - name:    Variable name.
+#     variable:   variable from which the variable is calculated.
+#     type:    Variable type {single, multiple, range, default}
+#     value:   Value of the variable that defines the variable.
+#              If the type is 'single' use a single value.
+#              If the type is 'multiple', use a list of values.
+#              If the type is 'range', use a list of two values.
+#              If the type is 'default', the value must be empty.
+#   - ...
+#-----------------------------------------------------------------------
+
+tag: iptables
+
+timestamp_format: "%b %d %H:%M:%S"
+
+timestamp_regexp: '(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+[0-9]{1,2} ([0-9]{2}:){2}[0-9]{2}'
+
+separator: "\n"
+
+structured: False
+
+timearg: 
+
+
+## variables Section
+VARIABLES:
+
+- name: timestamp
+  matchtype: string
+  where: '(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+[0-9]{1,2} ([0-9]{2}:){2}[0-9]{2}'
+
+- name: conection #INBOUND TCP UDP...#
+  matchtype: string
+  where: '(?<= bridge kernel: )(.*?)(?=: )'
+
+- name: in_interface #INBOUND TCP UDP...#
+  matchtype: string
+  where: '(?<= IN=)(.*?)(?= )'
+
+- name: out_interface #INBOUND TCP UDP...#
+  matchtype: string
+  where: '(?<= OUT=)(.*?)(?= )'
+
+- name: physical_in_interface
+  matchtype: string
+  where: '(?<= PHYSIN=)(.*?)(?= )'
+
+- name: physical_out_interface
+  matchtype: string
+  where: '(?<= PHYSOUT=)(.*?)(?= )'
+  
+- name: src_ip
+  matchtype: ip
+  where: '(?<= SRC=)([0-9]{1,3}.){3}[0-9]{1,3}(?= )'
+
+- name: dst_ip
+  matchtype: ip
+  where: '(?<= DST=)([0-9]{1,3}.){3}[0-9]{1,3}(?= )'
+
+- name: len
+  matchtype: number
+  where: '(?<= LEN=)[0-9]+(?= )'
+
+- name: tos
+  matchtype: number
+  where: '(?<= TOS=[0-9]x)[0-9]+(?= )'
+
+- name: precedence
+  matchtype: number
+  where: '(?<= PREC=[0-9]x)[0-9]+(?= )'
+
+- name: ttl
+  matchtype: number
+  where: '(?<= TTL=)[0-9]+(?= )'
+
+- name: id
+  matchtype: number
+  where: '(?<= TTL=)[0-9]+(?= )'
+
+- name: defragment_flags
+  matchtype: string
+  where: '(?<=[0-9] )(DF|CE|MF)(?= PROTO)'
+
+- name: protocol
+  matchtype: string
+  where: '(?<= PROTO=)[A-Z]+(?= )'
+
+- name: src_port
+  matchtype: string
+  where: '(?<= SPT=)[0-9]+(?= )'
+
+- name: dst_port
+  matchtype: string
+  where: '(?<= DPT=)[0-9]+(?= )'
+
+- name: window
+  matchtype: string
+  where: '(?<= WINDOW=)[0-9]+(?= )'
+
+- name: reserved
+  matchtype: string
+  where: '(?<= RES=)[0-9]x[0-9]+(?= )'
+
+- name: tcp_flags
+  matchtype: string
+  where: '(?<= RES=[0-9]x[0-9]{2} )(.)+(?=URGP)'
+
+- name: urgent_pointer
+  matchtype: string
+  where: '(?<= URGP=)[0-9]+(?= )'
+
+
+## Variables Section
+FEATURES:
+
+# source IP
+- name: iptables_src_ip_private
+  variable: src_ip
+  matchtype: single
+  value: private
+- name: iptables_src_ip_public
+  variable: src_ip
+  matchtype: single
+  value: public
+- name: iptables_src_ip_default
+  variable: src_ip
+  matchtype: default
+  value: 
+
+# destination IP
+- name: iptables_dst_ip_private
+  variable: dst_ip
+  matchtype: single
+  value: private
+- name: iptables_dst_ip_public
+  variable: dst_ip
+  matchtype: single
+  value: public
+- name: iptables_dst_ip_default
+  variable: dst_ip
+  matchtype: default
+  value: 
+
+- name: iptables_inboundTCP
+  variable: conection
+  matchtype: single
+  value: INBOUND TCP
+
+- name: iptables_inboundICMP
+  variable: conection
+  matchtype: single
+  value: INBOUND ICMP
+
+- name: iptables_inboundUDP
+  variable: conection
+  matchtype: single
+  value: INBOUND UDP
+
+- name: iptables_outboundTCP
+  variable: conection
+  matchtype: single
+  value: OUTBOUND CONN TCP
+
+- name: iptables_outboundUDP
+  variable: conection
+  matchtype: single
+  value: OUTBOUND CONN UDP
+
+- name: iptables_phyin_eth0
+  variable: physical_in_interface
+  matchtype: single
+  value: eth0
+
+- name: iptables_phyin_eth1
+  variable: physical_in_interface
+  matchtype: single
+  value: eth1
+
+- name: iptables_phyout_eth0
+  variable: physical_out_interface
+  matchtype: single
+  value: eth0
+
+- name: iptables_phyout_eth1
+  variable: physical_out_interface
+  matchtype: single
+  value: eth1
+
+- name: iptables_len_low
+  variable: len
+  matchtype: range
+  value: [0,300]
+
+- name: iptables_len_medium
+  variable: len
+  matchtype: range
+  value: [300,1000]
+
+- name: iptables_len_high
+  variable: len
+  matchtype: range
+  value: [1000,inf]
+
+- name: iptables_tos_0
+  variable: tos
+  matchtype: single
+  value: 0
+
+- name: iptables_tos_4
+  variable: tos
+  matchtype: single
+  value: 4
+
+- name: iptables_tos_8
+  variable: tos
+  matchtype: single
+  value: 8
+
+- name: iptables_tos_10
+  variable: tos
+  matchtype: single
+  value: 10
+
+- name: iptables_tos_14
+  variable: tos
+  matchtype: single
+  value: 14
+
+- name: iptables_tos_18
+  variable: tos
+  matchtype: single
+  value: 18
+
+- name: iptables_prec_0
+  variable: precedence
+  matchtype: single
+  value: 0
+
+- name: iptables_prec_20
+  variable: precedence
+  matchtype: single
+  value: 20
+
+- name: iptables_prec_40
+  variable: precedence
+  matchtype: single
+  value: 40
+
+- name: iptables_prec_60
+  variable: precedence
+  matchtype: single
+  value: 60
+
+- name: iptables_prec_80
+  variable: precedence
+  matchtype: single
+  value: 80
+
+- name: iptables_ttl_low
+  variable: ttl
+  matchtype: range
+  value: [0,50]
+
+- name: iptables_ttl_medium
+  variable: ttl
+  matchtype: range
+  value: [50,200]
+
+- name: iptables_ttl_high
+  variable: ttl
+  matchtype: range
+  value: [200,inf]
+
+- name: iptables_defrag_DF
+  variable: defragment_flags
+  matchtype: single
+  value: DF
+
+- name: iptables_defrag_CE
+  variable: defragment_flags
+  matchtype: single
+  value: CE
+
+- name: iptables_defrag_MF
+  variable: defragment_flags
+  matchtype: single
+  value: MF
+
+- name: iptables_proto_TCP
+  variable: protocol
+  matchtype: single
+  value: TCP
+
+- name: iptables_proto_UDP
+  variable: protocol
+  matchtype: single
+  value: UDP
+
+- name: iptables_proto_ICMP
+  variable: protocol
+  matchtype: single
+  value: ICMP
+
+
+- name: iptables_sport_zero
+  variable: src_port
+  matchtype: single
+  value: 0
+- name: iptables_sport_multiplex
+  variable: src_port
+  matchtype: single
+  value: 1
+- name: iptables_sport_echo
+  variable: src_port
+  matchtype: single
+  value: 7
+- name: iptables_sport_discard
+  variable: src_port
+  matchtype: single
+  value: 9
+- name: iptables_sport_daytime
+  variable: src_port
+  matchtype: single
+  value: 13
+- name: iptables_sport_quote
+  variable: src_port
+  matchtype: single
+  value: 17
+- name: iptables_sport_chargen
+  variable: src_port
+  matchtype: single
+  value: 19
+- name: iptables_sport_ftp_data
+  variable: src_port
+  matchtype: single
+  value: 20
+- name: iptables_sport_ftp_control
+  variable: src_port
+  matchtype: single
+  value: 21
+- name: iptables_sport_ssh
+  variable: src_port
+  matchtype: single
+  value: 22
+- name: iptables_sport_telnet
+  variable: src_port
+  matchtype: single
+  value: 23
+- name: iptables_sport_smtp
+  variable: src_port
+  matchtype: single
+  value: 25
+- name: iptables_sport_dns
+  variable: src_port
+  matchtype: single
+  value: 53
+- name: iptables_sport_bootp
+  variable: src_port
+  matchtype: multiple
+  value:
+  - 67
+  - 68
+- name: iptables_sport_gopher
+  variable: src_port
+  matchtype: single
+  value: 70
+- name: iptables_sport_finger
+  variable: src_port
+  matchtype: single
+  value: 79
+- name: iptables_sport_http
+  variable: src_port
+  matchtype: single
+  value: 80
+- name: iptables_sport_kerberos
+  variable: src_port
+  matchtype: single
+  value: 88
+- name: iptables_sport_pop3
+  variable: src_port
+  matchtype: single
+  value: 110
+- name: iptables_sport_nntp
+  variable: src_port
+  matchtype: single
+  value: 119
+- name: iptables_sport_ntp
+  variable: src_port
+  matchtype: single
+  value: 123
+- name: iptables_sport_netbios
+  variable: src_port
+  matchtype: multiple
+  value:
+  - 137
+  - 138
+  - 139
+- name: iptables_sport_imap4
+  variable: src_port
+  matchtype: single
+  value: 143
+- name: iptables_sport_snmp
+  variable: src_port
+  matchtype: single
+  value: 161
+- name: iptables_sport_ldap
+  variable: src_port
+  matchtype: single
+  value: 389
+- name: iptables_sport_https
+  variable: src_port
+  matchtype: single
+  value: 443
+- name: iptables_sport_mds
+  variable: src_port
+  matchtype: single
+  value: 445
+- name: iptables_sport_kpasswd
+  variable: src_port
+  matchtype: single
+  value: 464
+- name: iptables_sport_smtp_ssl
+  variable: src_port
+  matchtype: single
+  value: 465
+- name: iptables_sport_syslog
+  variable: src_port
+  matchtype: single
+  value: 514
+- name: iptables_sport_smtp
+  variable: src_port
+  matchtype: single
+  value: 587
+- name: iptables_sport_ldaps
+  variable: src_port
+  matchtype: single
+  value: 636
+- name: iptables_sport_cups
+  variable: src_port
+  matchtype: single
+  value: 631
+- name: iptables_sport_imap4
+  variable: src_port
+  matchtype: single
+  value: 993
+- name: iptables_sport_socks
+  variable: src_port
+  matchtype: single
+  value: 1080
+- name: iptables_sport_openvpn
+  variable: src_port
+  matchtype: single
+  value: 1194
+- name: iptables_sport_mssql
+  variable: src_port
+  matchtype: multiple
+  value:
+  - 1433
+  - 1434
+- name: iptables_sport_citrix
+  variable: src_port
+  matchtype: single
+  value: 1494
+- name: iptables_sport_oracle
+  variable: src_port
+  matchtype: single
+  value: 1521
+- name: iptables_sport_rapservice
+  variable: src_port
+  matchtype: single
+  value: 1530
+- name: iptables_sport_msnmessenger
+  variable: src_port
+  matchtype: single
+  value: 1863
+- name: iptables_sport_mgc
+  variable: src_port
+  matchtype: single
+  value: 3268
+- name: iptables_sport_mysql
+  variable: src_port
+  matchtype: single
+  value: 3306
+- name: iptables_sport_metasploit
+  variable: src_port
+  matchtype: single
+  value: 4444
+- name: iptables_sport_emule
+  variable: src_port
+  matchtype: single
+  value: 4662
+- name: iptables_sport_xmpp
+  variable: src_port
+  matchtype: single
+  value: 5222
+- name: iptables_sport_bittorrent
+  variable: src_port
+  matchtype: single
+  value: 6881
+- name: iptables_sport_http2
+  variable: src_port
+  matchtype: single
+  value: 8080
+- name: iptables_sport_reserved
+  variable: src_port
+  matchtype: range
+  value:
+  - 0
+  - 1023
+- name: iptables_sport_register
+  variable: src_port
+  matchtype: range
+  value:
+  - 1024
+  - 49151
+- name: iptables_sport_private
+  variable: src_port
+  matchtype: range
+  value:
+  - 49152
+  - 65535
+
+# destination port
+- name: iptables_dport_zero
+  variable: dst_port
+  matchtype: single
+  value: 0
+- name: iptables_dport_multiplex
+  variable: dst_port
+  matchtype: single
+  value: 1
+- name: iptables_dport_echo
+  variable: dst_port
+  matchtype: single
+  value: 7
+- name: iptables_dport_discard
+  variable: dst_port
+  matchtype: single
+  value: 9
+- name: iptables_dport_daytime
+  variable: dst_port
+  matchtype: single
+  value: 13
+- name: iptables_dport_quote
+  variable: dst_port
+  matchtype: single
+  value: 17
+- name: iptables_dport_chargen
+  variable: dst_port
+  matchtype: single
+  value: 19
+- name: iptables_dport_ftp_data
+  variable: dst_port
+  matchtype: single
+  value: 20
+- name: iptables_dport_ftp_control
+  variable: dst_port
+  matchtype: single
+  value: 21
+- name: iptables_dport_ssh
+  variable: dst_port
+  matchtype: single
+  value: 22
+- name: iptables_dport_telnet
+  variable: dst_port
+  matchtype: single
+  value: 23
+- name: iptables_dport_smtp
+  variable: dst_port
+  matchtype: single
+  value: 25
+- name: iptables_dport_dns
+  variable: dst_port
+  matchtype: single
+  value: 53
+- name: iptables_dport_bootp
+  variable: dst_port
+  matchtype: multiple
+  value:
+  - 67
+  - 68
+- name: iptables_dport_gopher
+  variable: dst_port
+  matchtype: single
+  value: 70
+- name: iptables_dport_finger
+  variable: dst_port
+  matchtype: single
+  value: 79
+- name: iptables_dport_http
+  variable: dst_port
+  matchtype: single
+  value: 80
+- name: iptables_dport_kerberos
+  variable: dst_port
+  matchtype: single
+  value: 88
+- name: iptables_dport_pop3
+  variable: dst_port
+  matchtype: single
+  value: 110
+- name: iptables_dport_nntp
+  variable: dst_port
+  matchtype: single
+  value: 119
+- name: iptables_dport_ntp
+  variable: dst_port
+  matchtype: single
+  value: 123
+- name: iptables_dport_netbios
+  variable: dst_port
+  matchtype: multiple
+  value:
+  - 137
+  - 138
+  - 139
+- name: iptables_dport_imap4
+  variable: dst_port
+  matchtype: single
+  value: 143
+- name: iptables_dport_snmp
+  variable: dst_port
+  matchtype: single
+  value: 161
+- name: iptables_dport_ldap
+  variable: dst_port
+  matchtype: single
+  value: 389
+- name: iptables_dport_https
+  variable: dst_port
+  matchtype: single
+  value: 443
+- name: iptables_dport_mds
+  variable: dst_port
+  matchtype: single
+  value: 445
+- name: iptables_dport_kpasswd
+  variable: dst_port
+  matchtype: single
+  value: 464
+- name: iptables_dport_smtp_ssl
+  variable: dst_port
+  matchtype: single
+  value: 465
+- name: iptables_dport_syslog
+  variable: dst_port
+  matchtype: single
+  value: 514
+- name: iptables_dport_smtp
+  variable: dst_port
+  matchtype: single
+  value: 587
+- name: iptables_dport_ldaps
+  variable: dst_port
+  matchtype: single
+  value: 636
+- name: iptables_dport_cups
+  variable: dst_port
+  matchtype: single
+  value: 631
+- name: iptables_dport_imap4
+  variable: dst_port
+  matchtype: single
+  value: 993
+- name: iptables_dport_socks
+  variable: dst_port
+  matchtype: single
+  value: 1080
+- name: iptables_dport_openvpn
+  variable: dst_port
+  matchtype: single
+  value: 1194
+- name: iptables_dport_mssql
+  variable: dst_port
+  matchtype: multiple
+  value:
+  - 1433
+  - 1434
+- name: iptables_dport_citrix
+  variable: dst_port
+  matchtype: single
+  value: 1494
+- name: iptables_dport_oracle
+  variable: dst_port
+  matchtype: single
+  value: 1521
+- name: iptables_dport_rapservice
+  variable: dst_port
+  matchtype: single
+  value: 1530
+- name: iptables_dport_msnmessenger
+  variable: dst_port
+  matchtype: single
+  value: 1863
+- name: iptables_dport_mgc
+  variable: dst_port
+  matchtype: single
+  value: 3268
+- name: iptables_dport_mysql
+  variable: dst_port
+  matchtype: single
+  value: 3306
+- name: iptables_dport_metasploit
+  variable: dst_port
+  matchtype: single
+  value: 4444
+- name: iptables_dport_emule
+  variable: dst_port
+  matchtype: single
+  value: 4662
+- name: iptables_dport_xmpp
+  variable: dst_port
+  matchtype: single
+  value: 5222
+- name: iptables_dport_bittorrent
+  variable: dst_port
+  matchtype: single
+  value: 6881
+- name: iptables_dport_http2
+  variable: dst_port
+  matchtype: single
+  value: 8080
+- name: iptables_dport_reserved
+  variable: dst_port
+  matchtype: range
+  value:
+  - 0
+  - 1023
+- name: iptables_dport_register
+  variable: dst_port
+  matchtype: range
+  value:
+  - 1024
+  - 49151
+- name: iptables_dport_private
+  variable: dst_port
+  matchtype: range
+  value:
+  - 49152
+  - 65535
+
+- name: iptables_flag_URG
+  variable: tcp_flags
+  matchtype: regexp
+  value: URG
+
+- name: iptables_flag_ACK
+  variable: tcp_flags
+  matchtype: regexp
+  value: ACK
+
+- name: iptables_flag_PSH
+  variable: tcp_flags
+  matchtype: regexp
+  value: PSH
+
+- name: iptables_flag_RST
+  variable: tcp_flags
+  matchtype: regexp
+  value: RST
+
+- name: iptables_flag_SYN
+  variable: tcp_flags
+  matchtype: regexp
+  value: SYN
+
+- name: iptables_flag_FIN
+  variable: tcp_flags
+  matchtype: regexp
+  value: FIN
+
+- name: iptables_urgent_low
+  variable: urgent_pointer
+  matchtype: range
+  value: [0,1000]
+
+- name: iptables_urgent_medium
+  variable: urgent_pointer
+  matchtype: range
+  value: [1000,30000]
+
+- name: iptables_urgent_high
+  variable: urgent_pointer
+  matchtype: range
+  value: [30000,inf]

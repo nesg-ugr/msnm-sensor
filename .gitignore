@@ -1,0 +1,5 @@
+.spyderproject
+*.pyc
+.settings/*
+.idea
+.spyproject
