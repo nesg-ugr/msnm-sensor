@@ -6,9 +6,9 @@ Description
 **MSNMSensor** is conceived to be extremely scalable and aseptic because just two parameters are sent among levels or devices in the monitored network or system. Additionally, the MSNMSensor is able to manage multiple and heterogeneous type data sources at each monitored devices thanks to the [FCParser (Feature as a Counter Parser)](https://github.com/josecamachop/FCParser)
 
 
-##Installation
+## Installation
 
-####Requirements
+#### Requirements
 
 MSNSensor runs with python 2.7 Also, the following dependencies has to be installed.
 
@@ -20,7 +20,7 @@ MSNSensor runs with python 2.7 Also, the following dependencies has to be instal
   * watchdog >= 0.8.3
   * [FCParser (Feature as a Counter Parser)](https://github.com/josecamachop/FCParser)
 
-####How to install
+#### How to install
 
 Creating a python execution environment is, probably the better way to run the application. So I recommend you to create one
 before doing the requeriments installation. Anaconda environment can help you and, if you decide to use it, run the following
@@ -34,12 +34,12 @@ Running the previous command will install everything needed.
 	(py27) $ pip install -r requirements.txt
 	$ conda deactivate
 	
-####How to run an example
+#### How to run an example
 
 Please see instructions at [examples](examples/README.md)
 
 
-##License
+## License
 GPL v3
 
 Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
