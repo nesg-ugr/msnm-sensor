@@ -1,4 +1,4 @@
-##MSNM sensor in action
+## MSNM sensor in action
 
 If you are interested on to test the MSNM sensor, just follow the next steps.
 In the figure you can see the scenario that we are going to build. Four are the involved routers (R1-3, BR (Border Router)). All of them, 
