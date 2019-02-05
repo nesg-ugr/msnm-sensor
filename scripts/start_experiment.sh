@@ -33,7 +33,9 @@ do
   # Copy sensor 
   echo "[+] Copy needed files for sensor $i ..."
   # Copy sensor core python files
-  rsync -aAL ../src/ $path_scenario/$i  
+  rsync -aAL ../msnm  $path_scenario/$i
+  # Copy the main script
+  cp ../msnmsensor.py $path_scenario/$i
   # Copy start stop scripts
   cp start.sh $path_scenario/$i
   cp stop.sh $path_scenario/$i

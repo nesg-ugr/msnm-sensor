@@ -10,7 +10,7 @@ DataSources:
       # Module containing the local data source class for managing it
       moduleName: msnm.modules.source.netflow
       # nfapd netflow captures
-      captures: /home/roberto/netflow_captures
+      captures: /tmp/netflow_captures
       # nfcapd netflow captures (a copyt of the previous ones)
       raw: data/sources/local/netflow/raw/
       # nfdump exported files (CSV)
