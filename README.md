@@ -21,7 +21,7 @@ MSNSensor runs with python 2.7 Also, the following dependencies has to be instal
   * IPy >= 0.83
   * pandas >= 0.22
   * watchdog >= 0.8.3
-  * [FCParser (Feature as a Counter Parser)](https://github.com/josecamachop/FCParser)
+  * [FCParser (Feature as a Counter Parser) == 1.0.0](https://github.com/josecamachop/FCParser/releases/tag/v1.0.0)
 
 #### How to install
 

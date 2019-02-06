@@ -107,7 +107,7 @@ if __name__ == '__main__':
 
     if nparams < 5:
         print("Use: plot_statistics.py <path_to_data> <logscale> <ucld> <uclq>")
-        print("Example of use: plot_statistics.py ./config/scenario_4/results/20180102_162727/borderRouter/data/monitoring/output/ True 9.8 204.5")
+        print("Example of use: plot_statistics.py ../examples/scenario_4/results/20180102_162727/borderRouter/data/monitoring/output/ True 9.8 204.5")
         exit(1)
     
     launch_show_output(sys.argv[1],sys.argv[2], sys.argv[3], sys.argv[4])
