@@ -1,11 +1,16 @@
-'''
-Created on 9 sept. 2016
-
-@author: roberto
-'''
+# -*- coding: utf-8 -*-
+"""
+    :mod:`thread`
+    ===========================================================================
+    :synopsis: Common thread functions
+    :author: NESG (Network Engineering & Security Group) - https://nesg.ugr.es
+    :contact: nesg@ugr.es, rmagan@ugr.es
+    :organization: University of Granada
+    :project: VERITAS - MSNM Sensor
+    :since: 0.0.1
+"""
 import threading
-# import time
-# import numpy as np
+
 
 class MSNMThread(threading.Thread, object):
         
@@ -25,28 +30,3 @@ class MSNMThread(threading.Thread, object):
     def stop(self):
         self.on_stop()
         self._stopped_event.set()
-        
-#         timetowait = np.random.randint(10)
-#         print "Thread %s is waiting %d seconds.\n" %(threading.current_thread().getName(),timetowait)
-#         time.sleep(timetowait)
-        
- 
-# if __name__ == '__main__': 
-#     
-#     for i in range(5):
-#         t = IPTablesThread()
-#         t.start()
-#         
-#     print "# of threads: %s" %(len(threading.enumerate()))
-#     for i in threading.enumerate():
-#         print "Thread %s" %(i.getName())
-#         
-#     for i in threading.enumerate():
-#         if i is not threading.currentThread():
-#             i.join()
-#         
-#     print "Finish .."
-        
-    
-        
-        

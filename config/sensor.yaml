@@ -90,7 +90,7 @@ Sensor:
 
 GeneralParams:
   # root files path - All created folders are under this one
-  rootPath: /home/roberto/
+  rootPath: ./
   # Date formats
   dateFormat: '%Y-%m-%d %H:%M:%S'
   dateFormatNfcapdFiles: '%Y%m%d%H%M'

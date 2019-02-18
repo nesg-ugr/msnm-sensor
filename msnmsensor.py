@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+"""
+    :mod:`msnmsensor`
+    ===========================================================================
+    :synopsis: Main class
+    :author: NESG (Network Engineering & Security Group) - https://nesg.ugr.es
+    :contact: nesg@ugr.es, rmagan@ugr.es
+    :organization: University of Granada
+    :project: VERITAS - MSNM Sensor
+    :since: 0.0.1
+"""
+
 from msnm.sensor import Sensor
 from msnm.exceptions.msnm_exception import MSNMError, ConfigError
 import scipy.io as sio
@@ -9,17 +21,18 @@ import numpy as np
 import yaml
 import logging.config
 from msnm.modules.config.configure import Configure
-from msnm.modules.com.networking import TCPServerThread,\
+from msnm.modules.com.networking import TCPServerThread, \
     MSNMTCPServerRequestHandler, MSNMTCPServer
 from msnm.utils import datautils
 from msnm.modules.source.manager import SourceManager, SourceManagerMasterThread
 import threading
 from msnm.modules.source.remote import RemoteSource
 import importlib
+import argparse
 from msnm.utils.offlineutils import OfflineThread
 
-def main(config_file):
 
+def main(config_file):
     # Get the configuration params and load it into a singleton pattern
     sensor_config_params = Configure()
 
@@ -29,17 +42,18 @@ def main(config_file):
 
     except ConfigError as ece:
         exc_type, exc_value, exc_traceback = sys.exc_info()
-        traceback.print_exception(exc_type, exc_value, exc_traceback ,limit=10, file=sys.stdout)
+        traceback.print_exception(exc_type, exc_value, exc_traceback, limit=10, file=sys.stdout)
         ece.print_error()
         exit(1)
 
     try:
 
         # Logging config
-        logging.config.dictConfig(yaml.load(open(sensor_config_params.get_config()['GeneralParams']['logConfigFile'], 'r')))
+        logging.config.dictConfig(
+            yaml.load(open(sensor_config_params.get_config()['GeneralParams']['logConfigFile'], 'r')))
     except ConfigError as ece:
         exc_type, exc_value, exc_traceback = sys.exc_info()
-        traceback.print_exception(exc_type, exc_value, exc_traceback ,limit=10, file=sys.stdout)
+        traceback.print_exception(exc_type, exc_value, exc_traceback, limit=10, file=sys.stdout)
         ece.print_error()
         exit(1)
 
@@ -59,14 +73,14 @@ def main(config_file):
         # FIXME: alpha status
         # From *.mat file generated calibration matrix
         # Calibration matrix
-        calMatFile = sio.loadmat(sensor_config_params.get_config()['DataSources']['calibrationFile'],mat_dtype=True)
+        calMatFile = sio.loadmat(sensor_config_params.get_config()['DataSources']['calibrationFile'], mat_dtype=True)
         x = calMatFile[sensor_config_params.get_config()['DataSources']['calibrationMatrix']]
         variables = calMatFile[sensor_config_params.get_config()['DataSources']['calibrationVariables']]
 
         # Read all variables name
         vars_name = []
         indx = 0
-        for var in variables[0,:]:
+        for var in variables[0, :]:
             vars_name.append(str(var[0]))
             indx += 1
 
@@ -88,6 +102,9 @@ def main(config_file):
         except OSError as oe:
             logging.error("Sensor results directory cannot be created: %s", oe)
             exit(1)
+        except Exception as e:
+            traceback.print_exc()
+            exit(1)
 
         # CALIBRATION PHASE
         # Get the number of latent variables configured
@@ -98,16 +115,16 @@ def main(config_file):
         phase = sensor_config_params.get_config()['Sensor']['phase']
 
         sensor.set_data(x)
-        sensor.do_calibration(phase=phase,lv=lv,prep=prep)
-        logging.debug("UCLd = %s",sensor.get_model().get_mspc().getUCLD())
-        logging.debug("UCLq = %s",sensor.get_model().get_mspc().getUCLQ())
+        sensor.do_calibration(phase=phase, lv=lv, prep=prep)
+        logging.debug("UCLd = %s", sensor.get_model().get_mspc().getUCLD())
+        logging.debug("UCLq = %s", sensor.get_model().get_mspc().getUCLQ())
 
         # Load local data sources
         local_dict = {}
         try:
             src_local = sensor_config_params.get_config()['DataSources']['local']
 
-            logging.debug("Loading %s local sources %s.",len(src_local),src_local.keys())
+            logging.debug("Loading %s local sources %s.", len(src_local), src_local.keys())
 
             for i in src_local.keys():
 
@@ -123,23 +140,20 @@ def main(config_file):
                 # Example: MyClass = getattr(importlib.import_module(module_name), class_name)
                 LocalSource = getattr(importlib.import_module(src_local[i]['moduleName']), i)
                 local_dict[i] = LocalSource()
-                local_dict[i].start() # Run the thread associated
+                local_dict[i].start()  # Run the thread associated
 
         except KeyError as ke:
             logging.warning("There are no local sources configured: %s", ke)
-        except OSError as oe:
-            print(sys.exc_info()[0])
-            logging.error("Local data source directory can not be created: %s", sys.exc_info()[1])
-
+        except Exception as e:
+            traceback.print_exc()
             exit(1)
-
 
         # Load remote data sources
         remote_dict = {}
         try:
             src_remote = sensor_config_params.get_config()['DataSources']['remote']
 
-            logging.debug("Loading %s remote sources %s.",len(src_remote),src_remote.keys())
+            logging.debug("Loading %s remote sources %s.", len(src_remote), src_remote.keys())
 
             for i in src_remote.keys():
 
@@ -185,11 +199,11 @@ def main(config_file):
         if 'local' in sensor_config_params.get_config()['DataSources'].keys():
             # Check if the offline mode is enabled
             # TODO: enable this funcionality and extend this functionality to all available data sources
-            #staticMode = sensor_config_params.get_config()['DataSources']['local']['Netflow']['staticMode']
+            # staticMode = sensor_config_params.get_config()['DataSources']['local']['Netflow']['staticMode']
             # If we are in static mode we launch the offilne thread
 
             offlineThread = OfflineThread()
-            #TODO: enable this funcionality
+            # TODO: enable this funcionality
             if staticMode:
                 offlineThread.setName("OffLineThread")
                 offlineThread.start()
@@ -217,7 +231,7 @@ def main(config_file):
         logging.error(se.print_error())
     except:
         exc_type, exc_value, exc_traceback = sys.exc_info()
-        traceback.print_exception(exc_type, exc_value, exc_traceback ,limit=5, file=sys.stdout)
+        traceback.print_exception(exc_type, exc_value, exc_traceback, limit=5, file=sys.stdout)
     finally:
         logging.info("Stopping all services ...")
 
@@ -244,22 +258,39 @@ def main(config_file):
         logging.info("Exiting ...")
         exit(1)
 
+
 def signalHandler(signum, frame):
     if signum == signal.SIGINT:
         raise KeyboardInterrupt, "Signal Interrupt"
     else:
         logging.debug("Signal handler do not recognize signal number %s", signum)
 
+
+def getArguments():
+    """
+    Function to get input arguments from configuration file
+    :return: args
+	"""
+
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     description='''Multivariate Statistical Network Monitoring - Sensor (MSNM Sensor)''')
+    parser.add_argument('config', metavar='CONFIG', help='Sensor configuration File.')
+    args = parser.parse_args()
+    return args
+
+
 if __name__ == "__main__":
     # SIGINT registration to manage them outside
     signal.signal(signal.SIGINT, signalHandler)
 
     # Check the number of scripts params
-    nparams = len(sys.argv)
+    #nparams = len(sys.argv)
 
-    if nparams < 2:
-        print("Use: msnmsensor.py <path_to_config_file> ")
-        print("Example of use: msnmsensor.py ../config/sensor.yaml")
-        exit(1)
+    #if nparams < 2:
+    #    print("Use: msnmsensor.py <path_to_config_file> ")
+    #    print("Example of use: msnmsensor.py ../config/sensor.yaml")
+    #    exit(1)
 
-    main(sys.argv[1])
+    args = getArguments()
+
+    main(args.config)

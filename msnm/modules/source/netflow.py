@@ -1,8 +1,15 @@
-'''
-Created on 12 sept. 2016
+# -*- coding: utf-8 -*-
+"""
+    :mod:`netflow`
+    ===========================================================================
+    :synopsis: It is in charge of to get, parser and process netflow based data sources
+    :author: NESG (Network Engineering & Security Group) - https://nesg.ugr.es
+    :contact: nesg@ugr.es, rmagan@ugr.es
+    :organization: University of Granada
+    :project: VERITAS - MSNM Sensor
+    :since: 0.0.1
+"""
 
-@author: roberto
-'''
 from msnm.modules.source.source import Source
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
@@ -24,11 +31,16 @@ class Netflow(Source):
 
         # Listen for new nfcapd files
         event_handler = NetFlowFileEventHandler(self)
-        # Watch the new netflow generated files
-        self._observer = Observer()
-        self._observer.schedule(event_handler, self.config.get_config()['DataSources'][self._type][self.__class__.__name__]['captures'], recursive=False)
-        self._observer.setName("Netflow")
-        self._observer.start()
+        try:
+            # Watch the new netflow generated files
+            self._observer = Observer()
+            self._observer.schedule(event_handler, self.config.get_config()['DataSources'][self._type][self.__class__.__name__]['captures'], recursive=False)
+            self._observer.setName("Netflow")
+            self._observer.start()
+        except Exception as e:
+            logging.error("Please check if %s folder for netflow captures is already created.",
+                          self.config.get_config()['DataSources'][self._type][self.__class__.__name__]['captures'])
+            raise e
 
 
     def start(self):

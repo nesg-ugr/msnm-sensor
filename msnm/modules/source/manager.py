@@ -1,3 +1,15 @@
+# -*- coding: utf-8 -*-
+"""
+    :mod:`manager`
+    ===========================================================================
+    :synopsis: It is in charge of to manage the monitoring process of all data sources.
+    :author: NESG (Network Engineering & Security Group)
+    :contact: rmagan@ugr.es
+    :organization: University of Granada
+    :project: VERITAS - MSNM Sensor
+    :since: 0.0.1
+"""
+
 from msnm.modules.source.source import Source
 from msnm.modules.thread.thread import MSNMThread
 from time import sleep
@@ -14,8 +26,6 @@ import traceback
 import numpy as np
 from msnm.modules.com.packet import DataPacket, Packet
 from msnm.modules.com.networking import TCPClient, TCPClientThread
-
-
 
 class SourceManager(Source):
 

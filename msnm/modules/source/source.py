@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    :mod:`Source`
+    :mod:`source`
     ===========================================================================
     :synopsis: Represents a general data source
     :author: NESG (Network Engineering & Security Group)

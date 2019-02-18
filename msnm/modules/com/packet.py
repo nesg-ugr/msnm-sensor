@@ -1,9 +1,14 @@
-'''
-Created on 16 sept. 2016
-
-@author: roberto
-'''
-
+# -*- coding: utf-8 -*-
+"""
+    :mod:`packet`
+    ===========================================================================
+    :synopsis: It describes all fo the available packets used by the sensor
+    :author: NESG (Network Engineering & Security Group)
+    :contact: rmagan@ugr.es
+    :organization: University of Granada
+    :project: VERITAS - MSNM Sensor
+    :since: 0.0.1
+"""
 class Packet(object):
     
     # Flags received to discern among types of packages

@@ -1,8 +1,14 @@
-'''
-Created on 12 may. 2017
-
-@author: roberto
-'''
+# -*- coding: utf-8 -*-
+"""
+    :mod:`drow`
+    ===========================================================================
+    :synopsis: A row in the diagnosis routing table
+    :author: NESG (Network Engineering & Security Group)
+    :contact: rmagan@ugr.es
+    :organization: University of Granada
+    :project: VERITAS - MSNM Sensor
+    :since: 0.0.1
+"""
 
 class DRow():
     '''
