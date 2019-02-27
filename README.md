@@ -5,7 +5,7 @@ Description
 
 <img src="blocks.png" alt="MSNM Sensor functional blocks" width="60%">
 
-**MSNMSensor** is conceived to be extremely scalable and aseptic because just two parameters are sent among levels or devices in the monitored network or system. Additionally, the MSNMSensor is able to manage multiple and heterogeneous type data sources at each monitored devices thanks to the [FCParser (Feature as a Counter Parser)](https://github.com/josecamachop/FCParser)
+**MSNMSensor** is conceived to be extremely scalable and aseptic because just two parameters are sent among levels or devices in the monitored network or system. Additionally, the MSNMSensor is able to manage multiple and heterogeneous type data sources at each monitored devices thanks to the [FCParser (Feature as a Counter Parser)](https://github.com/josecamachop/FCParser) feature engineering approach.
 
 <img src="hierarchy.png" alt="MSNM Sensor example deployment" width="60%">
 
@@ -13,7 +13,7 @@ Description
 
 #### Requirements
 
-MSNSensor runs with python 2.7 Also, the following dependencies has to be installed.
+MSNSensor runs with python 2.7 and has been successfully tested on Ubuntu from 16.04 version and above. Also, the following dependencies has to be installed.
 
   * numpy >= 1.14
   * scipy >=1.0
