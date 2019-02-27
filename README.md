@@ -44,5 +44,5 @@ Please see instructions at [examples](examples/README.md)
 <a href="https://www.safecreative.org/work/1902149945824-msnm-sensor" target="_blank"> 
 <span>MSNM Sensor</span> - 
 <span>GNU GPL</span> - 
-<span>Roberto Magán Carrión, </span><span>José Camacho Páez</span><span> and Gabriel Maciá Fernández</span> 
+<span>Roberto Magán-Carrión, </span><span>José Camacho</span><span> and Gabriel Maciá-Fernández</span> 
 </a> 
