@@ -1,0 +1,5 @@
+django
+django-fontawesome
+setuptools
+pandas
+numpy

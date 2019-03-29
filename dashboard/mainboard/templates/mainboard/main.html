@@ -1,0 +1,136 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        $url = "{% url 'mainboard:graph' 'none' %}";
+        $loading_url = "{% static 'base/img/loading_graph3.gif' %}";
+        $sync_seconds = {{ sync_seconds }};
+    </script>
+    <script src="{% static 'mainboard/js/graph.js' %}"></script>
+{% endblock scripts %}
+
+{% block styles %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <div id="routers_and_graph" class="row">
+        <div class="col-sm-6" style="text-align: center; margin-top: 60px;">
+            <div class="alert alert-info" style="display: inline-block; width: -moz-fit-content">
+              <strong>Info:</strong> Click on any router to see its graph.
+            </div>
+            <span class=".bg-info" style="font-size: 13px;"></span>
+            <br/><br/>
+            <div class="image">
+                <div class="row" style="display: block; text-align: center;">
+                    <b>SID:</b> {{ borderRouterSID }}
+                    <br/>
+                    <b>Server address:</b> {{ borderRouterserverAddress }}
+                    <br/>
+                    <img id="{{ borderRouterSID }}" class="router clickable" width="100px" src="{% static 'base/img/router_sensor2.png' %}" alt="border-router">
+                </div>
+                <div class="arrows row" style="display: block; text-align: center; margin-top: 0px;">
+                        <span class="center" style="display: inline-block; width: 13px; position: relative; left: -188px">
+                            <svg height="120">
+                                <defs>
+                                    <marker id="arrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
+                                        <path d="M2,1 L2,10 L10,6 L2,2" style="fill:#383d41;" />
+                                    </marker>
+                                </defs>
+                                <path d="M190,10 L0,128"
+                                    style="stroke:#383d41; stroke-width: 1.25px; fill: none;"
+                                ></path>
+                            </svg>
+                        </span>
+                        <span class="center" style="display: inline-block; width: 13px;">
+                            <svg height="120">
+                                <defs>
+                                    <marker id="arrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
+                                        <path d="M2,1 L2,10 L10,6 L2,2" style="fill:#383d41;" />
+                                    </marker>
+                                </defs>
+                                <path d="M5,12 L5,128"
+                                    style="stroke:#383d41; stroke-width: 1.25px; fill: none;"
+                                ></path>
+                            </svg>
+                        </span>
+                        <span class="center" style="display: inline-block; width: 13px; position: relative; left: -4px">
+                            <svg height="120">
+                                <defs>
+                                    <marker id="arrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
+                                        <path d="M2,1 L2,10 L10,6 L2,2" style="fill:#383d41;" />
+                                    </marker>
+                                </defs>
+                                <path d="M10,10 L210,128"
+                                    style="stroke:#383d41; stroke-width: 1.25px; fill: none;"
+                                ></path>
+                            </svg>
+                        </span>
+                </div>
+                <div class="row" style="display: block; text-align: center; margin-top: -20px">
+                    <div style="display: inline-block;">
+                        <img id="{{ routerR1SID }}" class="router clickable" width="100px" src="{% static 'base/img/router_sensor2.png' %}" alt="router-1">
+                        <br/>
+                        <b>SID:</b> {{ routerR1SID }}
+                        <br/>
+                        <b>Server address:</b> {{ routerR1serverAddress }}
+                        {% comment %}<br/>
+                        <b>Remote addresses:</b> <br/>
+                        <ul>
+                            {% for rs in routerR1remoteAddresses %}
+                                {% for k, v in rs.items %}
+                                    <li>{{ k }}: {{ v }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>{% endcomment %}
+                    </div>
+                    <div style="display: inline-block; margin: 0 15px;">
+                        <img id="{{ routerR2SID }}" class="router clickable" width="100px" src="{% static 'base/img/router_sensor2.png' %}" alt="router-2">
+                        <br/>
+                        <b>SID:</b> {{ routerR2SID }}
+                        <br/>
+                        <b>Server address:</b> {{ routerR2serverAddress }}
+                        {% comment %}<br/>
+                        <b>Remote addresses:</b> <br/>
+                        <ul>
+                            {% for rs in routerR2remoteAddresses %}
+                                {% for k, v in rs.items %}
+                                    <li>{{ k }}: {{ v }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>{% endcomment %}
+                    </div>
+                    <div style="display: inline-block;">
+                        <img id="{{ routerR3SID }}" class="router clickable" width="100px" src="{% static 'base/img/router_sensor2.png' %}" alt="router-3">
+                        <br/>
+                        <b>SID:</b> {{ routerR3SID }}
+                        <br/>
+                        <b>Server address:</b> {{ routerR3serverAddress }}
+                        {% comment %}<br/>
+                        <b>Remote addresses:</b> <br/>
+                        <ul>
+                            {% for rs in routerR3remoteAddresses %}
+                                {% for k, v in rs.items %}
+                                    <li>{{ k }}: {{ v }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>{% endcomment %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id='graph_side' class="col-sm-6" style="text-align: center; padding-top: 40px;">
+            <a id="pause_sync" class="btn btn-danger btn-sm" style="color: white; margin-bottom: 10px; margin-left: 80px; display: none;">Pause sync</a>
+            <a id="resume_sync" class="btn btn-info btn-sm" style="color: white; margin-bottom: 10px; margin-left: 80px; display: none;">Resume sync</a>
+            <a style="display: inline-block; position: relative; left: 170px; margin-bottom: 10px; color: white; display: none;" class="btn btn-secondary btn-sm" id="expand_graph">Expand <span class="fa fa-expand"></span></a>
+            <a style="display: inline-block; display: none; position: relative; left: 170px; margin-bottom: 10px; color: white;" class="btn btn-secondary btn-sm" id="compress_graph">Compress <span class="fa fa-compress"></span></a>
+            <span class="last_updated" style="display: none;"></span>
+            <div class="graph" id="graph1" style="display: none; margin-top: -20px;">
+                <img style="position: relative; top: 180px; width: 20%;" src="{% static 'base/img/loading_graph3.gif' %}">
+            </div>
+            <br/>
+        </div>
+    </div>
+{% endblock content %}

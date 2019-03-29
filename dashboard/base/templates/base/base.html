@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}MSNM-S DASHBOARD{% endblock title %}</title>
+    {% block styles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'base/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'base/font-awesome/css/font-awesome.min.css' %}" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{% static 'base/css/jquery-ui.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'base/css/dataTables.jqueryui.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'base/css/buttons.dataTables.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'base/css/bootstrap-select.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'base/css/base.css' %}" />
+    {% endblock styles %}
+    {% block scripts %}
+        <script src="{% static 'base/js/jquery-3.3.1.js' %}"></script>
+        <script src="{% static 'base/js/jquery.dataTables.min.js' %}"></script>
+        <script src="{% static 'base/js/dataTables.buttons.min.js' %}"></script>
+        <script src="{% static 'base/js/buttons.flash.min.js' %}"></script>
+        <script src="{% static 'base/js/jszip.min.js' %}"></script>
+        <script src="{% static 'base/js/vfs_fonts.js' %}"></script>
+        <script src="{% static 'base/js/buttons.html5.min.js' %}"></script>
+        <script src="{% static 'base/js/dataTables.jqueryui.min.js' %}"></script>
+        <script src="{% static 'base/js/popper.js' %}"></script>
+        <script src="{% static 'base/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'base/js/plotly-latest.min.js' %}"></script>
+        <script src="{% static 'base/js/bootstrap-select.min.js' %}"></script>
+    {% endblock scripts %}
+</head>
+<body>
+<div class="header">
+    <!-- Image and text -->
+    <nav class="navbar navbar-light bg-light" style="display: block; text-align: center;">
+        <img src="{% static 'base/img/logo_ugr.png' %}" height="50" class="d-inline-block align-top" style="float: left; margin-top: -5px" alt="">
+        <a style="display: inline-block;" class="navbar-brand" href="{% url 'base:index' %}">
+            <span style="color: #2d609e; text-shadow: 1px 1px 1px rgba(38,98,164,0.52);"><b>MSNM-S DASHBOARD</b></span>
+        </a>
+        <img src="{% static 'base/img/logo_uca.png' %}" height="70" class="d-inline-block align-top" style="float: right; margin-top: -20px;" alt="">
+    </nav>
+</div>
+<div class="content">
+{% block content %}
+{% endblock %}
+</div>
+<div class="footer">
+    <!-- Image and text -->
+    <nav class="navbar navbar-light bg-light" style="display: block; text-align: center;">
+        <img class="navbar-brand" src="{% static 'base/img/logo_nesg.png' %}" height="50" style="float: left; margin-top: -5px;" class="d-inline-block align-top" alt="">
+        <a style="display: inline-block;" class="navbar-brand" href="{% url 'base:index' %}">
+            <span style="color: #2d609e; text-shadow: 1px 1px 1px rgba(38,98,164,0.52);"><b>&nbsp;</b></span>
+        </a>
+        <img class="navbar-brand" src="{% static 'base/img/logo_ucadatalab.png' %}" height="30" class="d-inline-block align-top" style="float: right; display: inline-block; margin-top: 5px;" alt="">
+    </nav>
+</div>
+</body>
+</html>

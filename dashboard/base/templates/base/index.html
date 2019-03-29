@@ -1,0 +1,14 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">MSNM-S (Multivariate Statistical Network Monitoring-Sensor)</h1>
+    <p class="lead">A suitable and scalable anomaly detection and diagnosis tool for complex network scenarios.</p>
+  <hr class="my-4">
+  <p>Authors: Roberto Magán-Carrión, José Camacho, Gabriel Maciá-Fernández and Ismael Jerez Ibañez</p>
+  <p class="lead">
+    <a class="btn btn-primary btn-lg" href="{% url 'mainboard:main' %}" role="button">Go to mainboard</a>
+  </p>
+</div>
+{% endblock content %}
