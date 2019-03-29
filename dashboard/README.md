@@ -33,3 +33,5 @@ and type http://localhost:8000 (default configuration).
 
     (py35) $ python manage.py runserver
 
+Currently, the application gets the monitoring output values of the scenario created in ``examples/scenario_4/`` However, you can
+modify the path of files to be monitored and depicted by modifying the ``dashboard/mainboard/config.py``
