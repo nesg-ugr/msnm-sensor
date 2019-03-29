@@ -2,8 +2,8 @@
 
 If you are interested on to test the MSNM sensor, just follow the next steps.
 In the figure you can see the scenario that we are going to build. Four are the involved routers (R1-3, BR (Border Router)). All of them, 
-has a MSNMSensor instance and a netflow data source active. The BR is 
-in charge of gathering the information comming from the other on the lower hierarchy level (R1, R2 and R3). BR also computes
+has a MSNMSensor instance and a configured netflow data source. The BR is 
+in charge of gathering the information coming from the other on the lower hierarchy level (R1, R2 and R3). BR also computes
  new statistics (LbRtn, QbRtn) which are in turn obtained by joining all the data sources.
 
 <img src="scenario_4/architecture.png" alt="Example functional architecture" width="60%">
