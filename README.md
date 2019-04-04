@@ -39,7 +39,7 @@ Running the previous command will install everything needed.
 #### How to run an example
 
 Please see instructions at [examples](examples/README.md) or download the pre-configured
-VM available for dowloading at [MSNM-S-UBUNTU](https://drive.google.com/file/d/1zNf4mIuKEfEwQIDwPUbkM9oGiOVcCa22/view?usp=sharing) and follow the instructions in README.txt 
+VM at [MSNM-S-UBUNTU](https://drive.google.com/file/d/1zNf4mIuKEfEwQIDwPUbkM9oGiOVcCa22/view?usp=sharing) and follow the instructions in README.txt 
 file in ``/home/msnm/`` folder.
 
 ## Authors and license
