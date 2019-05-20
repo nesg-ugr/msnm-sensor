@@ -333,8 +333,8 @@ FEATURES:
   - 0
   - 1023
 - name: sport_notreserved
-  field: src_port
-  type: range
+  variable: src_port
+  matchtype: range
   value:
   - 1024
   - 65535
@@ -377,7 +377,7 @@ FEATURES:
   variable: dst_port
   matchtype: single
   value: 17
-- name: chargen
+- name: dport_chargen
   variable: dst_port
   matchtype: single
   value: 19
@@ -559,8 +559,8 @@ FEATURES:
   - 0
   - 1023
 - name: dport_notreserved
-  field: dst_port
-  type: range
+  variable: dst_port
+  matchtype: range
   value:
   - 1024
   - 65535
