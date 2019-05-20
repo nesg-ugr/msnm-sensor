@@ -12,12 +12,12 @@
 
 from msnm.sensor import Sensor
 from msnm.exceptions.msnm_exception import MSNMError, ConfigError
-import scipy.io as sio
 import sys, traceback
 import os
 import signal
 import time
 import numpy as np
+import pandas as pd
 import yaml
 import logging.config
 from msnm.modules.config.configure import Configure
@@ -64,31 +64,19 @@ def main(config_file):
     var_names = datautils.getAllVarNames()
     x = np.empty(0)
 
-    if sensor_config_params.get_config()['Sensor']['randomCalibration']:
+    if sensor_config_params.get_config()['Sensor']['staticCalibration']['randomCalibration']:
         # Random generated static calibration matix
-        nobs = sensor_config_params.get_config()['Sensor']['randomCalibrationObs']
+        nobs = sensor_config_params.get_config()['Sensor']['staticCalibration']['randomCalibrationObs']
         x = datautils.generateRandomCalObsMatrix(nobs, len(var_names))
     else:
-
-        # FIXME: alpha status
-        # From *.mat file generated calibration matrix
-        # Calibration matrix
-        calMatFile = sio.loadmat(sensor_config_params.get_config()['DataSources']['calibrationFile'], mat_dtype=True)
-        x = calMatFile[sensor_config_params.get_config()['DataSources']['calibrationMatrix']]
-        variables = calMatFile[sensor_config_params.get_config()['DataSources']['calibrationVariables']]
-
-        # Read all variables name
-        vars_name = []
-        indx = 0
-        for var in variables[0, :]:
-            vars_name.append(str(var[0]))
-            indx += 1
+        # Get calibration matrix from a CSV file
+        x = pd.read_csv(sensor_config_params.get_config()['Sensor']['staticCalibration']['calibrationFile'],
+                        index_col=0).values
 
     # Get root path for creating data files
     rootDataPath = sensor_config_params.get_config()['GeneralParams']['rootPath']
 
     try:
-
         try:
             # Create monitoring dirs to save the results and the observations created
             if not os.path.exists(rootDataPath + sensor_config_params.get_config()['Sensor']['observation']):

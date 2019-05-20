@@ -58,22 +58,23 @@ Sensor:
   sid: routerR3
 
   # Static calibration
-  # random calibration?
-  randomCalibration: True
-  randomCalibrationObs: 300
-  # These ones are useless when randomCalibration is enabled
-  calibrationFile: cal_file.mat
-  calibrationMatrix: complete_matrix
-  calibrationVariables: var_l
+  staticCalibration:
+
+    # Random calibration?
+    randomCalibration: True
+    randomCalibrationObs: 300
+
+    # This one is useless when randomCalibration is enabled
+    calibrationFile: examples/scenario_4/calibration_routerR3.csv
 
   # EWMA dynamic calibration parameters
   dynamiCalibration:
     # Batch of observations
-    B: 30
+    B: 2
     # Forgetting factor
     lambda: 0.1
     # enabled?
-    enabled: True
+    enabled: False
 
   # Server configuration. To listen other sensors queries
   server_address:

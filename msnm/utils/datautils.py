@@ -602,6 +602,7 @@ def getVarNamesFromSource(source_config):
 
     return var_list
 
+
 def getAllVarNames():
 
     """
@@ -638,7 +639,11 @@ def getAllVarNames():
     except KeyError as ke:
             logging.warning("There are no remote sources configured: %s", ke)
 
-    return local_sources_vars_names + remote_sources_vars_names
+    all_vars = local_sources_vars_names + remote_sources_vars_names
+    logging.debug("%s variables found",len(all_vars))
+
+    return all_vars
+
 
 # Packet utilities
 def pack2json(packet):
@@ -675,7 +680,8 @@ def pack2json(packet):
     # json dumps
     return json.dumps(dpacket,cls=MSNMJsonEncoder, indent=4)
 
-def generateRandomCalObsMatrix(nobs,nvar):
+
+def generateRandomCalObsMatrix(nobs, nvar):
     """
     Random generation of a sensor calibration matrix
 
@@ -692,7 +698,8 @@ def generateRandomCalObsMatrix(nobs,nvar):
         [NxM] calibration matrix
 
     """
-    return np.random.random((nobs,nvar))
+    return np.random.randint(0,1000, size=(nobs, nvar))
+
 
 def generateCalVarLabels(cal_mat_shape):
     """

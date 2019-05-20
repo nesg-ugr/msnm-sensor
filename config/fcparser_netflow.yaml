@@ -106,10 +106,10 @@ FEATURES:
   variable: src_ip
   matchtype: single
   value: public
-- name: src_ip_default
-  variable: src_ip
-  matchtype: default
-  value: 
+#- name: src_ip_default
+#  variable: src_ip
+#  matchtype: default
+#  value:
 
 # destination IP
 - name: dst_ip_private
@@ -120,10 +120,10 @@ FEATURES:
   variable: dst_ip
   matchtype: single
   value: public
-- name: dst_ip_default
-  variable: dst_ip
-  matchtype: default
-  value: 
+#- name: dst_ip_default
+#  variable: dst_ip
+#  matchtype: default
+#  value:
 
 
 # source port
@@ -151,7 +151,7 @@ FEATURES:
   variable: src_port
   matchtype: single
   value: 17
-- name: sport_chwhereen
+- name: sport_chargen
   variable: src_port
   matchtype: single
   value: 19
@@ -332,18 +332,24 @@ FEATURES:
   value:
   - 0
   - 1023
-- name: sport_register
-  variable: src_port
-  matchtype: range
+- name: sport_notreserved
+  field: src_port
+  type: range
   value:
   - 1024
-  - 49151
-- name: sport_private
-  variable: src_port
-  matchtype: range
-  value:
-  - 49152
   - 65535
+#- name: sport_register
+#  variable: src_port
+#  matchtype: range
+#  value:
+#  - 1024
+#  - 49151
+#- name: sport_private
+#  variable: src_port
+#  matchtype: range
+#  value:
+#  - 49152
+#  - 65535
 
 
 # destination port
@@ -371,7 +377,7 @@ FEATURES:
   variable: dst_port
   matchtype: single
   value: 17
-- name: dport_chwhereen
+- name: chargen
   variable: dst_port
   matchtype: single
   value: 19
@@ -552,18 +558,24 @@ FEATURES:
   value:
   - 0
   - 1023
-- name: dport_register
-  variable: dst_port
-  matchtype: range
+- name: dport_notreserved
+  field: dst_port
+  type: range
   value:
   - 1024
-  - 49151
-- name: dport_private
-  variable: dst_port
-  matchtype: range
-  value:
-  - 49152
   - 65535
+#- name: dport_register
+#  variable: dst_port
+#  matchtype: range
+#  value:
+#  - 1024
+#  - 49151
+#- name: dport_private
+#  variable: dst_port
+#  matchtype: range
+#  value:
+#  - 49152
+#  - 65535
 
 
 # protocol
@@ -632,12 +644,12 @@ FEATURES:
 
 
 # Input packets
-- name: in_npackets_verylow
-  variable: in_packets
-  matchtype: range
-  value:
-  - 0
-  - 3
+#- name: in_npackets_verylow
+#  variable: in_packets
+#  matchtype: range
+#  value:
+#  - 0
+#  - 3
 - name: in_npackets_low
   variable: in_packets
   matchtype: range
@@ -698,12 +710,12 @@ FEATURES:
 
 
 # Input Bytes
-- name: in_nbytes_verylow
-  variable: in_bytes
-  matchtype: range
-  value:
-  - 0
-  - 150
+#- name: in_nbytes_verylow
+#  variable: in_bytes
+#  matchtype: range
+#  value:
+#  - 0
+#  - 150
 - name: in_nbytes_low
   variable: in_bytes
   matchtype: range

@@ -58,13 +58,14 @@ Sensor:
   sid: S2
 
   # Static calibration
-  # Random calibration?
-  randomCalibration: True
-  randomCalibrationObs: 300
-  # These ones are useless when randomCalibration is enabled
-  calibrationFile: cal_file.mat
-  calibrationMatrix: complete_matrix
-  calibrationVariables: var_l
+  staticCalibration:
+
+    # Random calibration?
+    randomCalibration: True
+    randomCalibrationObs: 300
+
+    # This one is useless when randomCalibration is enabled
+    calibrationFile: examples/scenario_4/calibration_routerR1.csv
 
   # EWMA dynamic calibration parameters
   dynamiCalibration:
