@@ -4,6 +4,8 @@ MSNM-S Dashboard
 Visualization interface to interact with the deployed MSNM-S.
 
 <img src="dashboard.png" alt="MSNM-S dashboard" width="100%">
+<br/><br/>
+<img src="dashboard2.png" alt="MSNM-S dashboard" width="100%">
 
 ## Installation
 
