@@ -17,11 +17,14 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
 
 from netmalies import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), {'next_page': '/login'}, name='logout'),
     path('', include('base.urls')),
     path('mainboard/', include('mainboard.urls')),
 ]

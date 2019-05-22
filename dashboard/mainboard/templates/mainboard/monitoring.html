@@ -1,0 +1,241 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        $url = "{% url 'mainboard:graph' 'none' %}";
+        $loading_url = "{% static 'base/img/loading_graph3.gif' %}";
+        $sync_seconds = {{ sync_seconds }};
+        $selected_sid = '';
+        $interval_id = {};
+        $interval = 1000 * $sync_seconds;
+        $col_class = null;
+        $prediv = null;
+        $sid = null;
+        $token_loader = null;
+    </script>
+    <script src="{% static 'mainboard/js/graph.js' %}"></script>
+    <script type="text/javascript">
+
+        var nodes = null;
+        var edges = null;
+        var network = null;
+
+        // Called when the Visualization API is loaded.
+        function draw() {
+            nodes = [
+                {% for s in sensors %}
+                    {
+                        id: "{{ s.id }}",
+                        shape: 'image',
+                        image: "{% static 'base/img/router_sensor2.png' %}",
+                        label: "{{ s.label }}",
+                        title: "<h5>General info:</h5><ul><i>- <b>IP:</b> {{ s.ip }}</i><br><i>- <b>Port:</b> {{ s.port }}</i></ul>" +
+                               "{% if s.localSources %}<h5>Local sources:</h5><ul>" +
+                               "{% for l in s.localSources %}<i>- <b>{{ l }}</b></i><br/>{% endfor %}" +
+                               "</ul>{% endif %}" +
+                               "{% if s.remoteAddresses %}<h5>Remote sources:</h5><ul>" +
+                               "{% for r in s.remoteAddresses %}<i>- {% for k,v in r.items %}<b>{{ k }}:</b> {{ v }}{% endfor %}</i><br/>{% endfor %}" +
+                               "</ul>{% endif %}",
+                        fixed: false,
+                    },
+                {% endfor %}
+            ];
+            edges = [
+                {% for e in edges %}
+                    {from: "{{ e.from }}", to: "{{ e.to }}"},
+                {% endfor %}
+            ];
+
+            var container = document.getElementById('mynetwork');
+            var data = {
+                nodes: nodes,
+                edges: edges
+            };
+            var options = {
+                    edges: {
+                        arrows: {
+                            to: {enabled: true, scaleFactor: 1, type: 'arrow'},
+                            middle: {enabled: false, scaleFactor: 1, type: 'arrow'},
+                            from: {enabled: false, scaleFactor: 1, type: 'arrow'}
+                        },
+                        arrowStrikethrough: true,
+                    },
+                    nodes: {
+                        size: 40,
+                        color: {
+                            background: '#006400'
+                        },
+                        font: {color: '#0c0c0c', "size": 10},
+                    },
+                    interaction: {
+                        dragNodes: true,
+                        hover: true,
+                    },
+                    physics: {
+                        barnesHut: {
+                            avoidOverlap: 1
+                        },
+                    },
+            };
+            network = new vis.Network(container, data, options);
+
+            network.on("doubleClick", function (params) {
+                $sid = params.nodes[0];
+                if ($sid != null && $token_loader == null) {
+                    if ($("#graph_side_" + $sid).length === 0) {
+                        if ($selected_sid !== $sid  && $token_loader == null) {
+                            $token_loader = $sid;
+                            var graph = $("#graph_side").clone().prop('id', 'graph_side_' + $sid);
+                            graph.children(".last_updated").prop('id', 'last_updated_' + $sid);
+                            graph.children(".pause_sync").on("click", function() {
+                                $(this).hide();
+                                var graph_side = $(this).parent();
+                                graph_side.children(".resume_sync").show();
+                                $sid = graph_side.children(".graph").prop('id').replace('graph', '');
+                                if ($interval_id) {
+                                    window.clearInterval($interval_id[$sid]);
+                                    delete $interval_id[$sid];
+                                }
+                            });
+                            graph.children(".resume_sync").on("click", function() {
+                                $(this).hide();
+                                var graph_side = $(this).parent();
+                                graph_side.children(".pause_sync").show();
+                                $sid = graph_side.children(".graph").prop('id').replace('graph', '');
+                                $interval_id[$sid] = window.setInterval(reload_graphs, $interval);
+                            });
+                            graph.children(".expand_graph").on("click", function () {
+                                $("body").children().each(function () {
+                                    $(this).hide();
+                                });
+                                var graph_side = $(this).parents(".graph-container");
+                                graph_side.children(".close_graph").hide();
+                                graph_side.css("width", '100%');
+                                graph_side.css("height", '100%');
+                                graph_side.css("position", 'absolute');
+                                graph_side.css("top", '0');
+                                graph_side.css("left", '0');
+                                graph_side.css("padding", '20px');
+                                graph_side.removeClass('col-sm-4');
+                                $prediv = graph_side.prev();
+                                graph_side.detach().appendTo("body");
+                                $sid = graph_side.prop('id').replace('graph_side_', '');
+                                $selected_sid = $sid;
+                                reload_graphs($sid);
+                                $("body").css("background-color", "white");
+                                $(this).hide();
+                                graph_side.children(".compress_graph").show();
+                            });
+                            graph.children(".compress_graph").on("click", function () {
+                                $("body").children().each(function () {
+                                    $(this).show();
+                                });
+                                var graph_side = $(this).parents(".graph-container");
+                                graph_side.css("width", 'auto');
+                                graph_side.css("height", 'auto');
+                                graph_side.css("position", 'relative');
+                                graph_side.css("padding", '10px 15px');
+                                graph_side.addClass('col-sm-4');
+                                graph_side.detach().insertAfter($prediv);
+                                $sid = graph_side.prop('id').replace('graph_side_', '');
+                                $selected_sid = $sid;
+                                reload_graphs($sid);
+                                $("body").css("background", "rgba(46, 53, 61, 0.6) no-repeat fixed");
+                                $(this).hide();
+                                graph_side.children(".expand_graph").show();
+                                graph_side.children(".close_graph").show();
+                            });
+                            graph.children(".close_graph").on("click", function () {
+                                var graph_side = $(this).parent();
+                                $sid = graph_side.children(".graph").prop('id').replace('graph', '');
+                                if ($interval_id) {
+                                    window.clearInterval($interval_id[$sid]);
+                                    delete $interval_id[$sid];
+                                }
+                                $(this).parent().remove();
+                                $selected_sid = null;
+                            });
+                            $("#graph_side").after(graph);
+                            graph.show(600);
+                            graph.children("#graph").html('<img style="position: relative; top: 20px; width: 5%;" src="' + $loading_url + '">');
+                            graph.children(".last_updated").hide();
+                            graph.children("#pause_sync").hide();
+                            graph.children("#resume_sync").hide();
+                            graph.children(".expand_graph").hide();
+                            graph.children(".compress_graph").hide();
+                            graph.children(".close_graph").hide();
+                            $selected_sid = $sid;
+                        }
+                        setTimeout(function () {
+                            var url = $url.replace('none', $sid);
+                            generate_router_graph(url, $sid);
+                        }, 500);
+                        graph.children(".pause_sync").show();
+                        graph.children(".expand_graph").show();
+                        graph.children(".close_graph").show();
+                        graph.children(".graph").prop('id', 'graph' + $sid);
+                        if ($interval_id) {
+                            window.clearInterval($interval_id[$sid]);
+                            delete $interval_id[$sid];
+                        }
+                        $interval_id[$sid] = window.setInterval(reload_graphs, $interval);
+                    }
+                }
+            });
+            network.on("hoverNode", function (params) {
+                network.canvas.body.container.style.cursor = 'pointer';
+                params.event = "[original event]";
+            });
+
+            network.on("blurNode", function (params) {
+                network.canvas.body.container.style.cursor = 'default'
+            });
+        }
+        $(document).ready(function() {
+            draw();
+        });
+    </script>
+{% endblock scripts %}
+
+{% block styles %}
+    {{ block.super }}
+    <style type="text/css">
+        #mynetwork {
+            width: 100%;
+            height: 420px;
+            border: 1px solid lightgray;
+            background-color: #f4f4f4;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+           {% comment %} <div class="alert alert-info" style="display: inline-block; width: -moz-fit-content">
+
+            </div>{% endcomment %}
+    <div id="network-container">
+        <div class="text-center"><strong>Info:</strong> Double-click on any router to show its graph below.</div>
+        <div id="mynetwork"></div>
+    </div>
+    <a id="hide-network" class="btn btn-light" style="border: 1px solid lightgray; width: 100%; height: 25px; margin-top: -1px; margin-bottom: 15px;">
+        <div class="arrow-container" style="margin-top: -7px;">
+            <span id="arrow-hide" class="fa fa-angle-up"></span>
+        </div>
+    </a>
+    <div id="routers_and_graph" class="row">
+        <div id='graph_side' class="graph-container col-sm-4" style="height: 509px; text-align: center; border: 1px solid lightgray; padding: 10px 15px; display: none;">
+            <a class="pause_sync btn btn-danger btn-sm" style="color: white; display: none;"><span class="fa fa-pause"></span></a>
+            <a class="resume_sync btn btn-info btn-sm" style="color: white; display: none;"><span class="fa fa-play"></span></a>
+            <a style="display: inline-block;  color: white; float: right; display: none;" class="close_graph btn btn-danger btn-sm"><span class="fa fa-close"></span></a>
+            <a style="display: inline-block;  color: white; float: right; display: none;" class="expand_graph btn btn-primary btn-sm"><span class="fa fa-expand"></span></a>
+            <a style="display: inline-block; display: none; float: right; color: white;" class="compress_graph btn btn-primary btn-sm"><span class="fa fa-compress"></span></a>
+            <span class="last_updated" id="last_updated" style="display: none;"></span>
+            <div class="graph" id="graph" style="margin-top: -20px;">
+                <img style="position: relative; top: 180px; width: 20%;" src="{% static 'base/img/loading_graph3.gif' %}">
+            </div>
+            <br/>
+        </div>
+    </div>
+{% endblock content %}

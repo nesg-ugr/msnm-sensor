@@ -2,36 +2,39 @@ import json
 import os
 
 import yaml
-from django.http import HttpResponseBadRequest, HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView
 
 from mainboard.config import EXAMPLE_ROOT, GRAPH_SIZE, MONITORING_ROOT, SYNC_SECONDS
-from mainboard.utils import get_monitoring
+from mainboard.utils import get_monitoring, update_context_data_network
 import pandas as pd
 
 
-class MainView(TemplateView):
+class MainView(LoginRequiredMixin, TemplateView):
+    login_url = reverse_lazy('login')
     template_name = 'mainboard/main.html'
 
     def get_context_data(self, **kwargs):
         context_data = super(MainView, self).get_context_data(**kwargs)
-        context_data['sync_seconds'] = SYNC_SECONDS
-        routers = ['borderRouter', 'routerR1', 'routerR2', 'routerR3']
-        for router in routers:
-            stream = open(os.path.join(EXAMPLE_ROOT, router + '.yaml'), 'r')
-            content = yaml.load(stream)
-            context_data[router + 'SID'] = content['Sensor']['sid']
-            context_data[router + 'serverAddress'] = content['Sensor']['server_address']['ip'] + ':' + \
-                                              str(content['Sensor']['server_address']['port'])
-            if content['Sensor']['remote_addresses']:
-                context_data[router + 'remoteAddresses'] = []
-                for k, v in content['Sensor']['remote_addresses'].items():
-                    context_data[router + 'remoteAddresses'].append({k: v['ip'] + ':' + str(v['port'])})
+        context_data = update_context_data_network(context_data)
         return context_data
 
 
-class GraphView(View):
+class MonitoringView(LoginRequiredMixin, TemplateView):
+    login_url = reverse_lazy('login')
+    template_name = 'mainboard/monitoring.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super(MonitoringView, self).get_context_data(**kwargs)
+        context_data = update_context_data_network(context_data)
+        return context_data
+
+
+class GraphView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('login')
 
     def get(self, request, *args, **kwargs):
         if not request.is_ajax():
@@ -59,3 +62,77 @@ class GraphView(View):
         }
 
         return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+class TestView(LoginRequiredMixin, TemplateView):
+    login_url = reverse_lazy('login')
+    template_name = 'mainboard/test.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super(TestView, self).get_context_data(**kwargs)
+        stream = open(os.path.join(EXAMPLE_ROOT, 'global.yaml'), 'r')
+        content = yaml.load(stream)
+        sensors = []
+        edges = []
+        for k, v in content.items():
+            sensors.append({
+                'id': k,
+                'label': v['label'],
+                'ip': v['ip'],
+                'port': v['port']
+            })
+            if v['outputs']:
+                for o in v['outputs']:
+                    edges.append({'from': k, 'to': o})
+        context_data['sensors'] = sensors
+        context_data['edges'] = edges
+        return context_data
+
+
+class TestJsonView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('login')
+
+    def get(self, request, *args, **kwargs):
+        data = {
+          "nodes": [
+            {
+              "id": "n0",
+              "label": "A node",
+              "x": 0,
+              "y": 0,
+              "size": 3
+            },
+            {
+              "id": "n1",
+              "label": "Another node",
+              "x": 3,
+              "y": 1,
+              "size": 2
+            },
+            {
+              "id": "n2",
+              "label": "And a last one",
+              "x": 1,
+              "y": 3,
+              "size": 1
+            }
+          ],
+          "edges": [
+            {
+              "id": "e0",
+              "source": "n0",
+              "target": "n1"
+            },
+            {
+              "id": "e1",
+              "source": "n1",
+              "target": "n2"
+            },
+            {
+              "id": "e2",
+              "source": "n2",
+              "target": "n0"
+            }
+          ]
+        }
+        return JsonResponse(data, safe=False)

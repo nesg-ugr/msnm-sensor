@@ -1,4 +1,6 @@
 {% load static %}
+{% load startswith %}
+{% load endswith %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +16,26 @@
         <link rel="stylesheet" type="text/css" href="{% static 'base/css/buttons.dataTables.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'base/css/bootstrap-select.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'base/css/base.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'base/css/vis-network.min.css' %}" />
+
+        <!--===========================================FAVICON====================================================-->
+        <link rel="apple-touch-icon" sizes="57x57" href="{% static 'base/favicon/apple-icon-57x57.png' %}">
+        <link rel="apple-touch-icon" sizes="60x60" href="{% static 'base/favicon/apple-icon-60x60.png' %}">
+        <link rel="apple-touch-icon" sizes="72x72" href="{% static 'base/favicon/apple-icon-72x72.png' %}">
+        <link rel="apple-touch-icon" sizes="76x76" href="{% static 'base/favicon/apple-icon-76x76.png' %}">
+        <link rel="apple-touch-icon" sizes="114x114" href="{% static 'base/favicon/apple-icon-114x114.png' %}">
+        <link rel="apple-touch-icon" sizes="120x120" href="{% static 'base/favicon/apple-icon-120x120.png' %}">
+        <link rel="apple-touch-icon" sizes="144x144" href="{% static 'base/favicon/apple-icon-144x144.png' %}">
+        <link rel="apple-touch-icon" sizes="152x152" href="{% static 'base/favicon/apple-icon-152x152.png' %}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'base/favicon/apple-icon-180x180.png' %}">
+        <link rel="icon" type="image/png" sizes="192x192"  href="{% static 'base/favicon/android-icon-192x192.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'base/favicon/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="96x96" href="{% static 'base/favicon/favicon-96x96.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'base/favicon/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'base/favicon/manifest.json' %}">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="{% static 'base/favicon/ms-icon-144x144.png' %}">
+        <meta name="theme-color" content="#ffffff">
     {% endblock styles %}
     {% block scripts %}
         <script src="{% static 'base/js/jquery-3.3.1.js' %}"></script>
@@ -28,6 +50,9 @@
         <script src="{% static 'base/js/bootstrap.min.js' %}"></script>
         <script src="{% static 'base/js/plotly-latest.min.js' %}"></script>
         <script src="{% static 'base/js/bootstrap-select.min.js' %}"></script>
+        <script src="{% static 'base/js/d3.v4.min.js' %}"></script>
+        <script src="{% static 'base/js/vis.min.js' %}"></script>
+        <script src="{% static 'base/js/base.js' %}"></script>
     {% endblock scripts %}
 </head>
 <body>
@@ -35,11 +60,71 @@
     <!-- Image and text -->
     <nav class="navbar navbar-light bg-light" style="display: block; text-align: center;">
         <img src="{% static 'base/img/logo_ugr.png' %}" height="50" class="d-inline-block align-top" style="float: left; margin-top: -5px" alt="">
-        <a style="display: inline-block;" class="navbar-brand" href="{% url 'base:index' %}">
-            <span style="color: #2d609e; text-shadow: 1px 1px 1px rgba(38,98,164,0.52);"><b>MSNM-S DASHBOARD</b></span>
+        <a style="display: inline-block;" class="navbar-brand" href="">
+            <span style="font-weight: bolder !important; color: #404040; text-shadow: 1px 1px 1px rgba(38,98,164,0.22);"><b>MSNM-S DASHBOARD</b></span>
         </a>
         <img src="{% static 'base/img/logo_uca.png' %}" height="70" class="d-inline-block align-top" style="float: right; margin-top: -20px;" alt="">
     </nav>
+</div>
+<div class="nav-side-menu menu-hide-control">
+    <a href="" style="text-decoration: none;">
+        <div class="brand">
+            <div class="icono-brand"><span class="fa fa-th"></span></div>
+            <div class="image-hideable">
+                <div class="menu-name">MSNM-S</div>
+            </div>
+        </div>
+    </a>
+    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+        <div class="menu-list">
+            <ul id="menu-content" class="menu-content collapse out">
+                <li class="enter-link {% if request.path == '/' %}active{% endif %}">
+                  <a href="{% if not request.user.is_anonymous %}{% url 'base:index' %}{% endif %}">
+                      <i class="fa fa-home fa-lg" style="margin-right: 4px;"></i> <div class="menu-hideable">Home</div>
+                  </a>
+                </li>
+                {% if not request.user.is_anonymous %}
+                    <li data-toggle="collapse" data-target="#dashboards" class="collapsed{% if request.path|endswith:'/mainboard/' %} active{% endif %}">
+                        <a href="{% url 'mainboard:main' %}"><i class="fa fa-network-wired fa-lg" style="margin-right: 4px;"></i> <div class="menu-hideable">Overall {# <span class="arrow"></span> #}</div>
+                      </a>
+                    </li>
+                    <li data-toggle="collapse" data-target="#dashboards" class="collapsed{% if request.path|endswith:'/monitoring/' %} active{% endif %}">
+                        <a href="{% url 'mainboard:monitoring' %}"><i class="fa fa-tachometer-alt fa-lg" style="margin-right: 4px;"></i> <div class="menu-hideable">Monitoring {# <span class="arrow"></span> #}</div>
+                      </a>
+                    </li>
+                    <li data-toggle="collapse" data-target="#dashboards" class="collapsed{% if request.path == '/machinelogs/' or request.path == '/hncs/' or request.path == '/quality/' %} active{% endif %}">
+                        <a href="#"><i class="fa fa-cogs fa-lg" style="margin-right: 4px;"></i> <div class="menu-hideable">Management  {# <span class="arrow"></span> #}</div>
+                      </a>
+                    </li>
+                    {% comment %}<ul class="sub-menu dashboards collapse in{% if request.path|startswith:'/machinelogs/' or request.path == '/hncs/' or request.path == '/overall/' or request.path == '/quality/' %} show{% endif %}" id="dashboards">
+                        <li class="enter-link {% if request.path == '/overall/' %}active{% endif %}">
+                            <a href="">
+                                <div class="sub-menu-hideable">Overall</div>
+                            </a>
+                        </li>
+                    </ul>{% endcomment %}
+                    {% if request.user.is_superuser %}
+                        <li>
+                            <a href="{% url 'admin:index' %}" target="_blank">
+                                <i class="fa fa-cog fa-lg" style="margin-right: 4px;"></i> <div class="menu-hideable">Administration</div>
+                            </a>
+                        </li>
+                    {% endif %}
+                     <li class="enter-link {% if request.path == '/logout/' %}active{% endif %}">
+                      <a href="{% url 'logout' %}">
+                          <i class="fa fa-sign-out-alt fa-lg" style="margin-right: 4px;"></i> <div class="menu-hideable">Logout ({{ request.user }})</div>
+                      </a>
+                     </li>
+                {% else %}
+                     <li class="enter-link {% if request.path == '/login/' %}active{% endif %}">
+                      <a href="{% url 'login' %}">
+                          <i class="fa fa-sign-in-alt fa-lg" style="margin-right: 4px;"></i> <div class="menu-hideable">Login</div>
+                      </a>
+                     </li>
+                {% endif %}
+
+            </ul>
+     </div>
 </div>
 <div class="content">
 {% block content %}

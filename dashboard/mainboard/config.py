@@ -2,14 +2,9 @@ import os
 
 from netmalies.settings import BASE_DIR
 
-# Modify this path accordingly
-# Root path
-root_path='../examples/'
+#root_path='/home/roberto/RMAGAN/UGR/INVESTIGACION/Revistas/msnm_tech_report/DATA/RESULTS/'
 
-# Data path
-EXAMPLE_ROOT = os.path.join(root_path, 'scenario_4')
+EXAMPLE_ROOT = os.path.join(BASE_DIR, 'metis_batch_60obs', '20170920_182121')
 MONITORING_ROOT = os.path.join('data', 'monitoring', 'output')
-# last GRAPH_SIZE samples to depict in the monitoring graph
 GRAPH_SIZE = 100
-# Every SYNC_SECONDS the graph will be updated
 SYNC_SECONDS = 60

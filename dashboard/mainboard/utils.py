@@ -3,8 +3,47 @@ import re
 
 import numpy as np
 import pandas as pd
+import yaml
 
-from mainboard.config import EXAMPLE_ROOT, MONITORING_ROOT
+from mainboard.config import EXAMPLE_ROOT, MONITORING_ROOT, SYNC_SECONDS
+
+
+def update_context_data_network(context_data):
+    context_data['sync_seconds'] = SYNC_SECONDS
+    stream = open(os.path.join(EXAMPLE_ROOT, 'global.yaml'), 'r')
+    content = yaml.load(stream, Loader=yaml.FullLoader)
+    sensors = []
+    edges = []
+    for k, v in content.items():
+        sensors.append({
+            'id': k,
+            'label': v['label'],
+            'ip': v['ip'],
+            'port': v['port']
+        })
+        if v['outputs']:
+            for o in v['outputs']:
+                edges.append({'from': k, 'to': o})
+    context_data['sensors'] = sensors
+    context_data['edges'] = edges
+
+    for s in sensors:
+        stream = open(os.path.join(EXAMPLE_ROOT, s['id'] + '.yaml'), 'r')
+        content_by_id = yaml.load(stream, Loader=yaml.FullLoader)
+
+        # context_data[router + 'SID'] = content['Sensor']['sid']
+        # context_data[router + 'serverAddress'] = content['Sensor']['server_address']['ip'] + ':' + \
+        #                                   str(content['Sensor']['server_address']['port'])
+        if content_by_id['DataSources'].get('remote'):
+            s['remoteAddresses'] = []
+            for k, v in content_by_id['DataSources']['remote'].items():
+                s['remoteAddresses'].append({k: str(content[k]['ip']) + ':' + str(content[k]['port'])})
+        if content_by_id['DataSources'].get('local'):
+            s['localSources'] = []
+            for k, v in content_by_id['DataSources']['local'].items():
+                s['localSources'].append(k)
+    context_data['sensors'] = sensors
+    return context_data
 
 
 def get_monitoring(sid, files):

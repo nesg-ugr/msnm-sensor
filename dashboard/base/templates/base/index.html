@@ -1,14 +1,43 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
+{% block styles %}
+    {{ block.super }}
+    <style>
+        a {
+            font-family: Raleway-Regular;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #666666;
+            margin: 0px;
+            transition: all 0.4s;
+            -webkit-transition: all 0.4s;
+          -o-transition: all 0.4s;
+          -moz-transition: all 0.4s;
+        }
+
+        a:focus {
+            outline: none !important;
+        }
+
+        a:hover {
+            text-decoration: none;
+          color: #428bca;
+        }
+    </style>
+{% endblock styles %}
+
 {% block content %}
 <div class="jumbotron">
-  <h1 class="display-4">MSNM-S (Multivariate Statistical Network Monitoring-Sensor)</h1>
+  <h1 class="display-5" style="font-size: 2.3rem">MSNM-S (Multivariate Statistical Network Monitoring-Sensor)</h1>
     <p class="lead">A suitable and scalable anomaly detection and diagnosis tool for complex network scenarios.</p>
   <hr class="my-4">
-  <p>Authors: Roberto Magán-Carrión, José Camacho, Gabriel Maciá-Fernández and Ismael Jerez Ibañez</p>
+  <p>Authors: Roberto Magán-Carrión, José Camacho, Gabriel Maciá-Fernández and Ismael Jerez-Ibañez</p>
   <p class="lead">
-    <a class="btn btn-primary btn-lg" href="{% url 'mainboard:main' %}" role="button">Go to mainboard</a>
+    <div class="container-login100-form-btn" style="margin-top: 10px;">
+        <a class="login100-form-btn" href="{% url 'mainboard:main' %}" role="button">Go to mainboard</a>
+    </div>
+{#    <a class="btn btn-primary btn-lg" href="{% url 'mainboard:test' %}" role="button">Go to test</a>#}
   </p>
 </div>
 {% endblock content %}

@@ -1,0 +1,38 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block scripts %}
+    {{ block.super }}
+{% endblock scripts %}
+
+{% block styles %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <style type="text/css">
+    #mynetwork {
+      width: 100%;
+      border: 1px solid lightgray;
+      background-color:#dddddd;
+    }
+  </style>
+
+
+    <div id="routers_and_graph" class="row">
+        <div class="col-sm-6" style="text-align: center; margin-top: 0px;">
+            <div id="mynetwork"></div>
+        </div>
+        <div id='graph_side' class="col-sm-6" style="text-align: center; padding-top: 40px;">
+            <a id="pause_sync" class="btn btn-danger btn-sm" style="color: white; margin-bottom: 10px; margin-left: 80px; display: none;">Pause sync</a>
+            <a id="resume_sync" class="btn btn-info btn-sm" style="color: white; margin-bottom: 10px; margin-left: 80px; display: none;">Resume sync</a>
+            <a style="display: inline-block; position: relative; left: 170px; margin-bottom: 10px; color: white; display: none;" class="btn btn-secondary btn-sm" id="expand_graph">Expand <span class="fa fa-expand"></span></a>
+            <a style="display: inline-block; display: none; position: relative; left: 170px; margin-bottom: 10px; color: white;" class="btn btn-secondary btn-sm" id="compress_graph">Compress <span class="fa fa-compress"></span></a>
+            <span class="last_updated" style="display: none;"></span>
+            <div class="graph" id="graph1" style="display: none; margin-top: -20px;">
+                <img style="position: relative; top: 180px; width: 20%;" src="{% static 'base/img/loading_graph3.gif' %}">
+            </div>
+            <br/>
+        </div>
+    </div>
+{% endblock content %}

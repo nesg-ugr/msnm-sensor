@@ -7,127 +7,143 @@
         $url = "{% url 'mainboard:graph' 'none' %}";
         $loading_url = "{% static 'base/img/loading_graph3.gif' %}";
         $sync_seconds = {{ sync_seconds }};
+        $selected_sid = '';
+        $interval_id = {};
+        $interval = 1000 * $sync_seconds;
+        $col_class = null;
+        $sid = null;
     </script>
     <script src="{% static 'mainboard/js/graph.js' %}"></script>
+    <script type="text/javascript">
+
+        var nodes = null;
+        var edges = null;
+        var network = null;
+
+        // Called when the Visualization API is loaded.
+        function draw() {
+            nodes = [
+                {% for s in sensors %}
+                    {
+                        id: "{{ s.id }}",
+                        shape: 'image',
+                        image: "{% static 'base/img/router_sensor2.png' %}",
+                        label: "{{ s.label }}",
+                        title: "<b>IP:</b> {{ s.ip }}<br><b>Port:</b> {{ s.port }}",
+                        fixed: false,
+                    },
+                {% endfor %}
+            ];
+            edges = [
+                {% for e in edges %}
+                    {from: "{{ e.from }}", to: "{{ e.to }}"},
+                {% endfor %}
+            ];
+
+            var container = document.getElementById('mynetwork');
+            var data = {
+                nodes: nodes,
+                edges: edges
+            };
+            var options = {
+                    edges: {
+                        arrows: {
+                            to: {enabled: true, scaleFactor: 1, type: 'arrow'},
+                            middle: {enabled: false, scaleFactor: 1, type: 'arrow'},
+                            from: {enabled: false, scaleFactor: 1, type: 'arrow'}
+                        },
+                        arrowStrikethrough: true,
+                    },
+                    nodes: {
+                        size: 40,
+                        color: {
+                            background: '#006400'
+                        },
+                        font: {color: '#0c0c0c', "size": 10},
+                    },
+                    interaction: {
+                        dragNodes: true,
+                        hover: true,
+                    },
+                    physics: {
+                        barnesHut: {
+                            avoidOverlap: 1
+                        },
+                    },
+            };
+            network = new vis.Network(container, data, options);
+
+            network.on("doubleClick", function (params) {
+                $sid = params.nodes[0];
+                if ($sid != null) {
+                    $("#empty-graph").hide();
+                    $(".graph").prop('id', 'graph' + $sid);
+                    $("#graph_side").children(".last_updated").prop('id', 'last_updated_' + $sid);
+                    $(".graph").show();
+                    if ($selected_sid !== $sid) {
+                        $(".graph").html('<img style="position: relative; top: 180px; width: 20%;" src="' + $loading_url + '">');
+                        $(".last_updated").hide();
+                        $(".pause_sync").hide();
+                        $(".resume_sync").hide();
+                        $(".expand_graph").hide();
+                        $(".compress_graph").hide();
+                    }
+                    if ($interval_id) {
+                        window.clearInterval($interval_id[$selected_sid]);
+                        delete $interval_id[$selected_sid];
+                    }
+                    $selected_sid = $sid;
+                    setTimeout(function() {
+                        var url = $url.replace('none', $sid);
+                        generate_router_graph(url, $sid);
+                    }, 500);
+                    $interval_id[$sid] = window.setInterval(reload_graphs, $interval);
+                }
+            });
+            network.on("hoverNode", function (params) {
+                network.canvas.body.container.style.cursor = 'pointer';
+                params.event = "[original event]";
+            });
+
+            network.on("blurNode", function (params) {
+                network.canvas.body.container.style.cursor = 'default'
+            });
+        }
+        $(document).ready(function() {
+            draw();
+        });
+    </script>
 {% endblock scripts %}
 
 {% block styles %}
     {{ block.super }}
+    <style type="text/css">
+        #mynetwork {
+            width: 100%;
+            height: 420px;
+            border: 1px solid lightgray;
+            background-color: #f4f4f4;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
     <div id="routers_and_graph" class="row">
-        <div class="col-sm-6" style="text-align: center; margin-top: 60px;">
-            <div class="alert alert-info" style="display: inline-block; width: -moz-fit-content">
-              <strong>Info:</strong> Click on any router to see its graph.
-            </div>
-            <span class=".bg-info" style="font-size: 13px;"></span>
-            <br/><br/>
-            <div class="image">
-                <div class="row" style="display: block; text-align: center;">
-                    <b>SID:</b> {{ borderRouterSID }}
-                    <br/>
-                    <b>Server address:</b> {{ borderRouterserverAddress }}
-                    <br/>
-                    <img id="{{ borderRouterSID }}" class="router clickable" width="100px" src="{% static 'base/img/router_sensor2.png' %}" alt="border-router">
-                </div>
-                <div class="arrows row" style="display: block; text-align: center; margin-top: 0px;">
-                        <span class="center" style="display: inline-block; width: 13px; position: relative; left: -188px">
-                            <svg height="120">
-                                <defs>
-                                    <marker id="arrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
-                                        <path d="M2,1 L2,10 L10,6 L2,2" style="fill:#383d41;" />
-                                    </marker>
-                                </defs>
-                                <path d="M190,10 L0,128"
-                                    style="stroke:#383d41; stroke-width: 1.25px; fill: none;"
-                                ></path>
-                            </svg>
-                        </span>
-                        <span class="center" style="display: inline-block; width: 13px;">
-                            <svg height="120">
-                                <defs>
-                                    <marker id="arrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
-                                        <path d="M2,1 L2,10 L10,6 L2,2" style="fill:#383d41;" />
-                                    </marker>
-                                </defs>
-                                <path d="M5,12 L5,128"
-                                    style="stroke:#383d41; stroke-width: 1.25px; fill: none;"
-                                ></path>
-                            </svg>
-                        </span>
-                        <span class="center" style="display: inline-block; width: 13px; position: relative; left: -4px">
-                            <svg height="120">
-                                <defs>
-                                    <marker id="arrow" markerWidth="13" markerHeight="13" refx="2" refy="6" orient="auto">
-                                        <path d="M2,1 L2,10 L10,6 L2,2" style="fill:#383d41;" />
-                                    </marker>
-                                </defs>
-                                <path d="M10,10 L210,128"
-                                    style="stroke:#383d41; stroke-width: 1.25px; fill: none;"
-                                ></path>
-                            </svg>
-                        </span>
-                </div>
-                <div class="row" style="display: block; text-align: center; margin-top: -20px">
-                    <div style="display: inline-block;">
-                        <img id="{{ routerR1SID }}" class="router clickable" width="100px" src="{% static 'base/img/router_sensor2.png' %}" alt="router-1">
-                        <br/>
-                        <b>SID:</b> {{ routerR1SID }}
-                        <br/>
-                        <b>Server address:</b> {{ routerR1serverAddress }}
-                        {% comment %}<br/>
-                        <b>Remote addresses:</b> <br/>
-                        <ul>
-                            {% for rs in routerR1remoteAddresses %}
-                                {% for k, v in rs.items %}
-                                    <li>{{ k }}: {{ v }}</li>
-                                {% endfor %}
-                            {% endfor %}
-                        </ul>{% endcomment %}
-                    </div>
-                    <div style="display: inline-block; margin: 0 15px;">
-                        <img id="{{ routerR2SID }}" class="router clickable" width="100px" src="{% static 'base/img/router_sensor2.png' %}" alt="router-2">
-                        <br/>
-                        <b>SID:</b> {{ routerR2SID }}
-                        <br/>
-                        <b>Server address:</b> {{ routerR2serverAddress }}
-                        {% comment %}<br/>
-                        <b>Remote addresses:</b> <br/>
-                        <ul>
-                            {% for rs in routerR2remoteAddresses %}
-                                {% for k, v in rs.items %}
-                                    <li>{{ k }}: {{ v }}</li>
-                                {% endfor %}
-                            {% endfor %}
-                        </ul>{% endcomment %}
-                    </div>
-                    <div style="display: inline-block;">
-                        <img id="{{ routerR3SID }}" class="router clickable" width="100px" src="{% static 'base/img/router_sensor2.png' %}" alt="router-3">
-                        <br/>
-                        <b>SID:</b> {{ routerR3SID }}
-                        <br/>
-                        <b>Server address:</b> {{ routerR3serverAddress }}
-                        {% comment %}<br/>
-                        <b>Remote addresses:</b> <br/>
-                        <ul>
-                            {% for rs in routerR3remoteAddresses %}
-                                {% for k, v in rs.items %}
-                                    <li>{{ k }}: {{ v }}</li>
-                                {% endfor %}
-                            {% endfor %}
-                        </ul>{% endcomment %}
-                    </div>
-                </div>
-            </div>
+        <div class="col-sm-6" style="text-align: center; margin-top: 10px;">
+           {% comment %} <div class="alert alert-info" style="display: inline-block; width: -moz-fit-content">
+
+            </div>{% endcomment %}
+            <strong>Info:</strong> Double-click on any router to see its graph.
+            <div id="mynetwork"></div>
         </div>
-        <div id='graph_side' class="col-sm-6" style="text-align: center; padding-top: 40px;">
-            <a id="pause_sync" class="btn btn-danger btn-sm" style="color: white; margin-bottom: 10px; margin-left: 80px; display: none;">Pause sync</a>
-            <a id="resume_sync" class="btn btn-info btn-sm" style="color: white; margin-bottom: 10px; margin-left: 80px; display: none;">Resume sync</a>
-            <a style="display: inline-block; position: relative; left: 170px; margin-bottom: 10px; color: white; display: none;" class="btn btn-secondary btn-sm" id="expand_graph">Expand <span class="fa fa-expand"></span></a>
-            <a style="display: inline-block; display: none; position: relative; left: 170px; margin-bottom: 10px; color: white;" class="btn btn-secondary btn-sm" id="compress_graph">Compress <span class="fa fa-compress"></span></a>
-            <span class="last_updated" style="display: none;"></span>
-            <div class="graph" id="graph1" style="display: none; margin-top: -20px;">
+        <div id='graph_side' class="graph-container col-sm-6" style="text-align: center;">
+            <a class="btn btn-danger btn-sm pause_sync" style="color: white; display: none;"><span class="fa fa-pause"></span></a>
+            <a class="btn btn-info btn-sm resume_sync" style="color: white; display: none;"><span class="fa fa-play"></span></a>
+            <a style="display: inline-block;  color: white; float: right; display: none;" class="btn btn-secondary btn-sm expand_graph"><span class="fa fa-expand"></span></a>
+            <a style="display: inline-block; display: none; float: right; color: white;" class="btn btn-secondary btn-sm compress_graph"><span class="fa fa-compress"></span></a>
+            <span class="last_updated" id="last_updated" style="display: none;"></span>
+            <img id="empty-graph" class="responsive" src="{% static 'base/img/empty_graph.png' %}">
+            <div class="graph" id="graph" style="display: none; margin-top: -20px;">
                 <img style="position: relative; top: 180px; width: 20%;" src="{% static 'base/img/loading_graph3.gif' %}">
             </div>
             <br/>
