@@ -92,8 +92,8 @@
                         <a href="{% url 'mainboard:monitoring' %}"><i class="fa fa-tachometer-alt fa-lg" style="margin-right: 4px;"></i> <div class="menu-hideable">Monitoring {# <span class="arrow"></span> #}</div>
                       </a>
                     </li>
-                    <li data-toggle="collapse" data-target="#dashboards" class="collapsed{% if request.path == '/machinelogs/' or request.path == '/hncs/' or request.path == '/quality/' %} active{% endif %}">
-                        <a href="#"><i class="fa fa-cogs fa-lg" style="margin-right: 4px;"></i> <div class="menu-hideable">Management  {# <span class="arrow"></span> #}</div>
+                    <li data-toggle="collapse" data-target="#dashboards" class="collapsed{% if request.path|endswith:'/management/' %} active{% endif %}">
+                        <a href="{% url 'mainboard:management' %}"><i class="fa fa-cogs fa-lg" style="margin-right: 4px;"></i> <div class="menu-hideable">Management  {# <span class="arrow"></span> #}</div>
                       </a>
                     </li>
                     {% comment %}<ul class="sub-menu dashboards collapse in{% if request.path|startswith:'/machinelogs/' or request.path == '/hncs/' or request.path == '/overall/' or request.path == '/quality/' %} show{% endif %}" id="dashboards">

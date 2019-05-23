@@ -1,0 +1,247 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        $url = "{% url 'mainboard:graph' 'none' %}";
+        $loading_url = "{% static 'base/img/loading_graph3.gif' %}";
+        $sync_seconds = {{ sync_seconds }};
+        $selected_sid = '';
+        $interval_id = {};
+        $interval = 1000 * $sync_seconds;
+        $col_class = null;
+        $sid = null;
+    </script>
+    <script src="{% static 'mainboard/js/graph.js' %}"></script>
+    <script type="text/javascript">
+
+        var nodes = null;
+        var edges = null;
+        var network = null;
+
+        // Called when the Visualization API is loaded.
+        function draw() {
+            nodes = [
+                {% for s in sensors %}
+                    {
+                        id: "{{ s.id }}",
+                        shape: 'image',
+                        image: "{% static 'base/img/router_sensor2.png' %}",
+                        label: "{{ s.label }}",
+                        title: "<b>IP:</b> {{ s.ip }}<br><b>Port:</b> {{ s.port }}",
+                        fixed: false,
+                    },
+                {% endfor %}
+            ];
+            edges = [
+                {% for e in edges %}
+                    {from: "{{ e.from }}", to: "{{ e.to }}"},
+                {% endfor %}
+            ];
+
+            var container = document.getElementById('mynetwork');
+            var data = {
+                nodes: nodes,
+                edges: edges
+            };
+            var options = {
+                    edges: {
+                        arrows: {
+                            to: {enabled: true, scaleFactor: 1, type: 'arrow'},
+                            middle: {enabled: false, scaleFactor: 1, type: 'arrow'},
+                            from: {enabled: false, scaleFactor: 1, type: 'arrow'}
+                        },
+                        arrowStrikethrough: true,
+                    },
+                    nodes: {
+                        size: 40,
+                        color: {
+                            background: '#006400'
+                        },
+                        font: {color: '#0c0c0c', "size": 10},
+                    },
+                    interaction: {
+                        dragNodes: true,
+                        hover: true,
+                    },
+                    physics: {
+                        barnesHut: {
+                            avoidOverlap: 1
+                        },
+                    },
+            };
+            network = new vis.Network(container, data, options);
+
+            network.on("click", function (params) {
+                $sid = params.nodes[0];
+                if ($sid != null) {
+                    $(".form-control").val('');
+                    $(".form-control").prop("disabled", true);
+                    var urlconf = "{% url "mainboard:getconf" "changethis" %}".replace("changethis", $sid);
+                    $.ajax({
+                        type: "GET",
+                        url: urlconf,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        async: true,
+                        beforeSend: function () {},
+                        success: function (out, ajaxOptions, thrownError) {
+                            $("#sid_field").val(out.sid);
+                            $("#lv_field").val(out.lv);
+                            $("#phase_field").val(out.phase);
+                            $("#prep_field").val(out.prep);
+                            $("#lambda_field").val(out.dynamiCalibration.lambda);
+                            $("#b_field").val(out.dynamiCalibration.B);
+                            if (out.dynamiCalibration.enabled === true)
+                                $("#enabled_field").val(1);
+                            else
+                                $("#enabled_field").val(0);
+                            $(".form-control").prop("disabled", false);
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            $("#graph").html('<br/><br/>Unable to load');
+                            var err = xhr.responseText;
+                            console.log(err);
+                        }
+                    });
+                }
+            });
+            network.on("hoverNode", function (params) {
+                network.canvas.body.container.style.cursor = 'pointer';
+                params.event = "[original event]";
+            });
+
+            network.on("blurNode", function (params) {
+                network.canvas.body.container.style.cursor = 'default'
+            });
+        }
+        $(document).ready(function() {
+            $(".form-control").val('');
+            $(".form-control").prop("disabled", true);
+            draw();
+            $('form input').change(function() {
+                $(this).closest('form').submit(function(event) {
+                    console.log("Form changed!");
+                    event.preventDefault();
+                    var data  = {};
+                    data['sid'] = $("#sid_field").val();
+                    data['lv'] = $("#lv_field").val();
+                    data['phase'] = $("#phase_field").val();
+                    data['prep'] = $("#prep_field").val();
+                    data['lambda'] = $("#lambda_field").val();
+                    data['b'] = $("#b_field").val();
+                    data['enabled'] = $("#enabled_field").val();
+                    data['csrfmiddlewaretoken'] = $('input[name=csrfmiddlewaretoken]').val();
+                    $.ajax({
+                        url: $(this).attr('action').replace("changethis", $sid),
+                        method: $(this).attr('method'),
+                        dataType: "json",
+                        data: data,
+                        beforeSend: function () {
+                        },
+                        success: function (xhr, ajaxOptions, thrownError) {
+                            if ($(xhr).find('.has-error').length > 0) {
+
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            $("#graph").html('<br/><br/>Unable to load');
+                            var err = xhr.responseText;
+                            console.log(err);
+                        }
+                    });
+                });
+                $(this).closest('form').submit();
+            });
+        });
+    </script>
+{% endblock scripts %}
+
+{% block styles %}
+    {{ block.super }}
+    <style type="text/css">
+        #mynetwork {
+            width: 100%;
+            height: 420px;
+            border: 1px solid lightgray;
+            background-color: #f4f4f4;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="routers_and_graph" class="row">
+        <div class="col-sm-6" style="text-align: center; margin-top: 10px;">
+           {% comment %} <div class="alert alert-info" style="display: inline-block; width: -moz-fit-content">
+
+            </div>{% endcomment %}
+            <strong>Info:</strong> Double-click on any router to see its graph.
+            <div id="mynetwork"></div>
+        </div>
+        <div id='conf_side' class="graph-container col-sm-6" style="text-align: center;">
+            <a class="btn btn-danger btn-sm pause_sync" style="color: white; display: none;"><span class="fa fa-pause"></span></a>
+            <a class="btn btn-info btn-sm resume_sync" style="color: white; display: none;"><span class="fa fa-play"></span></a>
+            <a style="display: inline-block;  color: white; float: right; display: none;" class="btn btn-secondary btn-sm expand_graph"><span class="fa fa-expand"></span></a>
+            <a style="display: inline-block; display: none; float: right; color: white;" class="btn btn-secondary btn-sm compress_graph"><span class="fa fa-compress"></span></a>
+            <span class="last_updated" id="last_updated" style="display: none;"></span>
+            <div class="graph" id="conf" style="margin: 0 20px; padding: 10px 20px;">
+                <form style="text-align: left;" method="post" action="{% url 'mainboard:saveconf' 'changethis' %}">
+                    {% csrf_token %}
+                    <h6 style="margin-top: 10px; margin-bottom: 0px !important;">General</h6>
+                    <hr style="margin-top: 5px !important;" />
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="sid_field">SID</label>
+                            <input id="sid_field" class="form-control" type="text" disabled autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="lv_field">Latent variables</label>
+                            <input id="lv_field" class="form-control" type="number" disabled autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="phase_field">Phase (UCLd)</label>
+                            <select id="phase_field" class="form-control" disabled autocomplete="off">
+                                <option value="1" selected>Phase I</option>
+                                <option value="2">Phase II</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="prep_field">Data preprocessing method</label>
+                            <select id="prep_field" class="form-control" disabled autocomplete="off">
+                                <option value="0" selected>No preprocessing</option>
+                                <option value="1">Mean-centering</option>
+                                <option value="2">Auto-scaling</option>
+                            </select>
+                        </div>
+                    </div>
+                    <h6 style="margin-top: 10px; margin-bottom: 0px !important;">Dynamic calibration</h6>
+                    <hr style="margin-top: 5px !important;" />
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <label for="enabled_field">Enabled?</label>
+                            <select id="enabled_field" class="form-control" disabled autocomplete="off">
+                                <option value="1" selected>Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="b_field">Batch of observations</label>
+                            <input id="b_field" class="form-control" type="number" disabled autocomplete="off">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="lambda_field">Lambda</label>
+                            <input id="lambda_field" class="form-control" step="0.1" type="number" disabled autocomplete="off">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <br/>
+        </div>
+    </div>
+{% endblock content %}

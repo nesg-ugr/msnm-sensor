@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseBadRequest, HttpResponse, JsonResponse
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
 
 from mainboard.config import EXAMPLE_ROOT, GRAPH_SIZE, MONITORING_ROOT, SYNC_SECONDS
 from mainboard.utils import get_monitoring, update_context_data_network
@@ -29,6 +29,16 @@ class MonitoringView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context_data = super(MonitoringView, self).get_context_data(**kwargs)
+        context_data = update_context_data_network(context_data)
+        return context_data
+
+
+class ManagementView(LoginRequiredMixin, TemplateView):
+    login_url = reverse_lazy('login')
+    template_name = 'mainboard/management.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super(ManagementView, self).get_context_data(**kwargs)
         context_data = update_context_data_network(context_data)
         return context_data
 
@@ -62,6 +72,39 @@ class GraphView(LoginRequiredMixin, View):
         }
 
         return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+class GetConfView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('login')
+
+    def get(self, request, *args, **kwargs):
+        if not request.is_ajax():
+            return HttpResponseBadRequest()
+        sid = self.kwargs['sid']
+        stream = open(os.path.join(EXAMPLE_ROOT, sid + '.yaml'), 'r')
+        conf = yaml.load(stream, Loader=yaml.FullLoader)
+        data = conf['Sensor']
+        return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+class SaveConfView(LoginRequiredMixin, View):
+    login_url = reverse_lazy('login')
+
+    def post(self, request, *args, **kwargs):
+        if not request.is_ajax():
+            return HttpResponseBadRequest()
+        post = self.request.POST
+        print(post)
+        return HttpResponse(json.dumps({'success': True}), content_type="application/json")
+
+
+        # $("#sid_field").val(out.sid);
+        # $("#lv_field").val(out.lv);
+        # $("#phase_field").val(out.phase);
+        # $("#prep_field").val(out.prep);
+        # $("#lambda_field").val(out.dynamiCalibration.lambda );
+        # $("#b_field").val(out.dynamiCalibration.B);
+        # $("#enabled_field").val(1);
 
 
 class TestView(LoginRequiredMixin, TemplateView):
