@@ -93,8 +93,28 @@ class SaveConfView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         if not request.is_ajax():
             return HttpResponseBadRequest()
+        sid = self.kwargs['sid']
+        stream = open(os.path.join(EXAMPLE_ROOT, sid + '.yaml'), 'r')
+        conf = yaml.load(stream, Loader=yaml.FullLoader)
+        data = conf['Sensor']
         post = self.request.POST
-        print(post)
+        rename = False
+        if not data['sid'] == post['sid']:
+            rename = True
+        data['sid'] = post['sid']
+        data['lv'] = int(post['lv'])
+        data['phase'] = int(post['phase'])
+        data['prep'] = int(post['prep'])
+        data['dynamiCalibration']['B'] = int(post['B'])
+        data['dynamiCalibration']['lambda'] = float(post['lambda'])
+        data['dynamiCalibration']['enabled'] = bool(int(post['enabled']))
+        conf['Sensor'] = data
+        output = open(os.path.join(EXAMPLE_ROOT, sid + '.yaml'), 'w+')
+        yaml.dump(conf, output, allow_unicode=True, sort_keys=False)
+        stream.close()
+        output.close()
+        if rename:
+            os.rename(os.path.join(EXAMPLE_ROOT, sid + '.yaml'), os.path.join(EXAMPLE_ROOT, str(post['sid']) + '.yaml'))
         return HttpResponse(json.dumps({'success': True}), content_type="application/json")
 
 

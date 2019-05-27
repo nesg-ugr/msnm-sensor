@@ -99,6 +99,7 @@
                             else
                                 $("#enabled_field").val(0);
                             $(".form-control").prop("disabled", false);
+                            $("#sid_field").prop("disabled", true);
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             $("#graph").html('<br/><br/>Unable to load');
@@ -120,39 +121,39 @@
         $(document).ready(function() {
             $(".form-control").val('');
             $(".form-control").prop("disabled", true);
-            draw();
-            $('form input').change(function() {
-                $(this).closest('form').submit(function(event) {
-                    console.log("Form changed!");
-                    event.preventDefault();
-                    var data  = {};
-                    data['sid'] = $("#sid_field").val();
-                    data['lv'] = $("#lv_field").val();
-                    data['phase'] = $("#phase_field").val();
-                    data['prep'] = $("#prep_field").val();
-                    data['lambda'] = $("#lambda_field").val();
-                    data['b'] = $("#b_field").val();
-                    data['enabled'] = $("#enabled_field").val();
-                    data['csrfmiddlewaretoken'] = $('input[name=csrfmiddlewaretoken]').val();
-                    $.ajax({
-                        url: $(this).attr('action').replace("changethis", $sid),
-                        method: $(this).attr('method'),
-                        dataType: "json",
-                        data: data,
-                        beforeSend: function () {
-                        },
-                        success: function (xhr, ajaxOptions, thrownError) {
-                            if ($(xhr).find('.has-error').length > 0) {
+            $("form .form-control").closest('form').submit(function(event) {
+                console.log("Form changed!");
+                event.preventDefault();
+                var data  = {};
+                data['sid'] = $("#sid_field").val();
+                data['lv'] = $("#lv_field").val();
+                data['phase'] = $("#phase_field").val();
+                data['prep'] = $("#prep_field").val();
+                data['lambda'] = $("#lambda_field").val();
+                data['B'] = $("#b_field").val();
+                data['enabled'] = $("#enabled_field").val();
+                data['csrfmiddlewaretoken'] = $('input[name=csrfmiddlewaretoken]').val();
+                $.ajax({
+                    url: $(this).attr('action').replace("changethis", $sid),
+                    method: $(this).attr('method'),
+                    dataType: "json",
+                    data: data,
+                    beforeSend: function () {
+                    },
+                    success: function (xhr, ajaxOptions, thrownError) {
+                        if ($(xhr).find('.has-error').length > 0) {
 
-                            }
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            $("#graph").html('<br/><br/>Unable to load');
-                            var err = xhr.responseText;
-                            console.log(err);
                         }
-                    });
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $("#graph").html('<br/><br/>Unable to load');
+                        var err = xhr.responseText;
+                        console.log(err);
+                    }
                 });
+            });
+            draw();
+            $('form .form-control').change(function() {
                 $(this).closest('form').submit();
             });
         });
