@@ -18,7 +18,7 @@ Django engine.
 #### How to install
 
 Creating a python execution environment is, probably the better way to run the application. So we recommend you to create one
-before doing the requeriments installation. Anaconda environment can help you and, if you decide to use it, run the following
+before doing the requirements installation. Anaconda environment can help you and, if you decide to use it, run the following
 commands:
 
     $ cd dashboard/
@@ -28,6 +28,18 @@ commands:
 Running the previous command will install everything needed.
 
 	(py35) $ pip install -r requirements.txt
+	
+#### Configuration
+
+By default the dashboard links to the obtained output files 
+by running the experiment in *examples/scenario_4/* We recommend 
+you to link output data folders by running this command:
+
+    $ (py35) ln -s ../examples examples
+
+However the output folder can be configured accordingly by modifying *dashboard/mainboard/config.py* file.
+In this case move the file *examples/scenario_4/global.yaml* to the new
+folder.
 	
 #### How to run the dashboard application
 

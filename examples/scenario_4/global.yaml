@@ -1,0 +1,26 @@
+borderRouter:
+  label: borderRouter
+  ip: 192.168.0.1
+  port: 8000
+  outputs:
+
+routerR1:
+  label: routerR1
+  ip: 192.168.0.2
+  port: 8000
+  outputs:
+    - borderRouter
+
+routerR2:
+  label: routerR2
+  ip: 192.168.0.3
+  port: 8000
+  outputs:
+    - borderRouter
+
+routerR3:
+  label: routerR3
+  ip: 192.168.0.4
+  port: 8000
+  outputs:
+    - borderRouter
