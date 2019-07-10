@@ -39,8 +39,34 @@ Running the previous command will install everything needed.
 #### How to run an example
 
 Please see instructions at [examples](examples/README.md) or download the pre-configured
-VM at [MSNM-S-UBUNTU](https://drive.google.com/file/d/1zNf4mIuKEfEwQIDwPUbkM9oGiOVcCa22/view?usp=sharing) and follow the instructions in README.txt 
-file in ``/home/msnm/`` folder.
+VM at [MSNM-S-UBUNTU](https://drive.google.com/file/d/1zNf4mIuKEfEwQIDwPUbkM9oGiOVcCa22/view?usp=sharing). We recommend you to use the VM. Remember to pull the repository to get the MSNM-S project updated. In the following, you can see the necessary steps to run the pre-configure experiment in the VM:
+
+*Running the MSNM-Ss (backend)*
+
+Open a terminal window and activate netflow daemon and collector.
+
+	$ cd ~/msnm-sensor/scripts/netflow/
+	$ sudo ./activateNetflow.sh (pass: msnm1234)
+ 
+Wait for 5 minutes to get netflow records.
+Run and deploy the MSNM-Ss in example/scenario_4 example:
+
+	$ cd ~/msnm-sensor/scripts/
+	$ conda activate py27
+	$ ./start_experiment.sh ../examples/scenario_4/
+	$ ps -ef | grep msnmsensor (just to check if all the four MSNM-Ss are running)
+	$ tail -500f ~/msnm-sensor/examples/scenario_4/borderRouter/logs/msnm.log (another way to see how the MSNM-S is working. Replace the name of the MSNM-S if you want to see the others.)
+
+*Running the dashboard (frontend):*
+
+Open a new terminal window.
+
+	$ cd ~/msnm-sensor/dashboard/
+	$ conda activate msnm-dashboard
+	$ ln -s ../examples examples
+	$ python manage.py runserver
+
+Browse to http://localhost:8000
 
 ## Authors and license
 <a href="https://www.safecreative.org/work/1902149945824-msnm-sensor" target="_blank"> 
