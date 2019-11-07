@@ -23,6 +23,13 @@ DataSources:
       parserContents: config/fcparser_netflow.yaml
       # When True, tries to automatize start and stop nfcapd process
       nfcapdAutomatize: False
+      # Static mode where the *.dat files are manually provided in parsed folder
+      staticMode: True
+      # Path where the *.dat files can be found. These files are the results of the flow parser.
+      staticParsedFilesPath: examples/offline/dat/
+      # Static files range to build the data for testing. Date limits are included in the results.
+      staticObsRangeStart: '2015-12-12 10:09'
+      staticObsRangeEnd: '2015-12-12 10:39'
 
 Sensor:
   observation: data/monitoring/observation/

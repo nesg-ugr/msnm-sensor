@@ -73,13 +73,16 @@ class OfflineThread(MSNMThread):
                 filesOrdered = filesOrdered[np.logical_not('stats.log' == filesOrdered)]
                 filesOrdered = filesOrdered[np.logical_not('weights.dat' == filesOrdered)]
                 
-                logging.debug("Removed unuseless files from source %s. Total files to process: %s ",i,len(filesOrdered))
+                logging.debug("Removed useless files from source %s. Total files to process: %s ",i,len(filesOrdered))
                 
                 # Generate a dataframe containing all *.dat (all observations)
                 # Date range as index
-                dstart = filesOrdered[0][7:][0:-4]# get initial timestamp from the first file name, e.g., output-20160209t1249.dat            
+                dstart = filesOrdered[0][7:][0:-4]# get initial timestamp from the first file name, e.g., output-20160209t1249.dat
                 dend = filesOrdered[-1][7:][0:-4]# get ending timestamp from the first file name, e.g., output-20160209t1249.dat
+                print(dstart)
+                print(dend)
                 d_range = pd.date_range(dstart,dend,freq='1min')
+
                 dfAllObs = pd.DataFrame(filesOrdered,d_range,columns=['obs'])
                 
                 logging.debug("Got all obs from %s to %s",dstart,dend)
@@ -134,15 +137,15 @@ class OfflineThread(MSNMThread):
                 
                 logging.debug("Creating nfcapd.current.%s", tsFormatted)               
                             
-                # Generate nfcapd synthetic current filefile with equal timestamp as the observation
+                # Generate nfcapd synthetic current file with equal timestamp as the observation
                 nfcapdCurrent = netflow_captures + os.sep + "nfcapd.current." + tsFormatted            
                 with open(nfcapdCurrent,'w') as f:
                     f.write("Dummy nfcapd for static mode current ")
                 
                 # Move current nfcapd file to emulate on_moved event in netflow source
-                #In static mode the emulated nfcapd files has the name like  nfcapd.201701302000_2016001182312, where last ts after '_' is the ts of the statid *.dat
-                # file                 
-                nfcapdDummy = netflow_captures + os.sep + "nfcapd." + tsFormatted  + "_" + tsFormattedFile
+                # In static mode the emulated nfcapd files has the name like nfcapd.201701302000_2016001182312, where
+                # last ts after '_' is the ts of the static *.dat file
+                nfcapdDummy = netflow_captures + os.sep + "nfcapd." + tsFormatted + "_" + tsFormattedFile
                 logging.debug("Renaming %s to %s",nfcapdCurrent,nfcapdDummy)
                 shutil.move(nfcapdCurrent, nfcapdDummy)
                 

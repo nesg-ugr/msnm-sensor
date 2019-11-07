@@ -186,8 +186,8 @@ def main(config_file):
         # Are there local sources?
         if 'local' in sensor_config_params.get_config()['DataSources'].keys():
             # Check if the offline mode is enabled
-            # TODO: enable this funcionality and extend this functionality to all available data sources
-            # staticMode = sensor_config_params.get_config()['DataSources']['local']['Netflow']['staticMode']
+            # TODO: enable this functionality and extend this functionality to all available data sources
+            staticMode = sensor_config_params.get_config()['DataSources']['local']['Netflow']['staticMode']
             # If we are in static mode we launch the offilne thread
 
             offlineThread = OfflineThread()

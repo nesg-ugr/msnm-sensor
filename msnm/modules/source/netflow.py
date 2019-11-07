@@ -159,8 +159,8 @@ class NetFlowFileEventHandler(FileSystemEventHandler):
         netflow_flow_parser_config_file = config.get_config()['DataSources'][self._netflow_instance._type][self._netflow_instance.__class__.__name__]['parserConfig']; # Parser configuration file for netflow
 
         #TODO: to be enabled
-        #staticMode = config.get_config()['DataSources'][self._netflow_instance._type][self._netflow_instance.__class__.__name__]['staticMode'];
-        staticMode = False
+        staticMode = config.get_config()['DataSources'][self._netflow_instance._type][self._netflow_instance.__class__.__name__]['staticMode'];
+        #staticMode = False
 
         try:
             # Time stamp
