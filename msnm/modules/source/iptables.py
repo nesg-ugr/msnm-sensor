@@ -93,7 +93,7 @@ class IPTables(Source):
                 # Registered firewall events
                 event_id = 1
 
-                for line in my_file.xreadlines():
+                for line in my_file:
 
                     try:
 

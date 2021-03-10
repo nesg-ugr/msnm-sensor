@@ -119,7 +119,7 @@ class Netflow(Source):
             # add new id column to merge in parser
             # TODO: build a more elaborated method to do this e.g., from a dateframe utils package
             df = pd.read_csv(output_file_path,header=None, index_col=0)
-            df.loc[:,df.shape[1]] = range(100000, 100000 + df.shape[0])
+            df.loc[:,df.shape[1]] = list(range(100000, 100000 + df.shape[0]))
             df.to_csv(output_file_path, encoding='utf-8', header=False)
 
         except ValueError:
@@ -156,7 +156,7 @@ class NetFlowFileEventHandler(FileSystemEventHandler):
         netflow_log_raw_folder = rootDataPath + config.get_config()['DataSources'][self._netflow_instance._type][self._netflow_instance.__class__.__name__]['raw']
         netflow_log_processed_folder = rootDataPath + config.get_config()['DataSources'][self._netflow_instance._type][self._netflow_instance.__class__.__name__]['processed']
         netflow_log_parsed_folder = rootDataPath + config.get_config()['DataSources'][self._netflow_instance._type][self._netflow_instance.__class__.__name__]['parsed']
-        netflow_flow_parser_config_file = config.get_config()['DataSources'][self._netflow_instance._type][self._netflow_instance.__class__.__name__]['parserConfig']; # Parser configuration file for netflow
+        netflow_flow_parser_config_file = rootDataPath + config.get_config()['DataSources'][self._netflow_instance._type][self._netflow_instance.__class__.__name__]['parserConfig']; # Parser configuration file for netflow
 
         #TODO: to be enabled
         #staticMode = config.get_config()['DataSources'][self._netflow_instance._type][self._netflow_instance.__class__.__name__]['staticMode'];
