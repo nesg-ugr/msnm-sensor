@@ -1,0 +1,62 @@
+#-----------------------------------------------------------------------
+#
+# Parser - Configuration File
+#
+#-----------------------------------------------------------------------
+# DataSources:
+#   Source1:     DataSource name
+#     config:      Configuration file for this datasource.
+#     data:        Input files.
+#   Source2:
+#     ...
+#   SourceN:
+#     ...
+#
+# Key:          Key variable to aggregate dataSources
+#
+# Output:
+#   dir:        Output directory to write the output parsed data.
+#   stats:      Log file to write the stats (lines, records, matches).
+#
+# Deparsing_output: 
+#  dir:         Output directory for deparsing process
+# treshold:     upper limit of log entries by datasource.  
+#
+# SPLIT:        split info for temporal samplig
+#   Time:        
+#     window    time windows for sampling in seconds
+#     start:    start and end time for sampling interval
+#     end:  
+#   
+#    Output:    Output directory for split data      
+#
+#-----------------------------------------------------------------------
+
+DataSources:
+
+  netflow:
+    config: ./Example/config/netflow.yaml
+    data: ./Example/Examples_data/nf*.csv
+
+  ids:
+    config: ./Example/config/ids.yaml
+    data: ./Example/Examples_data/ids*
+ 
+Keys:  #Empty, so no aggregation is made. So, analyzed by timestamp 
+
+Output:
+  dir: ./Example/OUTPUT/
+  stats: stats.log
+ 
+Deparsing_output:
+  dir: ./Example/Deparsing_output/
+  threshold: 50
+
+SPLIT: 
+  Time:
+
+    window: 60
+    start: 2012-1-1 00:00:00
+    end: 2015-12-31 00:00:00
+    
+  Output: ./Example/data_split/

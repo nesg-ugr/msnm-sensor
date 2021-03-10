@@ -1,0 +1,14 @@
+README.md
+setup.py
+deparser/__init__.py
+deparser/deparser.py
+fcparser/__init__.py
+fcparser/faaclib.py
+fcparser/fcparser.py
+fcparser/splitData.py
+fcparser.egg-info/PKG-INFO
+fcparser.egg-info/SOURCES.txt
+fcparser.egg-info/dependency_links.txt
+fcparser.egg-info/not-zip-safe
+fcparser.egg-info/requires.txt
+fcparser.egg-info/top_level.txt
