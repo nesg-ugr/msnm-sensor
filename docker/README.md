@@ -44,15 +44,28 @@ En donde le añadimos los privilegios necesarios, la red del host y copiamos el 
 Para comprobar que el contenedor está ejecutándose utilizamos el comando docker ps:
 
 $ docker ps
-CONTAINER ID   IMAGE     COMMAND       CREATED         STATUS         PORTS     NAMES
-1db9c4dbd441   msnm      "/bin/bash"   4 seconds ago   Up 2 seconds             test
+
+|CONTAINER ID|   IMAGE  |   COMMAND   |    CREATED    |     STATUS    |     PORTS  |   NAMES |
+| ------------| --------- | ---------- | ------------- | ------------- | ---------- | -------- |
+|1db9c4dbd441|   msnm  |    "/bin/bash"  | 4 seconds ago  | Up 2 seconds    |         | test |
 
 Puesta en marcha
 ------------
-De momento, la puesta en marcha de esta herramienta se realiza de manera manual desde el interior del contenedor. Para poder introducir comandos desde el interior del contenedor ejecutamos el siguiente comando:
+
+Primer método:
+
+Podemos ejecutarlo de manera manual desde el interior del contenedor. Para poder introducir comandos desde el interior del contenedor ejecutamos el siguiente comando:
 
 $ docker exec -it test /bin/bash
 
 Una vez dentro, ejecutamos el script de msnm tal como se muestra a continuación:
 
 root@msnm:/home/msnm/msnm-sensor/scripts# ./start_experiment.sh ../examples/scenario_4/
+
+Segundo método:
+
+Podemos ejecutarlo desde el exterior de la máquina introduciendo el comando directamente:
+
+docker exec test bash ./start_experiment.sh ../examples/scenario_4/
+
+
