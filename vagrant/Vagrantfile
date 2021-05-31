@@ -1,0 +1,41 @@
+
+
+  # Client
+  config.vm.define "client" do |client|
+    client.vm.box = "bento/ubuntu-18.04"
+    client.vm.network "private_network", ip: "192.168.33.10",
+      virtualbox__intnet: true
+    client.vm.hostname = "client"
+    client.vm.provision "docker"
+  end
+  # Server
+  config.vm.define "server" do |server|
+    server.vm.box = "bento/ubuntu-18.04"
+    server.vm.network "private_network", ip: "192.168.33.11",
+      virtualbox__intnet: true
+    server.vm.hostname = "server"
+    server.vm.provision "docker"
+  end
+
+  # Router
+  config.vm.define "router" do |router|
+    router.vm.box = "bento/ubuntu-18.04"
+    router.vm.network "private_network", ip: "192.168.33.12"
+    #router.vm.network "private_network", ip: "192.168.33.12",
+    #  virtualbox__intnet: true
+    router.vm.hostname = "router"
+    router.vm.provision "docker"
+    router.vm.provision "ansible" do |ansible|
+      ansible.playbook = "playbook.yml"
+      ansible.groups = {
+        "clients" => ["client"],
+        "servers" => ["server"],
+        "routers" => ["router"],
+        "all_groups:children" =>  ["client", "server", "router"]
+      }
+      ansible.limit = "all"
+    end
+  end
+
+
+end
