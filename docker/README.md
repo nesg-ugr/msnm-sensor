@@ -1,71 +1,87 @@
-Descripción
+Description
 ------------
 
-**Docker**. En esta sección se detalla la creación de la imagen de Docker la cual incluye la herramienta MSNM-Sensor en un contenedor ejecutando Ubuntu 18 y con las dependencias necesarias. La herramienta se instala bajo la ruta /home/msnm/
+**Docker**. This section details the creation of the Docker image which includes the MSNM-Sensor tool in a container running Ubuntu 18 and with the necessary dependencies. The tool is installed under the /home/msnm/ path.
 
 * [Docker Hub](https://hub.docker.com/r/eliasgrana34/msnm-sensor)
 
-En la versión 1 la herramienta MSNM-Sensor está ejecutándose en Python2 mientras que en la versión 2 la herramienta está desplegada sobre Python3.
+In version 1 of the Docker Hub the MSNM-Sensor tool is deployed on Python2 while in version 2 the tool is deployed on Python3.
 
 
-Preinstalación
-------------
-Es necesario tener en cuenta que la herramienta MSNM-Sensor está pensada para monitorizar al equipo host. En nuestro caso, como las pruebas las estamos realizando con los datos de Netflow, necesitamos que en el equipo host se instale la herramienta MSNM-Sensor y se ejecute el script bajo el directorio msnm-sensor/scripts/netflow:
-
-$ sudo sh activateNetflow.sh
-
-Esto genera logs en el fichero /tmp/netflow_captures/ por defecto. En el momento de crear el contenedor, debemos tener en cuenta que debemos realizar una copia (un volumen) para que los logs de Netflow se almacenen tanto en el equipo host como en contenedor. Esto se realiza en el paso de Ejecución
+## Installation
 
 
+#### Requirements
 
-Instalación
-------------
+It should be noted that the MSNM-Sensor tool is intended to monitor the host. In our case, since we are testing with Netflow data, we need to install the MSNM-Sensor tool on the host and run the script under the msnm-sensor/scripts/netflow directory:
 
-De manera local y desde un equipo el cual tenga instalado Docker copiamos el fichero Dockerfile y desde ese mismo directorio creamos una imagen correspondiente al Dockerfile mediante el siguiente comando:
-
-docker build -t msnm .
-
-Este comando crea una imagen Docker basado en el Dockerfile cuyo nombre va a ser msnm. Para comprobar que se ha creado, utilizamos el comando:
-$ docker images
-REPOSITORY                       TAG       IMAGE ID       CREATED         SIZE
-eliasgrana34/msnm-sensor         2         1f39514f47ad   2 months ago    891MB
-msnm                             latest    1f39514f47ad   2 months ago    891MB
+    $ sudo sh activateNetflow.sh
 
 
+This generates logs in the /tmp/netflow_captures/ folder by default. When creating the container, we must take into account that we must make a copy (a volume) so that the Netflow logs are stored both on the host and in the container. This is done in the Create a container section
 
-Ejecución
-------------
-Una vez que tenemos la imagen creada, podemos ejecutar un contenedor de docker basado en esta imagen con el siguiente comando:
 
-$ docker run -t -d --cap-add=ALL --privileged --network host -v /tmp/netflow_captures:/tmp/netflow_captures -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro --name test msnm
+#### How to create an image
 
-En donde le añadimos los privilegios necesarios, la red del host y copiamos el directorio de las capturas de netflow del equipo host (/tmp/netflow_captures) y la zona horaria del equipo host para evitar problemas de sincronización.
+Locally and from a computer which has Docker installed we copy the Dockerfile file and from that same directory we create an image corresponding to the Dockerfile using the following command:
 
-Para comprobar que el contenedor está ejecutándose utilizamos el comando docker ps:
 
-$ docker ps
+    $ docker build -t msnm .
+
+This command creates a Docker image based on the Dockerfile whose name is msnm. To check that it has been created, we use the command:
+
+
+    $ docker images
+<pre>   
+  REPOSITORY                                      TAG       IMAGE ID       CREATED         SIZE
+  
+  eliasgrana34/msnm-sensor  2   1f39514f47ad    3 months ago    891MB
+  
+  msnm                                            latest    1f39514f47ad   3 months ago    891MB
+</pre>
+
+#### How to create a container
+
+Once we have the image created, we can run a docker container based on this image with the following command:
+
+    $ docker run -t -d --cap-add=ALL --privileged --network host -v /tmp/netflow_captures:/tmp/netflow_captures -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro --name test msnm 
+ 
+ 
+
+
+
+Where we add the necessary privileges, the host network and copy the netflow captures directory of the host computer (/tmp/netflow_captures) and the time zone of the host computer to avoid synchronization problems.
+
+To check that the container is running we use the docker ps command:
+
+    $ docker ps
 
 |CONTAINER ID|   IMAGE  |   COMMAND   |    CREATED    |     STATUS    |     PORTS  |   NAMES |
 | ------------| --------- | ---------- | ------------- | ------------- | ---------- | -------- |
 |1db9c4dbd441|   msnm  |    "/bin/bash"  | 4 seconds ago  | Up 2 seconds    |         | test |
 
-Puesta en marcha
-------------
 
-Primer método:
+#### How to run a container
 
-Podemos ejecutarlo de manera manual desde el interior del contenedor. Para poder introducir comandos desde el interior del contenedor ejecutamos el siguiente comando:
+First method:
 
-$ docker exec -it test /bin/bash
+We can execute it manually from inside the container. To be able to enter commands from inside the container we execute the following command:
 
-Una vez dentro, ejecutamos el script de msnm tal como se muestra a continuación:
+    $ docker exec -it test /bin/bash
 
-root@msnm:/home/msnm/msnm-sensor/scripts# ./start_experiment.sh ../examples/scenario_4/
 
-Segundo método:
+Once inside, we execute the msnm script as shown below:
 
-Podemos ejecutarlo desde el exterior de la máquina introduciendo el comando directamente:
+    root@msnm:/home/msnm/msnm-sensor/scripts# ./start_experiment.sh ../examples/scenario_4/
 
-docker exec test bash ./start_experiment.sh ../examples/scenario_4/
+
+
+Second method:
+
+We can run it from outside the machine by entering the command directly:
+
+    $ docker exec test bash ./start_experiment.sh ../examples/scenario_4/
+
+
 
 
