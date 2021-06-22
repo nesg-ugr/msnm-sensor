@@ -1,22 +1,26 @@
-Descripción
+Description
 ------------
 
-**Vagrant**. En esta sección se detalla la creación del escenario con 3 máquinas virtuales (cliente, servidor y router) desplegando la herramienta MSNM-Sensor en [Docker Hub](https://hub.docker.com/r/eliasgrana34/msnm-sensor)
+**Vagrant**. This section details the creation of the scenario with 3 virtual machines (client, server and router) by deploying the MSNM-Sensor tool in
+ [Docker Hub](https://hub.docker.com/r/eliasgrana34/msnm-sensor)
 
-Vagrant gestiona y automatiza el despliegue de máquinas virtuales operando sobre otros hipervisores de virtualización como VirtualBox. En este caso, lo utilizaremos para desplegar el escenario en cuestión con 3 máquinas virtuales Ubuntu con conexión a través de redes privadas.
-Ansible automatiza el despliegue y la ejecución de scripts de manera paralela y centralizada. En este caso lo utilizamos juntamente con vagrant para configurar e instalar las dependencias necesarias en las máquinas virtuales para poder desplegar la herramienta MSNM-Sensor de manera automatizada
+Vagrant manages and automates the deployment of virtual machines operating over other virtualization hypervisors such as VirtualBox. In this case, we will use it to deploy the scenario with 3 Ubuntu virtual machines with connection through private networks.
+Ansible automates the deployment and execution of scripts in a parallel and centralized way. In this case we use it together with vagrant to configure and install the necessary dependencies in the virtual machines to be able to deploy the MSNM-Sensor tool in an automated way.
 
 
-Configuración
+
+Requirements
 ------------
-Para llevar a cabo este despliegue necesitamos tener instalado en el equipo tanto la herramienta Vagrant como Ansible. 
+To perform this deployment we need to have both Vagrant and Ansible installed on the computer. 
 
-Una vez hecho esto, copiamos los ficheros Vagrantfile y playbook.yml en el mismo directorio.
+Once this is done, we copy the Vagrantfile and playbook.yml files into the same directory.
 
-Despliegue
+Deployment
 ------------
 
-Para el despliegue del escenario, únicamente es necesario arrancar vagrant con el fichero Vagrantfile en el mismo directorio. Para ello, ejecutamos:
+To deploy the scenario, it is only necessary to start vagrant with the Vagrantfile file in the same directory. To do this, run:
 
-$ vagrant up
+	$ vagrant up
+
+
 
