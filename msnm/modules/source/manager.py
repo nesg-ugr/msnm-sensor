@@ -198,11 +198,12 @@ class SourceManager(Source):
 
         # Save the generated statistics
         output_generated_file = output_generated_path + "output_" + ts + ".dat"
-        header = "UCLq:" + str(self._sensor.get_model().get_mspc().getUCLQ()) + ", UCLd:" + str(self._sensor.get_model().get_mspc().getUCLD())
+        header = "msnm: UCLq:" + str(self._sensor.get_model().get_mspc().getUCLQ()) + ", UCLd:" + str(self._sensor.get_model().get_mspc().getUCLD())
         list_array = [self._sensor.get_mspc().getQst(),self._sensor.get_mspc().getDst()]
         statistics = np.array(list_array)
         statistics = statistics.reshape((1,statistics.size))
-        np.savetxt(output_generated_file, statistics, fmt=valuesFormat, delimiter=",", header=header, comments="#")
+        np.savetxt(output_generated_file, statistics, fmt=valuesFormat, delimiter=",", newline=', ', header=header, comments=ts + ' ')
+
 
         # Gets the remote sensor addressed to send the packet
         remote_addresses = config.get_config()['Sensor']['remote_addresses']
