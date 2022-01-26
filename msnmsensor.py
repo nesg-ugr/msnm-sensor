@@ -112,9 +112,9 @@ def main(config_file):
         try:
             src_local = sensor_config_params.get_config()['DataSources']['local']
 
-            logging.debug("Loading %s local sources %s.", len(src_local), src_local.keys())
+            logging.debug("Loading %s local sources %s.", len(src_local), list(src_local.keys()))
 
-            for i in src_local.keys():
+            for i in list(src_local.keys()):
 
                 # Create the associated directories
                 if not os.path.exists(rootDataPath + src_local[i]['raw']):
@@ -141,9 +141,9 @@ def main(config_file):
         try:
             src_remote = sensor_config_params.get_config()['DataSources']['remote']
 
-            logging.debug("Loading %s remote sources %s.", len(src_remote), src_remote.keys())
+            logging.debug("Loading %s remote sources %s.", len(src_remote), list(src_remote.keys()))
 
-            for i in src_remote.keys():
+            for i in list(src_remote.keys()):
 
                 # Create the associated directories
                 if not os.path.exists(rootDataPath + src_remote[i]['raw']):
@@ -184,7 +184,7 @@ def main(config_file):
         staticMode = False
 
         # Are there local sources?
-        if 'local' in sensor_config_params.get_config()['DataSources'].keys():
+        if 'local' in list(sensor_config_params.get_config()['DataSources'].keys()):
             # Check if the offline mode is enabled
             # TODO: enable this funcionality and extend this functionality to all available data sources
             # staticMode = sensor_config_params.get_config()['DataSources']['local']['Netflow']['staticMode']
@@ -224,7 +224,7 @@ def main(config_file):
         logging.info("Stopping all services ...")
 
         # Stop all local data sources threads
-        for i in local_dict.values():
+        for i in list(local_dict.values()):
             i.stop()
         try:
             if isinstance(tcpServer, TCPServerThread): tcpServer.stop()
@@ -249,7 +249,7 @@ def main(config_file):
 
 def signalHandler(signum, frame):
     if signum == signal.SIGINT:
-        raise KeyboardInterrupt, "Signal Interrupt"
+        raise KeyboardInterrupt("Signal Interrupt")
     else:
         logging.debug("Signal handler do not recognize signal number %s", signum)
 

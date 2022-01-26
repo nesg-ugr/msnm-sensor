@@ -43,7 +43,7 @@ class MSNMError(Exception):
         else:
             object_class = self._obj.__class__
 
-        print("ERROR: %s, Type: %s, Method: %s" %(self._msg,object_class,self._method))
+        print(("ERROR: %s, Type: %s, Method: %s" %(self._msg,object_class,self._method)))
 
     def get_msg(self):
         return self._msg

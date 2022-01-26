@@ -54,7 +54,7 @@ class Configure(object):
         src_local = Configure.__instance.config_params['DataSources']
         
         # Having a local sources means that they must be parsed to build the complete observation. This way, we have to load the flowParser configuration file/s
-        if 'local' in src_local.keys():
+        if 'local' in list(src_local.keys()):
             # Every local source has its own parser configuration file
             for i in Configure.__instance.config_params['DataSources']['local']:               
                 
@@ -88,7 +88,7 @@ class Configure(object):
         method_name = "load_yaml_file()"
         
         try:        
-            stream = file(path_to_file, 'r')
+            stream = open(path_to_file, 'r')
             conf = yaml.load(stream)
             stream.close()
         except yaml.scanner.ScannerError:

@@ -82,10 +82,10 @@ class SourceManager(Source):
         logging.debug("Launch monitoring for %s ",ts)
 
         try:
-            logging.debug("Building the observation at %s for %s sources.",ts,self._sources.keys())
+            logging.debug("Building the observation at %s for %s sources.",ts,list(self._sources.keys()))
             # Build the observation for monitoring
             test = []
-            for i in self._sources.keys():
+            for i in list(self._sources.keys()):
                 # Get the number of variables of source i
                 i_variables = self.get_number_source_variables(self._sources[i],i)
                 logging.debug("Source %s has %s variables.",i,i_variables)
@@ -107,7 +107,7 @@ class SourceManager(Source):
                         else: # offline or static mode
                             # TODO it is just a patch to remove in_npackets_verylow e in_nbytes_verylow like in matlab experiment and just for Netflow!!!
                             # look for a more smart way to do this e.g., by configuration params
-                            i_test = np.loadtxt(i_parsed_file, comments="#", delimiter=",",usecols=range(1,i_variables + 1 + 2))
+                            i_test = np.loadtxt(i_parsed_file, comments="#", delimiter=",",usecols=list(range(1,i_variables + 1 + 2)))
 
                             logging.debug("Offline mode for source %s. Observation size of %s",i,i_test.shape)
 
@@ -138,7 +138,7 @@ class SourceManager(Source):
             # Dynamic invocation of the selected data imputation method if needed
             if np.isnan(test).any():
                 missingDataMethod = getattr(importlib.import_module(missingDataModule), missingDataMethods[missingDataSelectedMethod])
-                logging.debug("Invoking %s method for data imputation for observation at %s",missingDataMethod.func_name,ts)
+                logging.debug("Invoking %s method for data imputation for observation at %s",missingDataMethod.__name__,ts)
                 # Calling the corresponding method
                 test = missingDataMethod(obs=test,model=self._sensor._model)
 
@@ -168,7 +168,7 @@ class SourceManager(Source):
 
                     # Build the [NxM] data for the calibration
                     #print(self._batch.keys())
-                    for i in self._batch.keys():
+                    for i in list(self._batch.keys()):
                         logging.debug("batch at %s -> %s", i, self._batch[i]['data'].shape)
                         x = np.vstack((x,self._batch[i]['data']))
 
@@ -198,11 +198,12 @@ class SourceManager(Source):
 
         # Save the generated statistics
         output_generated_file = output_generated_path + "output_" + ts + ".dat"
-        header = "UCLq:" + str(self._sensor.get_model().get_mspc().getUCLQ()) + ", UCLd:" + str(self._sensor.get_model().get_mspc().getUCLD())
+        header = "msnm: UCLq:" + str(self._sensor.get_model().get_mspc().getUCLQ()) + ", UCLd:" + str(self._sensor.get_model().get_mspc().getUCLD())
         list_array = [self._sensor.get_mspc().getQst(),self._sensor.get_mspc().getDst()]
         statistics = np.array(list_array)
         statistics = statistics.reshape((1,statistics.size))
-        np.savetxt(output_generated_file, statistics, fmt=valuesFormat, delimiter=",", header=header, comments="#")
+        np.savetxt(output_generated_file, statistics, fmt=valuesFormat, delimiter=",", newline=', ', header=header, comments=ts + ' ')
+
 
         # Gets the remote sensor addressed to send the packet
         remote_addresses = config.get_config()['Sensor']['remote_addresses']
@@ -219,7 +220,7 @@ class SourceManager(Source):
 
             logging.debug("Remote sources to send the packet #%s: %s",self._packet_sent,remote_addresses)
 
-            for i in remote_addresses.keys():
+            for i in list(remote_addresses.keys()):
                 ip = remote_addresses[i]['ip']
                 port = remote_addresses[i]['port']
                 tcpClient = TCPClient()
@@ -295,18 +296,18 @@ class IntervalMonitoringSourceManagerThread(MSNMThread):
 
     def are_ready(self, ts):
 
-        for i in self._sourceManager_instance._sources.keys():
+        for i in list(self._sourceManager_instance._sources.keys()):
             if self.is_ready(i, ts):
                 self._sources_ready[i] = True
             else:
                 self._sources_ready[i] = False
 
         # Are all the datasources ready? -> Check generated file
-        return all(self._sources_ready.itervalues())
+        return all(self._sources_ready.values())
 
     def is_ready(self, source, ts):
 
-        if ts in self._sourceManager_instance._sources[source]._files_generated.keys():
+        if ts in list(self._sourceManager_instance._sources[source]._files_generated.keys()):
             return True
         else:
             return False
@@ -315,7 +316,7 @@ class IntervalMonitoringSourceManagerThread(MSNMThread):
 
         not_ready_sources = {}
 
-        for i in self._sourceManager_instance._sources.keys():
+        for i in list(self._sourceManager_instance._sources.keys()):
             if not self._sources_ready[i]:
                 not_ready_sources[i] =  self._sourceManager_instance._sources[i]
 
@@ -340,7 +341,7 @@ class IntervalMonitoringSourceManagerThread(MSNMThread):
         try:
 
                 # Set all data sources as non-ready
-                for i in self._sourceManager_instance._sources.keys():
+                for i in list(self._sourceManager_instance._sources.keys()):
                     self._sources_ready[i] = False
 
                 logging.debug("Checking sources at %s time interval.", self._ts)
@@ -350,13 +351,13 @@ class IntervalMonitoringSourceManagerThread(MSNMThread):
 
                 while not finish:
 
-                    logging.debug("Data sources not ready at interval %s: %s",self._ts,self.get_not_ready().keys())
+                    logging.debug("Data sources not ready at interval %s: %s",self._ts,list(self.get_not_ready().keys()))
 
                     # Current time
                     tc = datetime.now()
 
                     # for each source
-                    for i in self._sourceManager_instance._sources.keys():
+                    for i in list(self._sourceManager_instance._sources.keys()):
 
                         # If the max time to wait is not reached and not all sources are ready
                         if tc <= self._t_max and not self.are_ready(self._ts):
@@ -370,9 +371,9 @@ class IntervalMonitoringSourceManagerThread(MSNMThread):
                             src_not_ready = self.get_not_ready()
 
                             # Create an empty dummy *.dat file for the missing sources
-                            logging.debug("Data sources not ready: %s",src_not_ready.keys())
+                            logging.debug("Data sources not ready: %s",list(src_not_ready.keys()))
 
-                            for i in src_not_ready.keys():
+                            for i in list(src_not_ready.keys()):
                                 if src_not_ready[i]._type == Source.TYPE_R:
                                     parsed_file_path = rootDataPath + config.get_config()['DataSources'][Source.TYPE_R][i]['parsed']
                                 else:

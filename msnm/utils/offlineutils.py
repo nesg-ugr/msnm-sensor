@@ -42,9 +42,9 @@ class OfflineThread(MSNMThread):
         try:
             src_local = config.get_config()['DataSources']['local']
                 
-            logging.debug("Loading %s local sources %s.",len(src_local),src_local.keys())
+            logging.debug("Loading %s local sources %s.",len(src_local),list(src_local.keys()))
                 
-            for i in src_local.keys():
+            for i in list(src_local.keys()):
                 
                 if src_local[i]['staticMode']:
                     
@@ -59,7 +59,7 @@ class OfflineThread(MSNMThread):
         obsBySource = {}
         
         # Get external files
-        for i in local_dict.keys():
+        for i in list(local_dict.keys()):
             if i == 'Netflow':
                 # Get all parsed *.dat files from a specific folder
                 staticFiles = local_dict[i]['staticParsedFilesPath']

@@ -1,0 +1,20 @@
+FCParser is designed to work on UNIX systems with python installed. Almost every linux distribution come with python pre-installed. For library compatibility, python 2.7 is the chosen version.
+
+The program requires some python modules to work properly. Before using this tool, install the following packages:
+
+1) Ipy: Python module for handling IPv4 and IPv6 addresses and networks
+
+$ pip install IPy
+
+2) PyYAML: YAML analyzer for python:
+
+$ pip install PyYAML
+
+Alternatively, running the following command installs both, the corresponding FCParser modules and the previous mentioned dependencies.
+
+$ python <CURRENT_DIR>/setup.py install
+
+Note: In order to work with netflow data in nfcapd format, the netflow processing tool Nfdump is also required.
+
+
+

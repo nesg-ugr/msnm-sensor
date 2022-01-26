@@ -1,0 +1,1113 @@
+#-----------------------------------------------------------------------
+#
+# Snort- Configuration File
+#
+#-----------------------------------------------------------------------
+#
+# tag: tag asociated with the files
+#
+# structured: Boolean ver to indicate if datasource is structured or not.
+#
+# timestamp_format: format of the timestamp of the logs in the files of 
+#                   this dataSource in python datetime format, see https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior
+#
+# timestamp_regexp: regular expresion that matches the date format of the source (only needed for unstructured sources)
+#
+# separator: chars that delimitates the log entries of the source (only needed in unstructured sources)
+#
+# timearg: position of the timestamp in the log entry (only needed in structured sources)
+#
+# VARIABLES:
+#   - name:      Variable name.
+#     matchtype:      Variable matchtype {string, number, counter, ip, time, duration}.
+#     where:       Position of the field in the line (starts with 0).
+#
+#   - ...
+#
+# FEATURES:
+#   - name:      Feature name.
+#     variable:  Feature from which the feature is calculated.
+#     matchtype:      Feature matchtype {single, multiple, range, default}
+#     value:     Value of the field that defines the feature.
+#                If the matchtype is 'single' use a single value.
+#                If the matchtype is 'multiple', use a list of values.
+#                If the matchtype is 'range', use a list of two values.
+#                If the matchtype is 'default', the value must be empty.
+#   - ...
+#-----------------------------------------------------------------------
+
+tag: ids
+
+structured: False
+
+timestamp_format: '%m/%d-%H:%M:%S'
+
+timestamp_regexp: '[0-9]{1,2}/[0-9]{1,2}-([0-9]{1,2}:){2}[0-9]{2}'
+
+separator: "\n\n"
+
+# timearg: 
+
+
+## variables Section
+VARIABLES:
+
+- name: timestamp
+  matchtype: string 
+  where: '(?P<match>[0-9]{1,2}/[0-9]{1,2}-([0-9]{1,2}:){2}[0-9]{2})'
+
+- name: priority
+  matchtype: number 
+  where: '(?<=Priority: )(?P<match>[0-9]+)'
+
+- name: label
+  matchtype: string
+  where: '(?<=\[\*\*\] )(?P<match>(.)+ )'
+
+- name: classification
+  matchtype: string
+  where: '(?<=\[Classification: )(?P<match>(.)+)(?=\] \[)' 
+
+- name: src_ip
+  matchtype: ip
+  where: '(?P<match>([0-9]{1,3}\.){3}[0-9]{1,3})(?=:[0-9])'
+
+- name: src_port
+  matchtype: number
+  where: '(?<=[0-9]:)(?P<match>[0-9]+)(?= \->)'
+
+- name: dst_ip
+  matchtype: ip
+  where: '(?<= \-> )(?P<match>([0-9]{1,3}\.){3}[0-9]{1,3})(?=:[0-9])'
+
+- name: dst_port
+  matchtype: number
+  where: '(?P<match>(?<=[0-9]:)[0-9]+)(?=\r)'
+
+- name: proto
+  matchtype: string 
+  where: '(?P<match>[a-z|A-Z]+)(?= TTL)'
+
+- name: ttl
+  matchtype: number
+  where: '(?<=TTL:)(?P<match>(.*?))(?= TOS)'
+
+- name: tos
+  matchtype: number
+  where: '(?<=TOS:0x)(?P<match>(.*?))(?= ID)'
+  
+- name: ip_len  # ip header length
+  matchtype: number
+  where: '(?<=IpLen:)(?P<match>(.*?))(?= DgmLen)'
+
+- name: len  # datagram length
+  matchtype: number
+  where: '(?<=DgmLen:)(?P<match>(.*?))(?= )'
+
+- name: tcp_len  # tcp header length
+  matchtype: number
+  where: '(?<=TcpLen: )(?P<match>[0-9]+)'
+
+- name: flags  # tcp header length
+  matchtype: string
+  where: '(?P<match>(.*?))(?= Seq)'
+
+- name: fragments  # tcp header length
+  matchtype: string
+  where: '(?P<match>DF|CE|MF)'
+
+   
+
+## Variables Section
+FEATURES:
+
+- name: ids_prio1
+  variable: priority
+  matchtype: single
+  value: 1
+  weight: 1
+
+- name: ids_prio2
+  variable: priority
+  matchtype: single
+  value: 2
+  weight: 1
+
+- name: ids_prio3
+  variable: priority
+  matchtype: single
+  value: 3
+  weight: 1
+
+- name: ids_prio4
+  variable: priority
+  matchtype: single
+  value: 4
+  weight: 1
+
+- name: ids_attempted-admin
+  variable: classification
+  matchtype: regexp
+  value: 'Attempted Administrator Privilege Gain'
+  weight: 1
+
+- name: ids_attempted-user
+  variable: classification
+  matchtype: regexp
+  value: 'Attempted User Privilege Gain'
+  weight: 1
+
+- name: ids_inappropriate-content
+  variable: classification
+  matchtype: regexp
+  value: 'Inappropriate Content was Detected'
+  weight: 1
+
+- name: ids_policy-violation
+  variable: classification
+  matchtype: regexp
+  value: 'Potential Corporate Privacy Violation'
+  weight: 1
+
+- name: ids_shellcode-detect
+  variable: classification
+  matchtype: regexp
+  value: 'Executable code was detected'
+  weight: 1
+
+- name: ids_successful-admin
+  variable: classification
+  matchtype: regexp
+  value: 'Successful Administrator Privilege Gain'
+  weight: 1
+
+- name: ids_successful-user
+  variable: classification
+  matchtype: regexp
+  value: 'Successful User Privilege Gain'
+  weight: 1
+
+- name: ids_trojan-activity
+  variable: classification
+  matchtype: regexp
+  value: '  A Network Trojan was detected'
+  weight: 1
+
+- name: ids_unsuccessful-user
+  variable: classification
+  matchtype: regexp
+  value: 'Unsuccessful User Privilege Gain'
+  weight: 1
+
+- name: ids_web-application-attack
+  variable: classification
+  matchtype: regexp
+  value: 'Web Application Attack'
+  weight: 1
+
+- name: ids_attempted-dos
+  variable: classification
+  matchtype: regexp
+  value: 'Attempted Denial of Service'
+  weight: 1
+
+- name: ids_attempted-recon
+  variable: classification
+  matchtype: regexp
+  value: 'Attempted Information Leak'
+  weight: 1
+
+- name: ids_bad-unknown
+  variable: classification
+  matchtype: regexp
+  value: 'Potentially Bad Traffic'
+  weight: 1
+
+- name: default-login-attempt
+  variable: classification
+  matchtype: regexp
+  value: 'Attempt to login by a default username and password'
+  weight: 1
+
+- name: ids_denial-of-service
+  variable: classification
+  matchtype: regexp
+  value: 'Detection of a Denial of Service Attack'
+  weight: 1
+
+- name: ids_misc-attack
+  variable: classification
+  matchtype: regexp
+  value: 'Misc Attack'
+  weight: 1
+
+- name: ids_non-standard-protocol
+  variable: classification
+  matchtype: regexp
+  value: 'Detection of a non-standard protocol or event'
+  weight: 1
+
+- name: ids_rpc-portmap-decode
+  variable: classification
+  matchtype: regexp
+  value: 'Decode of an RPC Query'
+  weight: 1
+
+- name: successful-dos
+  variable: classification
+  matchtype: regexp
+  value: 'Denial of Service'
+  weight: 1
+
+- name: ids_successful-recon-largescale
+  variable: classification
+  matchtype: regexp
+  value: 'Large Scale Information Leak'
+  weight: 1
+
+- name: ids_successful-recon-limited
+  variable: classification
+  matchtype: regexp
+  value: 'Information Leak'
+  weight: 1
+
+- name: ids_suspicious-filename-detect
+  variable: classification
+  matchtype: regexp
+  value: 'A suspicious filename was detected'
+  weight: 1
+
+- name: ids_suspicious-login
+  variable: classification
+  matchtype: regexp
+  value: 'An attempted login using a suspicious username was detected'
+  weight: 1
+
+- name: system-call-detect
+  variable: classification
+  matchtype: regexp
+  value: 'A system call was detected'
+  weight: 1
+
+- name: ids_unusual-client-port-connection
+  variable: classification
+  matchtype: regexp
+  value: 'A client was using an unusual port'
+  weight: 1
+
+- name: ids_web-application-activity
+  variable: classification
+  matchtype: regexp
+  value: 'Access to a potentially vulnerable web application'
+  weight: 1
+
+- name: ids_icmp-event
+  variable: classification
+  matchtype: regexp
+  value: 'Generic ICMP event'
+  weight: 1
+
+- name: ids_misc-activity
+  variable: classification
+  matchtype: regexp
+  value: 'Misc activity'
+  weight: 1
+
+- name: ids_network-scan
+  variable: classification
+  matchtype: regexp
+  value: 'Detection of a Network Scan'
+  weight: 1
+
+- name: ids_not-suspicious
+  variable: classification
+  matchtype: regexp
+  value: 'Not Suspicious Traffic'
+  weight: 1
+
+- name: ids_protocol-command-decode
+  variable: classification
+  matchtype: regexp
+  value: 'Generic Protocol Command Decode'
+  weight: 1
+
+- name: ids_string-detect
+  variable: classification
+  matchtype: regexp
+  value: 'A suspicious string was detected'
+  weight: 1
+
+- name: ids_unknown
+  variable: classification
+  matchtype: regexp
+  value: 'Unknown Traffic'
+  weight: 1
+
+- name: ids_tcp-connection
+  variable: classification
+  matchtype: regexp
+  value: 'A TCP connection was detected'
+  weight: 1
+
+
+- name: ids_snmp_req
+  variable: label
+  matchtype: regexp
+  value: 'GPL SNMP request tcp'
+  weight: 1
+
+- name: ids_irc_auth
+  variable: label
+  matchtype: regexp
+  value: 'ET POLICY IRC authorization message'
+  weight: 1
+
+- name: ids_ssh_scan1
+  variable: label
+  matchtype: regexp
+  value: 'ET SCAN Potential SSH Scan'
+  weight: 1
+
+- name: ids_ssh_scan2
+  variable: label
+  matchtype: regexp
+  value: 'ET SCAN Behavioral Unusually fast Terminal Server Traffic, Potential Scan or Infection'
+  weight: 1
+
+- name: ids_ssh_scan_outbound
+  variable: label
+  matchtype: regexp
+  value: 'ET SCAN Potential SSH Scan OUTBOUND'
+  weight: 1
+
+- name: ids_vnc_scan
+  variable: label
+  matchtype: regexp
+  value: 'ET SCAN Potential VNC Scan'
+  weight: 1
+
+- name: ids_brute_force
+  variable: label
+  matchtype: regexp
+  value: 'Possible Brute Force Attack'
+  weight: 1
+
+- name: ids_dns_update
+  variable: label
+  matchtype: regexp
+  value: 'ET POLICY DNS Update From External net'
+  weight: 1
+
+- name: ids_inbound_*SQL
+  variable: label
+  matchtype: regexp
+  value: 'ET POLICY Suspicious inbound to (.)+SQL'
+  weight: 1
+
+- name: ids_behav_scan
+  variable: label
+  matchtype: regexp
+  value: 'ET SCAN Behavioral Unusually fast Terminal Server Traffic'
+  weight: 1
+
+- name: ids_netbios
+  variable: label
+  matchtype: regexp
+  value: 'GPL NETBIOS SMB'
+  weight: 1
+
+
+# source port
+- name: ids_sport_zero
+  variable: src_port
+  matchtype: single
+  value: 0
+  weight: 1
+
+- name: ids_sport_multiplex
+  variable: src_port
+  matchtype: single
+  value: 1
+  weight: 1
+
+- name: ids_sport_echo
+  variable: src_port
+  matchtype: single
+  value: 7
+  weight: 1
+
+- name: ids_sport_discard
+  variable: src_port
+  matchtype: single
+  value: 9
+  weight: 1
+
+- name: ids_sport_daytime
+  variable: src_port
+  matchtype: single
+  value: 13
+  weight: 1
+
+- name: ids_sport_quote
+  variable: src_port
+  matchtype: single
+  value: 17
+  weight: 1
+
+- name: ids_sport_chargen
+  variable: src_port
+  matchtype: single
+  value: 19
+  weight: 1
+
+- name: ids_sport_ftp_data
+  variable: src_port
+  matchtype: single
+  value: 20
+  weight: 1
+
+- name: ids_sport_ftp_control
+  variable: src_port
+  matchtype: single
+  value: 21
+  weight: 1
+
+- name: ids_sport_ssh
+  variable: src_port
+  matchtype: single
+  value: 22
+  weight: 1
+
+- name: ids_sport_telnet
+  variable: src_port
+  matchtype: single
+  value: 23
+  weight: 1
+
+- name: ids_sport_smtp
+  variable: src_port
+  matchtype: single
+  value: 25
+  weight: 1
+
+- name: ids_sport_dns
+  variable: src_port
+  matchtype: single
+  value: 53
+  weight: 1
+
+- name: ids_sport_bootp
+  variable: src_port
+  matchtype: multiple
+  value:
+  - 67
+  - 68
+  weight: 1
+
+- name: ids_sport_gopher
+  variable: src_port
+  matchtype: single
+  value: 70
+  weight: 1
+
+- name: ids_sport_finger
+  variable: src_port
+  matchtype: single
+  value: 79
+  weight: 1
+
+- name: ids_sport_http
+  variable: src_port
+  matchtype: single
+  value: 80
+  weight: 1
+
+- name: ids_sport_kerberos
+  variable: src_port
+  matchtype: single
+  value: 88
+  weight: 1
+
+- name: ids_sport_pop3
+  variable: src_port
+  matchtype: single
+  value: 110
+  weight: 1
+
+- name: ids_sport_nntp
+  variable: src_port
+  matchtype: single
+  value: 119
+  weight: 1
+
+- name: ids_sport_ntp
+  variable: src_port
+  matchtype: single
+  value: 123
+  weight: 1
+
+- name: ids_sport_netbios
+  variable: src_port
+  matchtype: multiple
+  value:
+  - 137
+  - 138
+  - 139
+  weight: 1
+
+- name: ids_sport_imap4
+  variable: src_port
+  matchtype: single
+  value: 143
+  weight: 1
+
+- name: ids_sport_snmp
+  variable: src_port
+  matchtype: single
+  value: 161
+  weight: 1
+
+- name: ids_sport_ldap
+  variable: src_port
+  matchtype: single
+  value: 389
+  weight: 1
+
+- name: ids_sport_https
+  variable: src_port
+  matchtype: single
+  value: 443
+  weight: 1
+
+- name: ids_sport_mds
+  variable: src_port
+  matchtype: single
+  value: 445
+  weight: 1
+
+- name: ids_sport_kpasswd
+  variable: src_port
+  matchtype: single
+  value: 464
+  weight: 1
+
+- name: ids_sport_smtp_ssl
+  variable: src_port
+  matchtype: single
+  value: 465
+  weight: 1
+
+- name: ids_sport_syslog
+  variable: src_port
+  matchtype: single
+  value: 514
+  weight: 1
+
+- name: ids_sport_smtp
+  variable: src_port
+  matchtype: single
+  value: 587
+  weight: 1
+
+- name: ids_sport_ldaps
+  variable: src_port
+  matchtype: single
+  value: 636
+  weight: 1
+
+- name: ids_sport_cups
+  variable: src_port
+  matchtype: single
+  value: 631
+  weight: 1
+
+- name: ids_sport_imap4
+  variable: src_port
+  matchtype: single
+  value: 993
+  weight: 1
+
+- name: ids_sport_socks
+  variable: src_port
+  matchtype: single
+  value: 1080
+  weight: 1
+
+- name: ids_sport_openvpn
+  variable: src_port
+  matchtype: single
+  value: 1194
+  weight: 1
+
+- name: ids_sport_mssql
+  variable: src_port
+  matchtype: multiple
+  value:
+  - 1433
+  - 1434
+  weight: 1
+
+- name: ids_sport_citrix
+  variable: src_port
+  matchtype: single
+  value: 1494
+  weight: 1
+
+- name: ids_sport_oracle
+  variable: src_port
+  matchtype: single
+  value: 1521
+  weight: 1
+
+- name: ids_sport_rapservice
+  variable: src_port
+  matchtype: single
+  value: 1530
+  weight: 1
+
+- name: ids_sport_msnmessenger
+  variable: src_port
+  matchtype: single
+  value: 1863
+  weight: 1
+
+- name: ids_sport_mgc
+  variable: src_port
+  matchtype: single
+  value: 3268
+  weight: 1
+
+- name: ids_sport_mysql
+  variable: src_port
+  matchtype: single
+  value: 3306
+  weight: 1
+
+- name: ids_sport_metasploit
+  variable: src_port
+  matchtype: single
+  value: 4444
+  weight: 1
+
+- name: ids_sport_emule
+  variable: src_port
+  matchtype: single
+  value: 4662
+  weight: 1
+
+- name: ids_sport_xmpp
+  variable: src_port
+  matchtype: single
+  value: 5222
+  weight: 1
+
+- name: ids_sport_bittorrent
+  variable: src_port
+  matchtype: single
+  value: 6881
+  weight: 1
+
+- name: ids_sport_http2
+  variable: src_port
+  matchtype: single
+  value: 8080
+  weight: 1
+
+- name: ids_sport_reserved
+  variable: src_port
+  matchtype: range
+  value:
+  - 0
+  - 1023
+  weight: 1
+
+- name: ids_sport_register
+  variable: src_port
+  matchtype: range
+  value:
+  - 1024
+  - 49151
+  weight: 1
+
+- name: ids_sport_private
+  variable: src_port
+  matchtype: range
+  value:
+  - 49152
+  - 65535
+  weight: 1
+
+
+
+# destination port
+- name: ids_dport_zero
+  variable: dst_port
+  matchtype: single
+  value: 0
+  weight: 1
+
+- name: ids_dport_multiplex
+  variable: dst_port
+  matchtype: single
+  value: 1
+  weight: 1
+
+- name: ids_dport_echo
+  variable: dst_port
+  matchtype: single
+  value: 7
+  weight: 1
+
+- name: ids_dport_discard
+  variable: dst_port
+  matchtype: single
+  value: 9
+  weight: 1
+
+- name: ids_dport_daytime
+  variable: dst_port
+  matchtype: single
+  value: 13
+  weight: 1
+
+- name: ids_dport_quote
+  variable: dst_port
+  matchtype: single
+  value: 17
+  weight: 1
+
+- name: ids_dport_chargen
+  variable: dst_port
+  matchtype: single
+  value: 19
+  weight: 1
+
+- name: ids_dport_ftp_data
+  variable: dst_port
+  matchtype: single
+  value: 20
+  weight: 1
+
+- name: ids_dport_ftp_control
+  variable: dst_port
+  matchtype: single
+  value: 21
+  weight: 1
+
+- name: ids_dport_ssh
+  variable: dst_port
+  matchtype: single
+  value: 22
+  weight: 1
+
+- name: ids_dport_telnet
+  variable: dst_port
+  matchtype: single
+  value: 23
+  weight: 1
+
+- name: ids_dport_smtp
+  variable: dst_port
+  matchtype: single
+  value: 25
+  weight: 1
+
+- name: ids_dport_dns
+  variable: dst_port
+  matchtype: single
+  value: 53
+  weight: 1
+
+- name: ids_dport_bootp
+  variable: dst_port
+  matchtype: multiple
+  value:
+  - 67
+  - 68
+  weight: 1
+
+- name: ids_dport_gopher
+  variable: dst_port
+  matchtype: single
+  value: 70
+  weight: 1
+
+- name: ids_dport_finger
+  variable: dst_port
+  matchtype: single
+  value: 79
+  weight: 1
+
+- name: ids_dport_http
+  variable: dst_port
+  matchtype: single
+  value: 80
+  weight: 1
+
+- name: ids_dport_kerberos
+  variable: dst_port
+  matchtype: single
+  value: 88
+  weight: 1
+
+- name: ids_dport_pop3
+  variable: dst_port
+  matchtype: single
+  value: 110
+  weight: 1
+
+- name: ids_dport_nntp
+  variable: dst_port
+  matchtype: single
+  value: 119
+  weight: 1
+
+- name: ids_dport_ntp
+  variable: dst_port
+  matchtype: single
+  value: 123
+  weight: 1
+
+- name: ids_dport_netbios
+  variable: dst_port
+  matchtype: multiple
+  value:
+  - 137
+  - 138
+  - 139
+  weight: 1
+
+- name: ids_dport_imap4
+  variable: dst_port
+  matchtype: single
+  value: 143
+  weight: 1
+
+- name: ids_dport_snmp
+  variable: dst_port
+  matchtype: single
+  value: 161
+  weight: 1
+
+- name: ids_dport_ldap
+  variable: dst_port
+  matchtype: single
+  value: 389
+  weight: 1
+
+- name: ids_dport_https
+  variable: dst_port
+  matchtype: single
+  value: 443
+  weight: 1
+
+- name: ids_dport_mds
+  variable: dst_port
+  matchtype: single
+  value: 445
+  weight: 1
+
+- name: ids_dport_kpasswd
+  variable: dst_port
+  matchtype: single
+  value: 464
+  weight: 1
+
+- name: ids_dport_smtp_ssl
+  variable: dst_port
+  matchtype: single
+  value: 465
+  weight: 1
+
+- name: ids_dport_syslog
+  variable: dst_port
+  matchtype: single
+  value: 514
+  weight: 1
+
+- name: ids_dport_smtp
+  variable: dst_port
+  matchtype: single
+  value: 587
+  weight: 1
+
+- name: ids_dport_ldaps
+  variable: dst_port
+  matchtype: single
+  value: 636
+  weight: 1
+
+- name: ids_dport_cups
+  variable: dst_port
+  matchtype: single
+  value: 631
+  weight: 1
+
+- name: ids_dport_imap4
+  variable: dst_port
+  matchtype: single
+  value: 993
+  weight: 1
+
+- name: ids_dport_socks
+  variable: dst_port
+  matchtype: single
+  value: 1080
+  weight: 1
+
+- name: ids_dport_openvpn
+  variable: dst_port
+  matchtype: single
+  value: 1194
+  weight: 1
+
+- name: ids_dport_mssql
+  variable: dst_port
+  matchtype: multiple
+  value:
+  - 1433
+  - 1434
+  weight: 1
+
+- name: ids_dport_citrix
+  variable: dst_port
+  matchtype: single
+  value: 1494
+  weight: 1
+
+- name: ids_dport_oracle
+  variable: dst_port
+  matchtype: single
+  value: 1521
+  weight: 1
+
+- name: ids_dport_rapservice
+  variable: dst_port
+  matchtype: single
+  value: 1530
+  weight: 1
+
+- name: ids_dport_msnmessenger
+  variable: dst_port
+  matchtype: single
+  value: 1863
+  weight: 1
+
+- name: ids_dport_mgc
+  variable: dst_port
+  matchtype: single
+  value: 3268
+  weight: 1
+
+- name: ids_dport_mysql
+  variable: dst_port
+  matchtype: single
+  value: 3306
+  weight: 1
+
+- name: ids_dport_metasploit
+  variable: dst_port
+  matchtype: single
+  value: 4444
+  weight: 1
+
+- name: ids_dport_emule
+  variable: dst_port
+  matchtype: single
+  value: 4662
+  weight: 1
+
+- name: ids_dport_xmpp
+  variable: dst_port
+  matchtype: single
+  value: 5222
+  weight: 1
+
+- name: ids_dport_bittorrent
+  variable: dst_port
+  matchtype: single
+  value: 6881
+  weight: 1
+
+- name: ids_dport_http2
+  variable: dst_port
+  matchtype: single
+  value: 8080
+  weight: 1
+
+- name: ids_dport_reserved
+  variable: dst_port
+  matchtype: range
+  value:
+  - 0
+  - 1023
+  weight: 1
+
+- name: ids_dport_register
+  variable: dst_port
+  matchtype: range
+  value:
+  - 1024
+  - 49151
+  weight: 1
+
+- name: ids_dport_private
+  variable: dst_port
+  matchtype: range
+  value:
+  - 49152
+  - 65535
+  weight: 1
+
+
+# source IP
+- name: ids_src_ip_private
+  variable: src_ip
+  matchtype: single
+  value: private
+  weight: 1
+
+- name: ids_src_ip_public
+  variable: src_ip
+  matchtype: single
+  value: public
+  weight: 1
+
+- name: ids_src_ip_default
+  variable: src_ip
+  matchtype: default
+  value: 
+  weight: 1
+
+
+# destination IP
+- name: ids_dst_ip_private
+  variable: dst_ip
+  matchtype: single
+  value: private
+  weight: 1
+
+- name: ids_dst_ip_public
+  variable: dst_ip
+  matchtype: single
+  value: public
+  weight: 1
+
+- name: ids_dst_ip_default
+  variable: dst_ip
+  matchtype: default
+  value: 
+  weight: 1
+
+
+
+
+
+
+
+
+
+
+
+
+

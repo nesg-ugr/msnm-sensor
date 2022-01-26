@@ -88,7 +88,7 @@ class DTable:
         
         row = None
             
-        for row_id in self.__rows.keys():
+        for row_id in list(self.__rows.keys()):
             row_vars = self.__rows[row_id].get_vars()
             if var in row_vars:
                 row = self.__rows[row_id]

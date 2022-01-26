@@ -12,7 +12,7 @@
 
 import logging
 import socket
-import SocketServer
+import socketserver
 import pickle
 from msnm.modules.thread.thread import MSNMThread
 import traceback
@@ -56,7 +56,7 @@ class TCPServerThread(MSNMThread):
         self._server.shutdown()
         
 
-class MSNMTCPServerRequestHandler(SocketServer.BaseRequestHandler):
+class MSNMTCPServerRequestHandler(socketserver.BaseRequestHandler):
     
     """
         
@@ -76,7 +76,7 @@ class MSNMTCPServerRequestHandler(SocketServer.BaseRequestHandler):
         
         return
 
-class MSNMTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+class MSNMTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     
     """
         *TCP concurrent server*
@@ -100,7 +100,7 @@ class MSNMTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     """ 
     
     def __init__(self, server_address, RequestHandlerClass, bind_and_activate=True):
-        SocketServer.TCPServer.__init__(self, server_address, RequestHandlerClass, bind_and_activate=bind_and_activate)
+        socketserver.TCPServer.__init__(self, server_address, RequestHandlerClass, bind_and_activate=bind_and_activate)
         # Remote sources
         self._remotes = {}
         # number of packets sent. They can be of response and data types.            
@@ -109,7 +109,7 @@ class MSNMTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
         self._packet_recv = 0
 
     def handle_error(self, request, client_address):
-        SocketServer.TCPServer.handle_error(self, request, client_address)
+        socketserver.TCPServer.handle_error(self, request, client_address)
         self.send_response(request, Packet.KO)
             
     def manage_data(self, data, client_address):
@@ -179,7 +179,7 @@ class MSNMTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
         try:
         
             # check is the source exists
-            if self._remotes.has_key(sid):
+            if sid in self._remotes:
             
                 logging.info("Saving packet from sensor %s (%s)", sid,client_addres[0])
                 
@@ -204,8 +204,8 @@ class MSNMTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
                 parsed_remote_source_file = parsed_remote_source_path + "output-" + sid + "_" + ts_rec + ".dat"
                 
                 # Save parsed data. The content of packet body
-                statistics_values = np.array([i for i in pack._body.values()])
-                name_statistics = [i for i in pack._body.keys()]
+                statistics_values = np.array([i for i in list(pack._body.values())])
+                name_statistics = [i for i in list(pack._body.keys())]
                 # 1xM array
                 statistics_values = statistics_values.reshape((1,statistics_values.size))
                 np.savetxt(parsed_remote_source_file, statistics_values, valuesFormat, delimiter=",", header=str(name_statistics), comments="#")

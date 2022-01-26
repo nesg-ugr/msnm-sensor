@@ -1,6 +1,7 @@
 Description
 ------------
 
+
 **MSNM-S** (Multivariate Statistical Network Monitoring-Sensor) shows the practical suitability of the approaches found in [PCA-MSNM](https://www.sciencedirect.com/science/article/pii/S0167404816300116) and in [Hierarchical PCA-MSNM](http://ieeexplore.ieee.org/document/7823895/) works. The first one present the MSNM approach and new multivariate statistical methodology for network anomaly detection while the second one proposes the previous one in a hierarchical and structured network systems. The main idea behind these works, is the use of multivariate statistical techniques to generate useful information in the form of two statistics. Such a light information comes from lower to higher levels in a network hierarchy. This way, the root sensor (for example, a border router) received all the statistical information being able to compute its own statistics (Q,D). By inspecting this statistics, a security analyst can determine if anomalous event are happening when some of the statistic values are above certain control limits.
 
 [See details at https://journals.sagepub.com/doi/full/10.1177/1550147720921309]

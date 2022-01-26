@@ -1,0 +1,199 @@
+---
+
+# Specific configuration on clients
+- hosts: clients
+
+  tasks:
+  - name: 1. Create python script to connect server (IP should be a variable)
+    blockinfile:
+      path: scripts/peticion_cliente.py
+      block: |
+        #!/usr/bin/python3
+        import time
+        import random
+        import urllib.request
+        starttime = time.time()
+        random.seed(10)
+        while True:
+          with urllib.request.urlopen('http://192.168.33.11:8000') as response:
+            html = response.read()
+          time.sleep(random.uniform(0,30))
+      create: yes
+      mode: '744'
+
+  - name: 2. Create Dockerfile. Change configuration on routers related to IPs
+    blockinfile:
+      path: docker/Dockerfile
+      block: |
+        FROM eliasgrana34/msnm-sensor:2
+        RUN sed -i '81s/127.0.0.1/192.168.33.10/g' /home/msnm/msnm-sensor/examples/scenario_4/routerR1.yaml
+        RUN sed -i '82s/9001/9000/g' /home/msnm/msnm-sensor/examples/scenario_4/routerR1.yaml
+        RUN sed -i '86s/127.0.0.1/192.168.33.12/g' /home/msnm/msnm-sensor/examples/scenario_4/routerR1.yaml
+        RUN sed -i '87s/9004/9000/g' /home/msnm/msnm-sensor/examples/scenario_4/routerR1.yaml
+        RUN sed -i 's/.*/routerR1/g' /home/msnm/msnm-sensor/examples/scenario_4/sensors.txt
+      create: yes
+    become: no
+
+
+
+
+# Specific configuration on servers
+- hosts: servers
+
+
+  tasks:
+
+  - name: 1. Create python script to create a web server
+    blockinfile:
+      path: scripts/creacion_servidor.py
+      block: |
+        python3 -m http.server
+      create: yes
+
+  - name: 2. Create Dockerfile. Change configuration on routers related to IPs
+    blockinfile:
+      path: docker/Dockerfile
+      block: |
+        FROM eliasgrana34/msnm-sensor:2
+        RUN sed -i '81s/127.0.0.1/192.168.33.11/g' /home/msnm/msnm-sensor/examples/scenario_4/routerR2.yaml
+        RUN sed -i '82s/9001/9000/g' /home/msnm/msnm-sensor/examples/scenario_4/routerR2.yaml
+        RUN sed -i '86s/127.0.0.1/192.168.33.12/g' /home/msnm/msnm-sensor/examples/scenario_4/routerR2.yaml
+        RUN sed -i '87s/9004/9000/g' /home/msnm/msnm-sensor/examples/scenario_4/routerR2.yaml
+        RUN sed -i 's/.*/routerR2/g' /home/msnm/msnm-sensor/examples/scenario_4/sensors.txt
+      create: yes
+    become: no
+
+
+# Specific configuration on routers 
+- hosts: routers 
+
+
+  tasks:
+
+  - name: 1. Create Dockerfile. Change configuration on routers related to IPs
+    blockinfile:
+      path: docker/Dockerfile
+      block: |
+        FROM eliasgrana34/msnm-sensor:2
+        RUN sed -i '98s/127.0.0.1/192.168.33.12/g' /home/msnm/msnm-sensor/examples/scenario_4/borderRouter.yaml
+        RUN sed -i '99s/9004/9000/g' /home/msnm/msnm-sensor/examples/scenario_4/borderRouter.yaml
+        RUN sed -i '38,42d' /home/msnm/msnm-sensor/examples/scenario_4/borderRouter.yaml
+        RUN sed -i 's/.*/borderRouter/g' /home/msnm/msnm-sensor/examples/scenario_4/sensors.txt
+      create: yes
+    become: no
+
+
+  - name: 2. Enable forwarding
+    command: "sysctl net.ipv4.ip_forward"
+    become: yes
+
+  - name: 3. Allow iptables FORWARD
+    command: "iptables -P FORWARD ACCEPT"
+    become: yes
+
+
+
+# General configuration on all machines
+- hosts: all
+  vars:
+    servers:
+      ip:
+        - 192.168.10.10
+        - 192.168.10.11
+        - 192.168.10.12
+    my_server_ip: " {{ groups['all_groups'] | map('extract', hostvars, ['ansible_enp0s8', 'ipv4', 'address']) | join(',') }}"
+
+
+  become: yes
+  become_method: sudo
+
+  tasks:
+#  - debug: var=hostvars[inventory_hostname]['ansible_enp0s8']['ipv4']['address']
+
+  - name: 1. Update system. apt-get update
+    apt:
+      update_cache: yes 
+ 
+###################################################
+#Dependencies to create Netflow traffic 
+
+  - name: 2. Clone a repo with separate git directory
+    ansible.builtin.git:
+      repo: https://github.com/aabc/ipt-netflow
+      dest: "ipt-netflow"
+    become: no
+ 
+  - name: 3. Install module-assistant
+    apt:
+      name: module-assistant
+
+  - name: 4. Run module-assistant
+    shell: yes | module-assistant prepare -y
+
+  - name: 5. Install iptables
+    apt:
+      name: iptables-dev
+
+  - name: 6. Install pkg-config
+    apt:
+      name: pkg-config
+
+  - name: 7. Configure
+    shell: "./configure"
+    become: no
+    args:
+      chdir: ipt-netflow
+
+  - name: 8. make all install
+    command: "make all install"
+    args:
+      chdir: ipt-netflow
+
+  - name: 9. depmod
+    command: "depmod"
+    args:
+      chdir: ipt-netflow
+
+
+##################################################
+# Download and run msnm-sensor on host
+
+  - name: 10. Clone a repo with separate git directory
+    ansible.builtin.git:
+      repo: https://github.com/nesg-ugr/msnm-sensor
+      dest: "msnm-sensor"
+    become: no
+
+  - name: 11. Install nfdump
+    apt:
+      name: nfdump
+
+  - name: 12. Activate netflow
+    ansible.builtin.shell: 
+      cmd:  ./activateNetflow.sh
+    args:
+      chdir: msnm-sensor/scripts/netflow/
+
+#################################################
+# Deploy container with MSNM-Sensor on it
+
+  - name: 13. Create new Docker image
+    command: "docker build -t msnm ."
+    args:
+      chdir: docker
+    become: no
+
+  - name: 14. Run docker container
+    command: "docker run -t -d --cap-add=ALL --privileged --network host -v /tmp/netflow_captures:/tmp/netflow_captures -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro --name prueba   msnm"
+    args:
+      chdir: docker
+    become: no
+    ignore_errors: yes
+
+  - name: 15. Set routes on hosts 2
+    command: "ip route add default via 192.168.33.12"
+
+
+  - name: 16. Set routes on hosts
+    command: "ip route delete 192.168.33.0/24 dev eth1"
+

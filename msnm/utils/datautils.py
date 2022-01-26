@@ -355,7 +355,7 @@ def zeroDataImputation(**kwargs):
 
     #Zero value imputation
     logging.debug("Doing zero based data imputation ...")
-    rec_obs = pd.DataFrame(obs).fillna(0).as_matrix()
+    rec_obs = pd.DataFrame(obs).fillna(0).to_numpy()
 
     return rec_obs
 
@@ -385,7 +385,7 @@ def averageDataImputation(**kwargs):
 
     #Doing average imputation
     logging.debug("Doing average based data imputation ...")
-    rec_obs = pd.DataFrame(obs).fillna(pd.DataFrame(model.get_av())).as_matrix()
+    rec_obs = pd.DataFrame(obs).fillna(pd.DataFrame(model.get_av())).to_numpy()
 
     return rec_obs
 
@@ -445,12 +445,12 @@ def sort_dict(keys,values,order_by,order,abs_value):
             reverse_order = False
 
         # Make a dict from {keys:values}
-        d = dict(zip(keys,aux))
+        d = dict(list(zip(keys,aux)))
 
         if order_by == 'key':
-            d = OrderedDict(sorted(d.items(),key=lambda t: t[0],reverse=reverse_order))
+            d = OrderedDict(sorted(list(d.items()),key=lambda t: t[0],reverse=reverse_order))
         else:
-            d = OrderedDict(sorted(d.items(),key=lambda t: t[1],reverse=reverse_order))
+            d = OrderedDict(sorted(list(d.items()),key=lambda t: t[1],reverse=reverse_order))
 
     except Exception:
         raise MSNMError(None,sys.exc_info()[0],method_name)
@@ -478,9 +478,9 @@ def sort_dictionary(dictionary,order_by='key',order='desc'):
             reverse_order = False
 
         if order_by == 'key':
-            d = OrderedDict(sorted(dictionary.items(),key=lambda t: t[0],reverse=reverse_order))
+            d = OrderedDict(sorted(list(dictionary.items()),key=lambda t: t[0],reverse=reverse_order))
         else:
-            d = OrderedDict(sorted(dictionary.items(),key=lambda t: t[1],reverse=reverse_order))
+            d = OrderedDict(sorted(list(dictionary.items()),key=lambda t: t[1],reverse=reverse_order))
 
     except Exception:
         raise MSNMError(None,sys.exc_info()[0],method_name)
@@ -563,7 +563,7 @@ def json2mat(input_json_path, output_mat_path, json_field):
     with open(input_json_path,'r') as f:
         json_file = json.load(f)
 
-    for key in json_file.keys():
+    for key in list(json_file.keys()):
         # Remove '_' character from the json_field name at the beginning
         if key[0] == '_': key_new = key[1:]
         # Replace keys without '_' character

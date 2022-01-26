@@ -1,0 +1,80 @@
+#-----------------------------------------------------------------------
+#
+# Datasource- Configuration File
+#
+#-----------------------------------------------------------------------
+#
+# tag: tag asociated with the files
+#
+# structured: Boolean ver to indicate if datasource is structured or not.
+#
+# timestamp_format: format of the timestamp of the logs in the files of 
+#                   this dataSource in python datetime format, see https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior
+#
+# timestamp_regexp: regular expresion that matches the date format of the source (only needed for unstructured sources)
+#
+# separator: chars that delimits the log entries of the source (only needed in unstructured sources)
+#
+# timearg: position of the timestamp in the log entry (only needed in structured sources)
+#
+# VARIABLES:
+#   - name:      Variable name.
+#     matchtype:      Variable matchtype {string, number, counter, ip, time, duration}.
+#     where:       Position of the field in the line (starts with 0).
+#
+#   - ...
+#
+# FEATURES:
+#   - name:      Feature name.
+#     variable:  Feature from which the feature is calculated.
+#     matchtype: Feature matchtype {single, multiple, range, default}
+#     value:     Value of the field that defines the feature.
+#                If the matchtype is 'single' use a single value.
+#                If the matchtype is 'multiple', use a list of values.
+#                If the matchtype is 'range', use a list of two values.
+#                If the matchtype is 'default', the value must be empty.
+#   - ...
+#-----------------------------------------------------------------------
+
+tag: 
+
+structured: 
+
+timestamp_format: 
+
+timestamp_regexp: 
+
+separator: 
+
+timearg: 
+
+
+## Variable Section
+# =================
+
+VARIABLES:
+
+- name: 
+  matchtype: 
+  where: 
+
+- name: 
+  matchtype: 
+  where: 
+
+
+## Features Section
+# =================
+
+FEATURES:
+
+- name: 
+  variable: 
+  matchtype: 
+  value: 
+
+- name: 
+  variable: 
+  matchtype: 
+  value: 
+
