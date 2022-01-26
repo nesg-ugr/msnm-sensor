@@ -169,10 +169,13 @@
       name: nfdump
 
   - name: 12. Activate netflow
-    ansible.builtin.shell: 
-      cmd:  ./activateNetflow.sh
+    command: "./activateNetflow.sh"
     args:
       chdir: msnm-sensor/scripts/netflow/
+    #ansible.builtin.shell:
+      #cmd: ./activateNetflow.sh
+    #args:
+      #chdir:
 
 #################################################
 # Deploy container with MSNM-Sensor on it
@@ -183,12 +186,22 @@
       chdir: docker
     become: no
 
-  - name: 14. Run docker container
+  - name: 14. Stopping docker container
+    command: "docker stop prueba"
+
+  - name: 14.1. Stopping docker container
+    command: "docker rm prueba"
+
+  - name: 14.2. Run docker container
     command: "docker run -t -d --cap-add=ALL --privileged --network host -v /tmp/netflow_captures:/tmp/netflow_captures -v /etc/timezone:/etc/timezone:ro -v /etc/localtime:/etc/localtime:ro --name prueba   msnm"
     args:
       chdir: docker
     become: no
     ignore_errors: yes
+
+  - name: 14.3. Running in docker msnm-sensor
+    command: "docker exec prueba bash ./start_experiment.sh ../examples/scenario_4/"
+
 
   - name: 15. Set routes on hosts 2
     command: "ip route add default via 192.168.33.12"
