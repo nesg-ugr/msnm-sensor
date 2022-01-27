@@ -19,11 +19,11 @@ Description
 
 #### Requirements
 
-MSNSensor runs with python 2.7 and has been successfully tested on Ubuntu from 16.04 version and above. Also, the following dependencies has to be installed.
+MSNSensor runs with python 3 and has been successfully tested on Ubuntu from 16.04 version and above. Also, the following dependencies has to be installed.
 
   * numpy >= 1.14
   * scipy >=1.0
-  * pyyaml >= 3.12
+  * pyyaml == 4.2b4
   * IPy >= 0.83
   * pandas >= 0.22
   * watchdog >= 0.8.3
@@ -35,12 +35,12 @@ Creating a python execution environment is, probably the better way to run the a
 before doing the requeriments installation. Anaconda environment can help you and, if you decide to use it, run the following
 commands:
 
-    $ conda create -n py27 python=2.7
-    $ conda activate py27
+    $ conda create -n msnm-dev python=3.7
+    $ conda activate msnm-dev
 
 Running the previous command will install everything needed.
 
-	(py27) $ pip install -r requirements.txt
+	(msnm-dev) $ pip install -r requirements.txt
 	
 #### How to run an example
 
