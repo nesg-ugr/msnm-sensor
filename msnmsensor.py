@@ -24,6 +24,7 @@ from msnm.modules.config.configure import Configure
 from msnm.modules.com.networking import TCPServerThread, \
     MSNMTCPServerRequestHandler, MSNMTCPServer
 from msnm.utils import datautils
+from msnm.utils import dateutils
 from msnm.modules.source.manager import SourceManager, SourceManagerMasterThread
 import threading
 from msnm.modules.source.remote import RemoteSource
@@ -106,6 +107,10 @@ def main(config_file):
         sensor.do_calibration(phase=phase, lv=lv, prep=prep)
         logging.debug("UCLd = %s", sensor.get_model().get_mspc().getUCLD())
         logging.debug("UCLq = %s", sensor.get_model().get_mspc().getUCLQ())
+
+        # Initial ts associated to the current monitoring interval
+        ts = dateutils.get_timestamp()
+        sensor_config_params.set_general_config_param('ts_monitoring_interval', ts)
 
         # Load local data sources
         local_dict = {}

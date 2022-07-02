@@ -169,7 +169,8 @@ class NetFlowFileEventHandler(FileSystemEventHandler):
             # Get the ts provided by the recently generated nfcapd file
             list_splitted = event.dest_path.split('/')
             nfcapd_file_name = list_splitted[len(list_splitted) - 1]
-            ts = nfcapd_file_name.split('.')[1]
+            #ts = nfcapd_file_name.split('.')[1]
+            ts = config.get_config()['GeneralParams']['ts_monitoring_interval']
 
             if not staticMode: # dynamic mode
 

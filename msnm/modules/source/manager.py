@@ -265,6 +265,7 @@ class SourceManagerMasterThread(MSNMThread):
 
                 # ts associated to the current monitoring interval
                 ts = dateutils.get_timestamp()
+                config.set_general_config_param('ts_monitoring_interval',ts)
 
                 # Start a thread to manage the sources ready for the current monitoring interval
                 intervalSourceMonitoringThread = IntervalMonitoringSourceManagerThread(self._sourceManager_instance,t_init_interval,t_end_interval,t_max_interval, ts)
@@ -318,12 +319,8 @@ class IntervalMonitoringSourceManagerThread(MSNMThread):
         # TODO: frequency must be added to the configuration file
         interval = pd.date_range(start=lower_ts, end=upper_ts, freq='T')
 
-        print(interval)
-
         # Known gathered timestamps from a data source
         source_intervals = list(self._sourceManager_instance._sources[source]._files_generated.keys())
-
-        print(source_intervals)
 
         # Is there a source timestamp within the delta interval?
         for item in source_intervals:

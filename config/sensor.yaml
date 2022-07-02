@@ -101,6 +101,8 @@ GeneralParams:
   dataSourcesScheduling: 60
   # Polling time interval in seconds for polling data sources
   dataSourcesPolling: 1
+  # global ts monitoring interval
+  ts_monitoring_interval: '0'
   # Delta time interval to consider a source ready with respect the current monitoring interval of the manager
   dataSourcesReadyIntervalDelta: 120
   # Timeout in seconds to wait the other not ready data sources

@@ -130,6 +130,9 @@ class Configure(object):
             
         """
         return self.__CONFIG_FILE_PATH
+
+    def set_general_config_param(self, param_name, param_value):
+        Configure.__instance.config_params['GeneralParams'][param_name] = param_value
     
     
     
