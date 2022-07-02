@@ -26,3 +26,26 @@ def get_timestamp():
     tstsDateFormat = config.get_config()['GeneralParams']['tsDateFormat']
     
     return datetime.strftime(datetime.now(),tstsDateFormat)
+
+
+def get_timestamp_datetime(datetime_str=''):
+    """
+    Gets the current time in datetime format.
+
+    Parameters
+    ----------
+    datetime_str: str
+        String to generate the datetime. Otherwise, the current timestamp is returned.
+
+    Return
+    ------
+    ts:
+        Datetime format.
+    """
+    config = Configure()
+    tstsDateFormat = config.get_config()['GeneralParams']['tsDateFormat']
+
+    if datetime_str != '':
+        return datetime.strptime(datetime_str, tstsDateFormat)
+    else:
+        return datetime.now()

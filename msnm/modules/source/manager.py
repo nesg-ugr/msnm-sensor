@@ -26,6 +26,7 @@ import traceback
 import numpy as np
 from msnm.modules.com.packet import DataPacket, Packet
 from msnm.modules.com.networking import TCPClient, TCPClientThread
+import pandas as pd
 
 class SourceManager(Source):
 
@@ -307,10 +308,28 @@ class IntervalMonitoringSourceManagerThread(MSNMThread):
 
     def is_ready(self, source, ts):
 
-        if ts in list(self._sourceManager_instance._sources[source]._files_generated.keys()):
-            return True
-        else:
-            return False
+        # delta interval in seconds around the monitoring interval ts to consider a data source ready.
+        config = Configure()
+        dataSourcesReadyIntervalDelta = config.get_config()['GeneralParams']['dataSourcesReadyIntervalDelta']
+        lower_ts = dateutils.get_timestamp_datetime(ts) - timedelta(seconds=dataSourcesReadyIntervalDelta)
+        upper_ts = dateutils.get_timestamp_datetime(ts) + timedelta(seconds=dataSourcesReadyIntervalDelta)
+
+        # Date ranges generation: one minute intervals
+        # TODO: frequency must be added to the configuration file
+        interval = pd.date_range(start=lower_ts, end=upper_ts, freq='T')
+
+        print(interval)
+
+        # Known gathered timestamps from a data source
+        source_intervals = list(self._sourceManager_instance._sources[source]._files_generated.keys())
+
+        print(source_intervals)
+
+        # Is there a source timestamp within the delta interval?
+        for item in source_intervals:
+            if item in interval:
+                return True
+        return False
 
     def get_not_ready(self):
 
