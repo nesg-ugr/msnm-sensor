@@ -127,7 +127,10 @@ class MSNMTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
         """
         
         # Reception timestamp
-        ts_rec = dateutils.get_timestamp()
+        #ts_rec = dateutils.get_timestamp()
+        # FIXED: Now the received packet is set up to the ts of the current monitoring interval.
+        config = Configure()
+        ts_rec = config.get_config()['GeneralParams']['ts_monitoring_interval']
         
         # Client IP
         client_IP = client_address[0]
@@ -244,12 +247,17 @@ class MSNMTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
         sid = config.get_config()['Sensor']['sid']
                 
         # sent timestamp
-        ts = dateutils.get_timestamp()
+        #ts = dateutils.get_timestamp()
+        # FIXED: ts is always the current monitoring interval
+        ts = config.get_config()['GeneralParams']['ts_monitoring_interval']
                 
         # build a response message           
         pack_resp = ResponsePacket()
-        pack_resp.fill_header({'id':self._packet_sent,'sid':sid,'ts':ts,'type':Packet.TYPE_R})
-        pack_resp.fill_body({'resp':msg})
+        pack_resp.fill_header({'id': self._packet_sent,
+                               'sid': sid,
+                               'ts': ts,
+                               'type': Packet.TYPE_R})
+        pack_resp.fill_body({'resp': msg})
             
         # Response packet
         p_serialized = pickle.dumps(pack_resp, 2)

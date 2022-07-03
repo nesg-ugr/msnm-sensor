@@ -195,6 +195,8 @@ class NetFlowFileEventHandler(FileSystemEventHandler):
                 # Add the *.dat output from parser to the dict of generated files
                 self._netflow_instance._files_generated[ts] = netflow_log_parsed_folder + "output-netflow_" + ts + ".dat"
 
+                logging.debug("Files generated for Netflow a ts: {0} --> {1}".format(ts, self._netflow_instance._files_generated[ts]))
+
                 # Remove CSV file once it is parsed succesfully
                 logging.debug("Deleting file %s",netflow_log_parsed_file)
                 os.remove(netflow_log_parsed_file)

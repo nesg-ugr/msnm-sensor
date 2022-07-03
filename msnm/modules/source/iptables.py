@@ -348,7 +348,9 @@ class IPTablesThread(MSNMThread):
                 log_lines = self._iptables_instance.get_file_to_parse_time(iptables_log, timer)
 
                 # Time stamp
-                ts = dateutils.get_timestamp()
+                #ts = dateutils.get_timestamp()
+                # FIXED: every datasource has a common ts: the current monitoring interval timestamp
+                ts = self.config.get_config()['GeneralParams']['ts_monitoring_interval']
 
                 # Path for the backup
                 iptables_raw_log_file = iptables_log_raw_folder + "iptables_" + ts + ".log"

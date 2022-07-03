@@ -216,8 +216,11 @@ class SourceManager(Source):
             dataPacket = DataPacket()
             # Packet sent counter increments
             self._packet_sent = self._packet_sent + 1
-            dataPacket.fill_header({'id':self._packet_sent, 'sid':config.get_config()['Sensor']['sid'], 'ts':dateutils.get_timestamp(), 'type':Packet.TYPE_D})
-            dataPacket.fill_body({'Q':self._sensor.get_mspc().getQst(), 'D':self._sensor.get_mspc().getDst()})
+            dataPacket.fill_header({'id': self._packet_sent, 'sid':config.get_config()['Sensor']['sid'],
+                                    'ts': config.get_config()['GeneralParams']['ts_monitoring_interval'],
+                                    'type': Packet.TYPE_D})
+            dataPacket.fill_body({'Q': self._sensor.get_mspc().getQst(),
+                                  'D': self._sensor.get_mspc().getDst()})
 
             logging.debug("Remote sources to send the packet #%s: %s",self._packet_sent,remote_addresses)
 
@@ -309,24 +312,10 @@ class IntervalMonitoringSourceManagerThread(MSNMThread):
 
     def is_ready(self, source, ts):
 
-        # delta interval in seconds around the monitoring interval ts to consider a data source ready.
-        config = Configure()
-        dataSourcesReadyIntervalDelta = config.get_config()['GeneralParams']['dataSourcesReadyIntervalDelta']
-        lower_ts = dateutils.get_timestamp_datetime(ts) - timedelta(seconds=dataSourcesReadyIntervalDelta)
-        upper_ts = dateutils.get_timestamp_datetime(ts) + timedelta(seconds=dataSourcesReadyIntervalDelta)
-
-        # Date ranges generation: one minute intervals
-        # TODO: frequency must be added to the configuration file
-        interval = pd.date_range(start=lower_ts, end=upper_ts, freq='T')
-
-        # Known gathered timestamps from a data source
-        source_intervals = list(self._sourceManager_instance._sources[source]._files_generated.keys())
-
-        # Is there a source timestamp within the delta interval?
-        for item in source_intervals:
-            if item in interval:
-                return True
-        return False
+        if ts in list(self._sourceManager_instance._sources[source]._files_generated.keys()):
+            return True
+        else:
+            return False
 
     def get_not_ready(self):
 
