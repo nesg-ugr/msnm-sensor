@@ -71,8 +71,10 @@ def main(config_file):
         x = datautils.generateRandomCalObsMatrix(nobs, len(var_names))
     else:
         # Get calibration matrix from a CSV file
+        # Generating fake header
+        header = ['f_' + str(i) for i in range(len(var_names))]
         x = pd.read_csv(sensor_config_params.get_config()['Sensor']['staticCalibration']['calibrationFile'],
-                        index_col=0).values
+                        names=header).values
 
     # Get root path for creating data files
     rootDataPath = sensor_config_params.get_config()['GeneralParams']['rootPath']
