@@ -88,6 +88,10 @@ Sensor:
     #S5:
       #ip: 127.0.0.1
       #port: 9005
+  # Websockets configuration. To listen dashboard queries
+  ws_address:
+    ip: 127.0.0.1
+    port: 8765
 
 GeneralParams:
   # root files path - All created folders are under this one
