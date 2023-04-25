@@ -37,10 +37,14 @@ class Websocket:
 
         Raises
         ------
-        SensorError, MSNMError
+        CommError
 
         """
-        async with websockets.connect(f"ws://{self.ip_address}:{self.port}") as websocket:
-            await websocket.send(f"Qst: {Qst}, Dst: {Dst}")
-            message = await websocket.recv()
-            print(f"Received: {message}")
+
+        try:
+            async with websockets.connect(f"ws://{self.ip_address}:{self.port}") as websocket:
+                await websocket.send(f"Qst: {Qst}, Dst: {Dst}")
+                message = await websocket.recv()
+                print(f"Received: {message}")
+        except Exception as e:
+            raise e
