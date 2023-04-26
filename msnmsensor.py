@@ -31,6 +31,7 @@ from msnm.modules.source.remote import RemoteSource
 import importlib
 import argparse
 from msnm.utils.offlineutils import OfflineThread
+from msnm.modules.com.websocket import Websocket
 
 
 def main(config_file):
@@ -178,8 +179,12 @@ def main(config_file):
         sources_dict.update(remote_dict)
         sources_dict = datautils.sort_dictionary(sources_dict, order='asc')
 
+        # Create a Websocket
+        ws_address = sensor_config_params.get_config()['Sensor']['ws_address']
+        websocket = Websocket(ws_address['ip'], ws_address['port'])
+
         # Source management
-        manager = SourceManager(sensor)
+        manager = SourceManager(sensor, websocket)
         manager.set_data_sources(sources_dict)
         managerThread = SourceManagerMasterThread(manager)
         managerThread.setName("SourceManagerMasterThread")
