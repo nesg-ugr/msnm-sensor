@@ -26,12 +26,14 @@ import traceback
 import numpy as np
 from msnm.modules.com.packet import DataPacket, Packet
 from msnm.modules.com.networking import TCPClient, TCPClientThread
+from msnm.modules.com.websocket import Websocket
 import pandas as pd
 
 class SourceManager(Source):
 
-    def __init__(self, sensor):
+    def __init__(self, sensor, websocket):
         self._sensor = sensor
+        self._websocket = websocket
         self._sources = {} # Contains all data sources ('Source name', source_instance)
         self._batch = {}
         self._packet_sent = 0
@@ -188,6 +190,9 @@ class SourceManager(Source):
 
             # Do monitoring
             Qst, Dst = self._sensor.do_monitoring(test)
+            
+            # Send statistics to dashboard
+            self._websocket.send_statistics(Qst, Dst)
 
         except SensorError as ese:
             raise MSNMError(self, ese.get_msg() ,method_name)
