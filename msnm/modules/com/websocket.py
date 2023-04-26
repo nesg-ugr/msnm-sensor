@@ -30,6 +30,7 @@ class Websocket:
     def __init__(self, ip_address: str, port: int):
         self.ip_address = ip_address
         self.port = port
+        self.websocket = websockets.connect(f"ws://{self.ip_address}:{self.port}")
 
     async def send_statistics(self, Qst, Dst):
         """
@@ -42,7 +43,7 @@ class Websocket:
         """
 
         try:
-            async with websockets.connect(f"ws://{self.ip_address}:{self.port}") as websocket:
+            async with self.websocket as websocket:
                 await websocket.send(f"Qst: {Qst}, Dst: {Dst}")
                 message = await websocket.recv()
                 print(f"Received: {message}")
