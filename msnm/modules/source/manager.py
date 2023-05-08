@@ -28,12 +28,14 @@ from msnm.modules.com.packet import DataPacket, Packet
 from msnm.modules.com.networking import TCPClient, TCPClientThread
 from msnm.modules.com.websocket import Websocket
 import pandas as pd
+import asyncio
 
 class SourceManager(Source):
 
     def __init__(self, sensor, websocket):
         self._sensor = sensor
         self._websocket = websocket
+        self._loop = asyncio.get_event_loop()
         self._sources = {} # Contains all data sources ('Source name', source_instance)
         self._batch = {}
         self._packet_sent = 0
@@ -53,6 +55,24 @@ class SourceManager(Source):
             vars_number = config.get_config()['DataSources'][source._type][source_name]['parserVariables']
 
         return vars_number
+    
+    def connect_websocket(self):
+        """
+        Connects to the WebSocket server using the `__async__connect_websocket` method.
+
+        Side Effects:
+            Calls the `__async__connect_websocket` method to connect by websocket
+        """
+        self.loop.run_until_complete(self.__async__connect_websocket())
+    
+    async def __async__connect_websocket(self):
+        """
+        Asynchronously creates and connects a WebSocket object using the `websocket` attribute.
+
+        Side Effects:
+            Creates a WebSocket connection using the `websocket` attribute.
+        """
+        await self.websocket.connect()
 
     def launch_monitoring(self,ts):
         """
