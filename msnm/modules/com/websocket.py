@@ -76,3 +76,12 @@ class Websocket:
             await self.websocket.send(f"Qst: {Qst}, Dst: {Dst}")
         except Exception as e:
             raise e
+
+    async def receive(self):
+        """
+        Method for receiving messages from the dashboard
+
+        Returns:
+            Message received from the dashboard
+        """
+        return await self.websocket.recv()
