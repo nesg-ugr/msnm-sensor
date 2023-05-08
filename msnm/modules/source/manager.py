@@ -92,6 +92,24 @@ class SourceManager(Source):
         """
         await self.websocket.close()
 
+    def send_statistics(self, Qst, Dst):
+        """
+        Sends the statistics to the dashboard using the `__async__send_statistics` method.
+
+        Side Effects:
+            Calls the `__async__send_statistics` method to send the statistics to the dashboard.
+        """
+        return self.loop.run_until_complete(self.__async__send_statistics(Qst, Dst))
+
+    async def __async__send_statistics(self, Qst, Dst):
+        """
+        Asynchronously sends the statistics to the dashboard using the `websocket` attribute.
+
+        Side Effects:
+            Sends the statistics to the dashboard using the `websocket` attribute.
+        """
+        await self.websocket.send_statistics(Qst, Dst)
+
     def launch_monitoring(self,ts):
         """
         Once the parsing (flow parser) procedure is done, this method is in charge of to start the monitoring
@@ -230,7 +248,7 @@ class SourceManager(Source):
             Qst, Dst = self._sensor.do_monitoring(test)
             
             # Send statistics to dashboard
-            self._websocket.send_statistics(Qst, Dst)
+            self.send_statistics(Qst, Dst)
 
         except SensorError as ese:
             raise MSNMError(self, ese.get_msg() ,method_name)
