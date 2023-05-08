@@ -58,18 +58,21 @@ class Websocket:
 
     async def send_statistics(self, Qst, Dst):
         """
-        Starting point of the websocket connection
+        Method for sending statistics to the dashboard
+
+        Parameters
+        ----------
+        Qst
+
+        Dst
+        -------
 
         Raises
         ------
-        CommError
-
+        Exception
         """
 
         try:
-            async with self.websocket as websocket:
-                await websocket.send(f"Qst: {Qst}, Dst: {Dst}")
-                message = await websocket.recv()
-                print(f"Received: {message}")
+            await self.websocket.send(f"Qst: {Qst}, Dst: {Dst}")
         except Exception as e:
             raise e
