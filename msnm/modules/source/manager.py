@@ -74,6 +74,24 @@ class SourceManager(Source):
         """
         await self.websocket.connect()
 
+    def close_websocket(self):
+        """
+        Closes the WebSocket connection using the `__async__close_websocket` method.
+        
+        Side Effects:
+            Calls the `__async__close_websocket` method to close the websocket connection.
+        """
+        self.loop.run_until_complete(self.__async__close_websocket())
+
+    async def __async__close_websocket(self):
+        """
+        Asynchronously closes the WebSocket connection using the `websocket` attribute.
+
+        Side Effects:
+            Closes the WebSocket connection using the `websocket` attribute.
+        """
+        await self.websocket.close()
+
     def launch_monitoring(self,ts):
         """
         Once the parsing (flow parser) procedure is done, this method is in charge of to start the monitoring
