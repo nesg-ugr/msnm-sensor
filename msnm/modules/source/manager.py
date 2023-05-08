@@ -63,7 +63,7 @@ class SourceManager(Source):
         Side Effects:
             Calls the `__async__connect_websocket` method to connect by websocket
         """
-        self.loop.run_until_complete(self.__async__connect_websocket())
+        self._loop.run_until_complete(self.__async__connect_websocket())
     
     async def __async__connect_websocket(self):
         """
@@ -72,7 +72,7 @@ class SourceManager(Source):
         Side Effects:
             Creates a WebSocket connection using the `websocket` attribute.
         """
-        await self.websocket.connect()
+        await self._websocket.connect()
 
     def close_websocket(self):
         """
@@ -81,7 +81,7 @@ class SourceManager(Source):
         Side Effects:
             Calls the `__async__close_websocket` method to close the websocket connection.
         """
-        self.loop.run_until_complete(self.__async__close_websocket())
+        self._loop.run_until_complete(self.__async__close_websocket())
 
     async def __async__close_websocket(self):
         """
@@ -90,7 +90,7 @@ class SourceManager(Source):
         Side Effects:
             Closes the WebSocket connection using the `websocket` attribute.
         """
-        await self.websocket.close()
+        await self._websocket.close()
 
     def send_statistics(self, Qst, Dst):
         """
@@ -99,7 +99,7 @@ class SourceManager(Source):
         Side Effects:
             Calls the `__async__send_statistics` method to send the statistics to the dashboard.
         """
-        return self.loop.run_until_complete(self.__async__send_statistics(Qst, Dst))
+        return self._loop.run_until_complete(self.__async__send_statistics(Qst, Dst))
 
     async def __async__send_statistics(self, Qst, Dst):
         """
@@ -108,7 +108,7 @@ class SourceManager(Source):
         Side Effects:
             Sends the statistics to the dashboard using the `websocket` attribute.
         """
-        await self.websocket.send_statistics(Qst, Dst)
+        await self._websocket.send_statistics(Qst, Dst)
 
     def launch_monitoring(self,ts):
         """
