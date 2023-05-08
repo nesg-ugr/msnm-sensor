@@ -20,17 +20,29 @@ class Websocket:
 
     Attributes
     ----------
-    ip_address: str
+    ip_address
         IP address of the dashboard
-    port: int
+    port
         Port of the dashboard
     ----------
     """
 
-    def __init__(self, ip_address: str, port: int):
+    def __init__(self, ip_address, port):
         self.ip_address = ip_address
         self.port = port
-        self.websocket = websockets.connect(f"ws://{self.ip_address}:{self.port}")
+        self.websocket = None
+
+    async def connect(self):
+        """
+        Method for connecting to the dashboard by websocket
+
+        Returns:
+            None
+
+        Side effects:
+            Establishes a websocket connection with the dashboard
+        """
+        self.websocket = await websockets.connect(f"ws://{self.ip_address}:{self.port}")
 
     async def send_statistics(self, Qst, Dst):
         """
