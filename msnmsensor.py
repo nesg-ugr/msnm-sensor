@@ -185,6 +185,7 @@ def main(config_file):
 
         # Source management
         manager = SourceManager(sensor, websocket)
+        manager.connect_websocket()
         manager.set_data_sources(sources_dict)
         managerThread = SourceManagerMasterThread(manager)
         managerThread.setName("SourceManagerMasterThread")
