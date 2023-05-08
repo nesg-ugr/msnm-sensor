@@ -44,6 +44,18 @@ class Websocket:
         """
         self.websocket = await websockets.connect(f"ws://{self.ip_address}:{self.port}")
 
+    async def close(self):
+        """
+        Method for closing the websocket connection
+
+        Returns:
+            None
+
+        Side effects:
+            Closes the websocket connection with the dashboard
+        """
+        await self.websocket.close()
+
     async def send_statistics(self, Qst, Dst):
         """
         Starting point of the websocket connection
