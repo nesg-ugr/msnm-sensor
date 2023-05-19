@@ -19,6 +19,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -58,8 +60,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'netmalies.wsgi.application'
-
+# WSGI_APPLICATION = 'netmalies.wsgi.application'
+ASGI_APPLICATION = 'netmalies.asgi.application'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
