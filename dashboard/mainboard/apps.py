@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class ImageConfig(AppConfig):
-    name = 'image'
+class MainboardConfig(AppConfig):
+    name = 'mainboard'
