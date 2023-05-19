@@ -9,7 +9,7 @@ from django.views import View
 from django.views.generic import TemplateView, FormView
 
 from mainboard.config import EXAMPLE_ROOT, GRAPH_SIZE, MONITORING_ROOT, SYNC_SECONDS
-from mainboard.utils import get_monitoring, update_context_data_network
+from mainboard.utils import get_monitoring, update_context_data_network, is_ajax
 import pandas as pd
 
 
@@ -47,7 +47,7 @@ class GraphView(LoginRequiredMixin, View):
     login_url = reverse_lazy('login')
 
     def get(self, request, *args, **kwargs):
-        if not request.is_ajax():
+        if not is_ajax(request=request):
             return HttpResponseBadRequest()
 
         sid = kwargs['sid']
@@ -78,7 +78,7 @@ class GetConfView(LoginRequiredMixin, View):
     login_url = reverse_lazy('login')
 
     def get(self, request, *args, **kwargs):
-        if not request.is_ajax():
+        if not is_ajax(request=request):
             return HttpResponseBadRequest()
         sid = self.kwargs['sid']
         stream = open(os.path.join(EXAMPLE_ROOT, sid + '.yaml'), 'r')
@@ -91,7 +91,7 @@ class SaveConfView(LoginRequiredMixin, View):
     login_url = reverse_lazy('login')
 
     def post(self, request, *args, **kwargs):
-        if not request.is_ajax():
+        if not is_ajax(request=request):
             return HttpResponseBadRequest()
         sid = self.kwargs['sid']
         stream = open(os.path.join(EXAMPLE_ROOT, sid + '.yaml'), 'r')

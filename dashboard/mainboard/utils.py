@@ -93,3 +93,6 @@ def get_monitoring(sid, files):
     df_complete = pd.concat([df, df_statistics], axis=1)
 
     return df_complete, mon_data
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
