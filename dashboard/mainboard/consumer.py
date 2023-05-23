@@ -1,16 +1,9 @@
 import json
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 
-class SensorConsumer(WebsocketConsumer):
-    def connect(self):
-        self.accept()
-        self.send(text_data=json.dumps({
-            'type': 'connection_established',
-            'message': 'Hello World!'
-        }))
+class SensorConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
 
-    def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-        
-        print(message)
+    async def receive(self, text_data):
+        await self.send(text_data="Información recibida: " + text_data)
