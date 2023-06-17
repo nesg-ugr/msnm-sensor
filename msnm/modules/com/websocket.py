@@ -12,6 +12,7 @@
 
 import asyncio
 import websockets
+import json
 
 
 class Websocket:
@@ -42,7 +43,7 @@ class Websocket:
         Side effects:
             Establishes a websocket connection with the dashboard
         """
-        self.websocket = await websockets.connect(f"ws://{self.ip_address}:{self.port}")
+        self.websocket = await websockets.connect(f"ws://{self.ip_address}:{self.port}/ws/monitoring/", ping_timeout=40)
 
     async def close(self):
         """
@@ -73,7 +74,7 @@ class Websocket:
         """
 
         try:
-            await self.websocket.send(f"Qst: {Qst}, Dst: {Dst}")
+            await self.websocket.send(json.dumps([{'Qst':Qst,'Dst':Dst}]))
         except Exception as e:
             raise e
 
