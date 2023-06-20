@@ -29,6 +29,7 @@ from msnm.modules.com.networking import TCPClient, TCPClientThread
 from msnm.modules.com.websocket import Websocket
 import pandas as pd
 import asyncio
+from datetime import datetime
 
 class SourceManager(Source):
 
@@ -246,9 +247,10 @@ class SourceManager(Source):
 
             # Do monitoring
             Qst, Dst = self._sensor.do_monitoring(test)
+            ts = datetime.now().strftime("%Y%m%d%H%M")
             
             # Send statistics to dashboard
-            self.send_statistics(Qst, Dst)
+            self.send_statistics(ts, Qst, Dst)
 
         except SensorError as ese:
             raise MSNMError(self, ese.get_msg() ,method_name)
