@@ -93,23 +93,23 @@ class SourceManager(Source):
         """
         await self._websocket.close()
 
-    def send_statistics(self, Qst, Dst):
+    def send_statistics(self, ts, Qst, Dst):
         """
         Sends the statistics to the dashboard using the `__async__send_statistics` method.
 
         Side Effects:
             Calls the `__async__send_statistics` method to send the statistics to the dashboard.
         """
-        return self._loop.run_until_complete(self.__async__send_statistics(Qst, Dst))
+        return self._loop.run_until_complete(self.__async__send_statistics(ts, Qst, Dst))
 
-    async def __async__send_statistics(self, Qst, Dst):
+    async def __async__send_statistics(self, ts, Qst, Dst):
         """
         Asynchronously sends the statistics to the dashboard using the `websocket` attribute.
 
         Side Effects:
             Sends the statistics to the dashboard using the `websocket` attribute.
         """
-        await self._websocket.send_statistics(Qst, Dst)
+        await self._websocket.send_statistics(ts, Qst, Dst)
 
     def launch_monitoring(self,ts):
         """
