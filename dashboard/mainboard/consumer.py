@@ -1,8 +1,8 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-import asyncio
 
 class SensorConsumer(AsyncWebsocketConsumer):
+    _ts = []
     _qst = []
     _dst = []
     
@@ -11,6 +11,12 @@ class SensorConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         statistics = json.loads(text_data)
+        if len(self._ts) > 10:
+            self._ts.pop(0)
+            self._ts.append(statistics[0]['ts'])
+        else:
+            self._qst.append(statistics[0]['ts'])
+
         if len(self._qst) > 10:
             self._qst.pop(0)
             self._qst.append(statistics[0]['Qst'])
@@ -23,6 +29,7 @@ class SensorConsumer(AsyncWebsocketConsumer):
         else:
             self._dst.append(statistics[0]['Dst'])
 
+        print(self._ts)
         print(self._qst)
         print(self._qst)
-        await self.send(text_data="Información recibida: " + text_data)
+        await self.send(text_data="Information received")
