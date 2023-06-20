@@ -11,7 +11,7 @@ from django.views.generic import TemplateView, FormView
 from mainboard.config import EXAMPLE_ROOT, GRAPH_SIZE, MONITORING_ROOT, SYNC_SECONDS
 from mainboard.utils import get_monitoring, update_context_data_network, is_ajax
 import pandas as pd
-from consumer import SensorConsumer
+import mainboard.consumer as consumer
 
 class MainView(LoginRequiredMixin, TemplateView):
     login_url = reverse_lazy('login')
@@ -63,11 +63,12 @@ class GraphView(LoginRequiredMixin, View):
         df_mon['ts'] = df_mon['ts'].astype(str)
 
         data = {
-            'ts': df_mon['ts'].tolist(),
+            # 'ts': df_mon['ts'].tolist(),
+            'ts': consumer.SensorConsumer._ts,
             #'Qst': df_mon['Qst'].tolist(),
-            'Qst': SensorConsumer._qst,
+            'Qst': consumer.SensorConsumer._qst,
             #'Dst': df_mon['Dst'].tolist(),
-            'Dst': SensorConsumer._dst,
+            'Dst': consumer.SensorConsumer._dst,
             'UCLq': df_mon['UCLq'].tolist(),
             'UCLd': df_mon['UCLd'].tolist(),
             'sid': sid
