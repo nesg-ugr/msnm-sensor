@@ -13,6 +13,7 @@
 import asyncio
 import websockets
 import json
+from datetime import datetime
 
 
 class Websocket:
@@ -57,7 +58,7 @@ class Websocket:
         """
         await self.websocket.close()
 
-    async def send_statistics(self, Qst, Dst):
+    async def send_statistics(self, ts, Qst, Dst):
         """
         Method for sending statistics to the dashboard
 
@@ -74,7 +75,7 @@ class Websocket:
         """
 
         try:
-            await self.websocket.send(json.dumps([{'Qst':Qst,'Dst':Dst}]))
+            await self.websocket.send(json.dumps([{'ts':ts,'Qst':Qst,'Dst':Dst}]))
         except Exception as e:
             raise e
 
