@@ -15,7 +15,7 @@ class SensorConsumer(AsyncWebsocketConsumer):
             self._ts.pop(0)
             self._ts.append(statistics[0]['ts'])
         else:
-            self._qst.append(statistics[0]['ts'])
+            self._ts.append(statistics[0]['ts'])
 
         if len(self._qst) > 10:
             self._qst.pop(0)
@@ -31,5 +31,5 @@ class SensorConsumer(AsyncWebsocketConsumer):
 
         print(self._ts)
         print(self._qst)
-        print(self._qst)
+        print(self._dst)
         await self.send(text_data="Information received")
