@@ -5,3 +5,4 @@ pandas
 numpy
 pyparsing
 channels==3.0.4
+channels_redis
