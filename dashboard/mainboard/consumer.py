@@ -1,12 +1,15 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.layers import get_channel_layer
 import json
 
 class SensorConsumer(AsyncWebsocketConsumer):
     _ts = []
     _qst = []
     _dst = []
+    channel_layer = get_channel_layer()
     
     async def connect(self):
+        self.websocket = self.scope['websocket']
         await self.accept()
 
     async def receive(self, text_data):
@@ -33,3 +36,7 @@ class SensorConsumer(AsyncWebsocketConsumer):
         print(self._qst)
         print(self._dst)
         await self.send(text_data="Information received")
+
+    async def send_data(self, data):
+        # Enviar datos al cliente
+        await self.send(json.dumps(data))
