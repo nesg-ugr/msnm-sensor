@@ -9,7 +9,6 @@ class SensorConsumer(AsyncWebsocketConsumer):
     channel_layer = get_channel_layer()
     
     async def connect(self):
-        self.websocket = self.scope['websocket']
         await self.accept()
 
     async def receive(self, text_data):
