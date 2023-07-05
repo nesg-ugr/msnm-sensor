@@ -44,6 +44,6 @@ class SensorConsumer(AsyncWebsocketConsumer):
         print(self._ucld)
         await self.send(text_data="Information received")
 
-    async def send_data(self, data):
+    async def send_config_data(self, data):
         # Enviar datos al cliente
         await self.send(json.dumps(data))

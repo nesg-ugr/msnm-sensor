@@ -11,7 +11,10 @@ from django.views.generic import TemplateView, FormView
 from mainboard.config import EXAMPLE_ROOT, GRAPH_SIZE, MONITORING_ROOT, SYNC_SECONDS
 from mainboard.utils import get_monitoring, update_context_data_network, is_ajax
 import pandas as pd
-import mainboard.consumer as consumer
+from mainboard.consumer import SensorConsumer
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
 
 class MainView(LoginRequiredMixin, TemplateView):
     login_url = reverse_lazy('login')
@@ -51,26 +54,28 @@ class GraphView(LoginRequiredMixin, View):
             return HttpResponseBadRequest()
 
         sid = kwargs['sid']
-        files_path = os.path.join(EXAMPLE_ROOT, sid, MONITORING_ROOT)
-        files = os.listdir(files_path)
-        files.sort(reverse=True)
-        if GRAPH_SIZE < len(files):
-            recent_files = files[0:GRAPH_SIZE]
-        else:
-            recent_files = files
-        df_mon, mon_data = get_monitoring(sid, recent_files)
-        df_mon['ts'] = pd.to_datetime(df_mon['ts'], format='%Y%m%d%H%M')
-        df_mon['ts'] = df_mon['ts'].astype(str)
+        # files_path = os.path.join(EXAMPLE_ROOT, sid, MONITORING_ROOT)
+        # files = os.listdir(files_path)
+        # files.sort(reverse=True)
+        # if GRAPH_SIZE < len(files):
+        #     recent_files = files[0:GRAPH_SIZE]
+        # else:
+        #     recent_files = files
+        # df_mon, mon_data = get_monitoring(sid, recent_files)
+        # df_mon['ts'] = pd.to_datetime(df_mon['ts'], format='%Y%m%d%H%M')
+        # df_mon['ts'] = df_mon['ts'].astype(str)
 
         data = {
             # 'ts': df_mon['ts'].tolist(),
-            'ts': consumer.SensorConsumer._ts,
+            'ts': SensorConsumer._ts,
             #'Qst': df_mon['Qst'].tolist(),
-            'Qst': consumer.SensorConsumer._qst,
+            'Qst': SensorConsumer._qst,
             #'Dst': df_mon['Dst'].tolist(),
-            'Dst': consumer.SensorConsumer._dst,
-            'UCLq': df_mon['UCLq'].tolist(),
-            'UCLd': df_mon['UCLd'].tolist(),
+            'Dst': SensorConsumer._dst,
+            # 'UCLq': df_mon['UCLq'].tolist(),
+            # 'UCLd': df_mon['UCLd'].tolist(),
+            'UCLq': SensorConsumer._uclq,
+            'UCLd': SensorConsumer._ucld,
             'sid': sid
         }
 
@@ -112,6 +117,14 @@ class SaveConfView(LoginRequiredMixin, View):
         data['dynamiCalibration']['lambda'] = float(post['lambda'])
         data['dynamiCalibration']['enabled'] = bool(int(post['enabled']))
         conf['Sensor'] = data
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            'sensors',
+            {
+                'type': 'send_config_data',
+                'message': data,
+            }
+        )
         output = open(os.path.join(EXAMPLE_ROOT, sid + '.yaml'), 'w+')
         yaml.dump(conf, output, allow_unicode=True, sort_keys=False)
         stream.close()
