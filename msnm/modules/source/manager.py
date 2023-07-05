@@ -93,23 +93,23 @@ class SourceManager(Source):
         """
         await self._websocket.close()
 
-    def send_statistics(self, ts, Qst, Dst):
+    def send_statistics(self, ts, Qst, Dst, UCLq, UCLd):
         """
         Sends the statistics to the dashboard using the `__async__send_statistics` method.
 
         Side Effects:
             Calls the `__async__send_statistics` method to send the statistics to the dashboard.
         """
-        return self._loop.run_until_complete(self.__async__send_statistics(ts, Qst, Dst))
+        return self._loop.run_until_complete(self.__async__send_statistics(ts, Qst, Dst, UCLq, UCLd))
 
-    async def __async__send_statistics(self, ts, Qst, Dst):
+    async def __async__send_statistics(self, ts, Qst, Dst, UCLq, UCLd):
         """
         Asynchronously sends the statistics to the dashboard using the `websocket` attribute.
 
         Side Effects:
             Sends the statistics to the dashboard using the `websocket` attribute.
         """
-        await self._websocket.send_statistics(ts, Qst, Dst)
+        await self._websocket.send_statistics(ts, Qst, Dst, UCLq, UCLd)
 
     def launch_monitoring(self,ts):
         """
@@ -250,7 +250,7 @@ class SourceManager(Source):
             ts = datetime.now().strftime("%Y%m%d%H%M")
             
             # Send statistics to dashboard
-            self.send_statistics(ts, Qst, Dst)
+            self.send_statistics(ts, Qst, Dst, self._sensor.get_model().get_mspc().getUCLQ(), self._sensor.get_model().get_mspc().getUCLD())
 
         except SensorError as ese:
             raise MSNMError(self, ese.get_msg() ,method_name)
