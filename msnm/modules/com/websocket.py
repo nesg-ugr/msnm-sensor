@@ -58,7 +58,7 @@ class Websocket:
         """
         await self.websocket.close()
 
-    async def send_statistics(self, ts, Qst, Dst):
+    async def send_statistics(self, ts, Qst, Dst, UCLq, UCLd):
         """
         Method for sending statistics to the dashboard
 
@@ -75,7 +75,7 @@ class Websocket:
         """
 
         try:
-            await self.websocket.send(json.dumps([{'ts':ts,'Qst':Qst,'Dst':Dst}]))
+            await self.websocket.send(json.dumps([{'ts':ts,'Qst':Qst,'Dst':Dst,'UCLq':UCLq,'UCLd':UCLd}]))
         except Exception as e:
             raise e
 
@@ -86,4 +86,6 @@ class Websocket:
         Returns:
             Message received from the dashboard
         """
-        return await self.websocket.recv()
+        data = await self.websocket.recv()
+        print(data)
+        return data
