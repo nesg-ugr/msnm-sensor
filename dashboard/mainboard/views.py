@@ -11,6 +11,7 @@ from django.views.generic import TemplateView, FormView
 from mainboard.config import EXAMPLE_ROOT, GRAPH_SIZE, MONITORING_ROOT, SYNC_SECONDS
 from mainboard.utils import get_monitoring, update_context_data_network, is_ajax
 import pandas as pd
+import requests
 from mainboard.consumer import SensorConsumer
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
@@ -117,14 +118,19 @@ class SaveConfView(LoginRequiredMixin, View):
         data['dynamiCalibration']['lambda'] = float(post['lambda'])
         data['dynamiCalibration']['enabled'] = bool(int(post['enabled']))
         conf['Sensor'] = data
-        channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)(
-            'sensors',
-            {
-                'type': 'send_config_data',
-                'message': data,
-            }
-        )
+        
+        try:
+            headers = {'Content-Type': 'application/json'}
+            response = requests.post('http://127.0.0.1:8989/sendConfig', data=json.dumps(conf), headers=headers)
+            response.raise_for_status()
+            response_data = response.json()
+
+            print(response_data)
+            
+            return HttpResponse('Solicitud exitosa')
+        except requests.exceptions.RequestException as e:
+            return HttpResponse('Error en la solicitud: {}'.format(str(e)))
+
         output = open(os.path.join(EXAMPLE_ROOT, sid + '.yaml'), 'w+')
         yaml.dump(conf, output, allow_unicode=True, sort_keys=False)
         stream.close()

@@ -37,6 +37,7 @@ CHANNEL_LAYERS = {
         'CONFIG': {
             'hosts': [('localhost', 6379)],
         },
+        'GROUP_NAME': 'netmalies',
     },
 }
 
