@@ -5,4 +5,6 @@ pyyaml==5.4
 IPy>=0.83
 watchdog>=0.8.3
 websockets>=11.0
+fastapi
+uvicorn[standard]
 -e git+https://github.com/josecamachop/FCParser@v1.0.0#egg=fcparser
