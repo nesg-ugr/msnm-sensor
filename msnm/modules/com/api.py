@@ -2,7 +2,7 @@
 """
     :mod:`API module`
     ===========================================================================
-    :synopsis: API
+    :synopsis: API that allow to receive the configuration params from the dashboard
     :author: Jaime Gallardo Mateo
     :contact: jaimegallardo@correo.ugr.es
     :organization: University of Granada
@@ -10,8 +10,9 @@
     :since: 
 """
 
+import uvicorn
+from ..config.configure import Configure
 from fastapi import FastAPI, Request
-from msnm.modules.config.configure import Configure
 
 app = FastAPI()
 
@@ -32,3 +33,6 @@ async def sendConfig(config: Request):
         "message": "Config receive successfully",
         "data": sensor_config_params.get_config(),
     }
+
+if __name__ == '__main__':
+    uvicorn.run(app,host='127.0.0.1', port=8989)
