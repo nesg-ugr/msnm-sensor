@@ -10,19 +10,19 @@
     :since: 
 """
 
-import uvicorn
-from ..config.configure import Configure
+from msnm.modules.config.configure import Configure
 from fastapi import FastAPI, Request
 
 app = FastAPI()
 
 @app.post("/sendConfig")
 async def sendConfig(config: Request):
-    # Get the configuration params and load it into a singleton pattern
-    sensor_config_params = Configure()
-
     # Get the data from the request
     config = await config.json()
+
+    # Get the configuration params and load it into a singleton pattern
+    sensor_config_params = Configure()
+    sensor_config_params.get_config()
 
     # Set new configuration params into the singleton pattern
     sensor_config_params.get_config()['Sensor']['lv'] = config['Sensor']['lv']
@@ -37,6 +37,3 @@ async def sendConfig(config: Request):
         "message": "Config receive successfully",
         "data": sensor_config_params.get_config()['Sensor'],
     }
-
-if __name__ == '__main__':
-    uvicorn.run(app,host='127.0.0.1', port=8989)
