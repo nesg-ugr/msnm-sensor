@@ -32,6 +32,8 @@ import importlib
 import argparse
 from msnm.utils.offlineutils import OfflineThread
 from msnm.modules.com.websocket import Websocket
+from msnm.modules.com.api import app
+import uvicorn
 
 
 def main(config_file):
@@ -58,6 +60,10 @@ def main(config_file):
         traceback.print_exception(exc_type, exc_value, exc_traceback, limit=10, file=sys.stdout)
         ece.print_error()
         exit(1)
+
+    # Run API server
+    server_thread = threading.Thread(target=run_api_server)
+    server_thread.start()
 
     # Create a Sensor
     sensor = Sensor()
@@ -213,6 +219,7 @@ def main(config_file):
 
         # Main loop
         while continueMainThread:
+            print(sensor_config_params.get_config()['Sensor'])
             # static mode?
             if staticMode:
                 if not offlineThread.isAlive():
@@ -276,6 +283,9 @@ def getArguments():
     parser.add_argument('config', metavar='CONFIG', help='Sensor configuration File.')
     args = parser.parse_args()
     return args
+
+def run_api_server():
+    uvicorn.run(app, host="127.0.0.1", port=8989)
 
 
 if __name__ == "__main__":
