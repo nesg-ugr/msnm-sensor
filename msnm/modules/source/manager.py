@@ -33,7 +33,7 @@ from datetime import datetime
 
 class SourceManager(Source):
 
-    def __init__(self, sensor, websocket):
+    def __init__(self, sensor, websocket=None):
         self._sensor = sensor
         self._websocket = websocket
         self._loop = asyncio.get_event_loop()
@@ -250,7 +250,8 @@ class SourceManager(Source):
             ts = datetime.now().strftime("%Y%m%d%H%M")
             
             # Send statistics to dashboard
-            self.send_statistics(ts, Qst, Dst, self._sensor.get_model().get_mspc().getUCLQ(), self._sensor.get_model().get_mspc().getUCLD())
+            if not self._websocket is None:
+                self.send_statistics(ts, Qst, Dst, self._sensor.get_model().get_mspc().getUCLQ(), self._sensor.get_model().get_mspc().getUCLD())
 
         except SensorError as ese:
             raise MSNMError(self, ese.get_msg() ,method_name)

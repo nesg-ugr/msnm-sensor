@@ -185,9 +185,12 @@ def main(config_file):
         sources_dict.update(remote_dict)
         sources_dict = datautils.sort_dictionary(sources_dict, order='asc')
 
+        remote_addresses = sensor_config_params.get_config()['Sensor']['remote_addresses']
+
         # Create a Websocket
-        ws_address = sensor_config_params.get_config()['Sensor']['ws_address']
-        websocket = Websocket(ws_address['ip'], ws_address['port'])
+        if remote_addresses:
+            ws_address = sensor_config_params.get_config()['Sensor']['ws_address']
+            websocket = Websocket(ws_address['ip'], ws_address['port'])
 
         # Source management
         manager = SourceManager(sensor, websocket)
@@ -219,7 +222,6 @@ def main(config_file):
 
         # Main loop
         while continueMainThread:
-            print(sensor_config_params.get_config()['Sensor'])
             # static mode?
             if staticMode:
                 if not offlineThread.isAlive():
