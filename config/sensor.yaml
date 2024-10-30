@@ -24,6 +24,20 @@ DataSources:
       # When True, tries to automatize start and stop nfcapd process
       nfcapdAutomatize: False
 
+
+    MonitorDataSource:
+      type: local
+      # Module containing the local data source class for managing it
+      moduleName: msnm.modules.source.MonitorDataSource
+      # nfdump exported files (CSV)
+      script_path: "./scripts/monitor_v3.py"
+      log_folder: "./msnm-sensor/data/sources/local/monitor/raw/"
+      parsed_folder: "data/sources/local/monitor/parsed/"
+      monitoring_interval: 10
+
+
+
+
 Sensor:
   observation: data/monitoring/observation/
   output: data/monitoring/output/
@@ -89,25 +103,25 @@ Sensor:
       #ip: 127.0.0.1
       #port: 9005
 
-GeneralParams:
-  # root files path - All created folders are under this one
-  rootPath: ./
-  # Date formats
-  dateFormat: '%Y-%m-%d %H:%M:%S'
-  dateFormatNfcapdFiles: '%Y%m%d%H%M'
-  # Data format for timestamps
-  tsDateFormat: '%Y%m%d%H%M'
-  # Time interval in seconds to get data from local sources
-  dataSourcesScheduling: 60
-  # Polling time interval in seconds for polling data sources
-  dataSourcesPolling: 1
-  # global ts monitoring interval
-  ts_monitoring_interval: '0'
-  # Delta time interval to consider a source ready with respect the current monitoring interval of the manager
-  dataSourcesReadyIntervalDelta: 120
-  # Timeout in seconds to wait the other not ready data sources
-  dataSourcesNotReadyWaitingTime: 5
-  valuesFormat: '%1.5f'
-  serverConnectionTimeout: 15
-  # logging/profiling config file
-  logConfigFile: config/logging.yaml
+  GeneralParams:
+    # root files path - All created folders are under this one
+    rootPath: ./
+    # Date formats
+    dateFormat: '%Y-%m-%d %H:%M:%S'
+    dateFormatNfcapdFiles: '%Y%m%d%H%M'
+     # Data format for timestamps
+    tsDateFormat: '%Y%m%d%H%M'
+    # Time interval in seconds to get data from local sources
+    dataSourcesScheduling: 60
+    # Polling time interval in seconds for polling data sources
+    dataSourcesPolling: 1
+    # global ts monitoring interval
+    ts_monitoring_interval: '1'
+     # Delta time interval to consider a source ready with respect the current monitoring interval of the manager
+    dataSourcesReadyIntervalDelta: 120
+    # Timeout in seconds to wait the other not ready data sources
+    dataSourcesNotReadyWaitingTime: 5
+    valuesFormat: '%1.5f'
+    serverConnectionTimeout: 15
+    # logging/profiling config file
+    logConfigFile: config/logging.yaml

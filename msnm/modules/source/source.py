@@ -15,7 +15,7 @@ from collections import deque
 from datetime import datetime
 from msnm.modules.config.configure import Configure
 from msnm.exceptions.msnm_exception import DataSourceError
-from fcparser import fcparser
+#from fcparser import fcparser
 import sys, traceback
 import time
 import logging

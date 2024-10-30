@@ -11,6 +11,7 @@ from msnm.utils import dateutils
 import subprocess  # Para ejecutar monitor_v3.py
 
 
+
 class MonitorDataSource(Source):
     """
     *MonitorDataSource*. Contiene los métodos básicos para ejecutar `monitor_v3.py`, gestionar y parsear los datos generados.
@@ -27,7 +28,9 @@ class MonitorDataSource(Source):
         """
         try:
             with open(self.config_path, 'r') as file:
-                return yaml.safe_load(file)
+                config = yaml.safe_load(file)
+                logging.debug(f"Configuración cargada: {config}")  # Imprimir configuración cargada
+                return config
         except Exception as e:
             raise Exception(f"Error loading configuration file: {str(e)}")
 
@@ -102,11 +105,17 @@ class MonitorDataSourceThread(MSNMThread):
                 logging.info("Running monitor data source thread ...")
 
                 # Leer la configuración directamente desde el YAML cargado
-                script_path = self.config['DataSources']['local']['MonitorDataSource']['script_path']
-                log_folder = self.config['DataSources']['local']['MonitorDataSource']['log_folder']
-                parsed_folder = self.config['DataSources']['local']['MonitorDataSource']['parsed_folder']
-                monitoring_interval = self.config['DataSources']['local']['MonitorDataSource']['monitoring_interval']
-                ts = self.config['GeneralParams']['ts_monitoring_interval']
+                try:
+                    script_path = self.config['DataSources']['local']['MonitorDataSource']['script_path']
+                    log_folder = self.config['DataSources']['local']['MonitorDataSource']['log_folder']
+                    parsed_folder = self.config['DataSources']['local']['MonitorDataSource']['parsed_folder']
+                    monitoring_interval = self.config['DataSources']['local']['MonitorDataSource']['monitoring_interval']
+
+                    ts = self.config['GeneralParams']['ts_monitoring_interval']
+
+                except KeyError as e:
+                    logging.error(f"Key error accessing configuration: {e}")
+                    return  # O manejarlo de otra manera
 
                 # Ejecutar el script monitor_v3.py
                 logging.debug(f"Executing monitor_v3.py script at {script_path}")

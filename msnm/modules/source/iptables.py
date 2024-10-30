@@ -329,6 +329,7 @@ class IPTablesThread(MSNMThread):
 
         method_name = "run()"
 
+
         iptables_log = self.config.get_config()['DataSources'][self._iptables_instance._type][self._iptables_instance.__class__.__name__]['captures']
         iptables_log_raw_folder = self.rootDataPath + self.config.get_config()['DataSources'][self._iptables_instance._type][self._iptables_instance.__class__.__name__]['raw']
         iptables_log_processed_folder = self.rootDataPath + self.config.get_config()['DataSources'][self._iptables_instance._type][self._iptables_instance.__class__.__name__]['processed']
@@ -368,7 +369,7 @@ class IPTablesThread(MSNMThread):
 
                 # Flow parser
                 logging.debug("Running flow parser for %s file config.",iptables_flow_parser_config_file)
-                self._iptables_instance.launch_flow_parser(iptables_flow_parser_config_file)
+                self._iptables_instance(iptables_flow_parser_config_file)
 
                 # Add the *.dat output from parser to the dict of generated files
                 self._iptables_instance._files_generated[ts] = iptables_log_parsed_folder + "output-iptables_" + ts + ".dat"

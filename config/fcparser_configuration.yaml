@@ -37,11 +37,19 @@ DataSources:
     config: ../config/fcparser_netflow.yaml
     data: /home/roberto/data/sources/local/netflow/parsed/netflow_*.csv
 
+    monitor:
+      config: ../config/fcparser_monitor.yaml
+      data: /home/roberto/data/sources/local/netflow/parsed/monitor_*.csv
+
 Keys:  #Empty, so no aggregation is made. So, analyzed by timestamp
 
 Output:
   dir: /home/roberto/data/sources/local/netflow/parsed/
   stats: stats.log
+
+  Output:
+    dir: /home/roberto/data/sources/local/monitor/parsed/
+    stats: stats.log
 
 Deparsing_output:
 
