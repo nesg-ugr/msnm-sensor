@@ -101,15 +101,17 @@ class MonitorDataSourceThread(MSNMThread):
         method_name = "run()"
 
         try:
-            while not self._stopped_event.isSet():
+            
+            while True:
+            #while not self._stopped_event.is_set(): para la prueba obviar esto
                 logging.info("Running monitor data source thread ...")
 
                 # Leer la configuración directamente desde el YAML cargado
                 try:
-                    script_path = self.config['DataSources']['local']['MonitorDataSource']['script_path']
-                    log_folder = self.config['DataSources']['local']['MonitorDataSource']['log_folder']
-                    parsed_folder = self.config['DataSources']['local']['MonitorDataSource']['parsed_folder']
-                    monitoring_interval = self.config['DataSources']['local']['MonitorDataSource']['monitoring_interval']
+                    script_path = self.config['DataSources']['NoParser']['MonitorDataSource']['script_path']
+                    log_folder = self.config['DataSources']['NoParser']['MonitorDataSource']['log_folder']
+                    parsed_folder = self.config['DataSources']['NoParser']['MonitorDataSource']['parsed_folder']
+                    monitoring_interval = self.config['DataSources']['NoParser']['MonitorDataSource']['monitoring_interval']
 
                     ts = self.config['GeneralParams']['ts_monitoring_interval']
 
@@ -134,6 +136,7 @@ class MonitorDataSourceThread(MSNMThread):
                 # Parsear el archivo generado
                 monitor_parsed_file = os.path.join(parsed_folder, f"monitor_{ts}.csv")
                 self._monitor_instance.parse(monitor_log_file, monitor_parsed_file)
+
 
                 # Manejar el archivo CSV generado
                 logging.debug(f"Processed and saved parsed data to {monitor_parsed_file}")

@@ -1,0 +1,67 @@
+import argparse
+import csv
+from collections import defaultdict
+from sklearn.preprocessing import MinMaxScaler
+import pandas as pd
+
+def create_interval_counters(input_file, output_file):
+    # Leer el archivo CSV en un DataFrame de pandas, omitiendo la primera línea (cabeceras)
+    df = pd.read_csv(input_file, skiprows=1)
+
+    # Definir los intervalos de valores normalizados para cada columna
+    value_intervals = {}
+
+    # Normalizar los valores de cada columna y definir intervalos
+    scaler = MinMaxScaler()
+    for col in df.columns:
+        if df[col].dtype in ['int64', 'float64']:  # Solo para columnas numéricas
+            # Normalizar los valores de la columna actual entre 0 y 1
+            normalized_values = scaler.fit_transform(df[[col]])
+            # Definir los intervalos basados en los valores normalizados
+            intervals = [(0, 0.2), (0.2, 0.4), (0.4, 0.6), (0.6, 0.8), (0.8, 1.0)]
+            value_intervals[col] = intervals
+
+    # Inicializar los contadores por intervalo
+    interval_counters = {col: defaultdict(int) for col in value_intervals}
+
+    # Contar los valores por intervalo para cada columna
+    for col in value_intervals:
+        for value in df[col]:
+            normalized_value = scaler.transform([[value]])[0][0]
+            for interval in value_intervals[col]:
+                if interval[0] <= normalized_value < interval[1]:
+                    interval_counters[col][interval] += 1
+                    break
+
+    # Escribir los contadores por intervalo en un nuevo archivo CSV
+    with open(output_file, 'w', newline='') as csvfile:
+        fieldnames = ['columna', 'intervalo_inicio', 'intervalo_fin', 'contador']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+
+        for col in interval_counters:
+            for interval, count in interval_counters[col].items():
+                writer.writerow({
+                    'columna': col,
+                    'intervalo_inicio': interval[0],
+                    'intervalo_fin': interval[1],
+                    'contador': count
+                })
+
+    print(f"Transformación completada. Resultados guardados en {output_file}")
+
+# Función para manejar los argumentos de línea de comandos
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='Procesar datos de un archivo CSV y generar contadores por intervalo.')
+    parser.add_argument('input_file', type=str, help='Ruta al archivo CSV de entrada')
+    parser.add_argument('output_file', type=str, help='Ruta al archivo CSV de salida para los contadores por intervalo')
+    return parser.parse_args()
+
+# Ejemplo de uso
+if __name__ == '__main__':
+    args = parse_arguments()  # Parsear los argumentos de línea de comandos
+
+    input_file = args.input_file  # Ruta al archivo CSV de entrada
+    output_file = args.output_file  # Ruta al archivo CSV de salida
+
+    create_interval_counters(input_file, output_file)

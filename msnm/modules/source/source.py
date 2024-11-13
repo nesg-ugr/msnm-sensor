@@ -59,6 +59,7 @@ class Source(object):
         self.config = Configure()
         # Get root path for creating data files
         self.rootDataPath = self.config.get_config()['GeneralParams']['rootPath']
+      
 
     def parse(self,file_to_parse):
         """

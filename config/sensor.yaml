@@ -20,13 +20,13 @@ DataSources:
       # parser general config
       parserConfig: config/fcparser_configuration.yaml
       # parser netflow config
-      parserContents: config/fcparser_netflow.yaml
+      parserContents: ./config/fcparser_netflow.yaml
       # When True, tries to automatize start and stop nfcapd process
       nfcapdAutomatize: False
 
-
+NoParser:
     MonitorDataSource:
-      type: local
+      type: NoParsed
       # Module containing the local data source class for managing it
       moduleName: msnm.modules.source.MonitorDataSource
       # nfdump exported files (CSV)
@@ -34,6 +34,7 @@ DataSources:
       log_folder: "./msnm-sensor/data/sources/local/monitor/raw/"
       parsed_folder: "data/sources/local/monitor/parsed/"
       monitoring_interval: 10
+      parserContents: ./config/monitor.yaml
 
 
 
@@ -103,7 +104,7 @@ Sensor:
       #ip: 127.0.0.1
       #port: 9005
 
-  GeneralParams:
+GeneralParams:
     # root files path - All created folders are under this one
     rootPath: ./
     # Date formats
