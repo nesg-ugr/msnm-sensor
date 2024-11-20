@@ -29,7 +29,7 @@ class MonitorDataSource(Source):
         try:
             with open(self.config_path, 'r') as file:
                 config = yaml.safe_load(file)
-                logging.debug(f"Configuración cargada: {config}")  # Imprimir configuración cargada
+                #logging.debug(f"Configuración cargada: {config}")  # Imprimir configuración cargada
                 return config
         except Exception as e:
             raise Exception(f"Error loading configuration file: {str(e)}")
@@ -102,16 +102,17 @@ class MonitorDataSourceThread(MSNMThread):
 
         try:
             
-            while True:
-            #while not self._stopped_event.is_set(): para la prueba obviar esto
+            while True: #TODO cambiar para que funcione el isset
+            #while not self._stopped_event.is_set():
                 logging.info("Running monitor data source thread ...")
-
+                
                 # Leer la configuración directamente desde el YAML cargado
                 try:
-                    script_path = self.config['DataSources']['NoParser']['MonitorDataSource']['script_path']
-                    log_folder = self.config['DataSources']['NoParser']['MonitorDataSource']['log_folder']
-                    parsed_folder = self.config['DataSources']['NoParser']['MonitorDataSource']['parsed_folder']
-                    monitoring_interval = self.config['DataSources']['NoParser']['MonitorDataSource']['monitoring_interval']
+
+                    script_path = self.config['NoParser']['MonitorDataSource']['script_path']
+                    log_folder = self.config['NoParser']['MonitorDataSource']['log_folder']
+                    parsed_folder = self.config['NoParser']['MonitorDataSource']['parsed_folder']
+                    monitoring_interval = self.config['NoParser']['MonitorDataSource']['monitoring_interval']
 
                     ts = self.config['GeneralParams']['ts_monitoring_interval']
 
@@ -121,11 +122,13 @@ class MonitorDataSourceThread(MSNMThread):
 
                 # Ejecutar el script monitor_v3.py
                 logging.debug(f"Executing monitor_v3.py script at {script_path}")
-                process = subprocess.Popen(['python3', script_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                process = subprocess.Popen(['python', script_path, str(monitoring_interval)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
                 stdout, stderr = process.communicate()
 
                 if process.returncode != 0:
-                    logging.error(f"Error executing monitor_v3.py: {stderr.decode().strip()}")
+                    logging.error(f"Error executing monitor_v3.py: {stderr.decode('cp1252').strip()}")
+
                     continue
 
                 # Guardar la salida en un archivo

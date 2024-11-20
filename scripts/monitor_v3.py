@@ -107,7 +107,7 @@ def start_monitoring(interval, output_directory):
 
 
 if __name__ == '__main__':
-    DEFAULT_OUTPUT_DIRECTORY = "..msnm-sensor/sources/data/local/monitor"
+    DEFAULT_OUTPUT_DIRECTORY = "./data/sources/local/monitor/raw/" #TODO Que esta ruta venga del sensor.yaml y no este hardocedada
 
     parser = argparse.ArgumentParser()
     parser.add_argument('interval', type=int, help='Sample time to monitor in minutes.')
