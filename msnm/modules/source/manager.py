@@ -255,7 +255,8 @@ class SourceManagerMasterThread(MSNMThread):
             c_interval = 1
 
             # Doing until stop request
-            while not self._stopped_event.isSet():
+            while True: #TODO Apañar esto
+            #while not self._stopped_event.isSet():
 
                 # init of the monitoring interval
                 t_init_interval = datetime.now()

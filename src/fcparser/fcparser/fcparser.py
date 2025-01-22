@@ -23,7 +23,7 @@ import shutil
 import yaml
 import subprocess
 
-from . import faaclib
+import faaclib
 
 def main(call='external',configfile=''):
 	
@@ -40,18 +40,18 @@ def main(call='external',configfile=''):
 	try:
 		parserConfig = getConfiguration(configfile)
 	except IOError:
-		print(("No such config file '%s'" %(configfile)))
+		print "No such config file '%s'" %(configfile)
 		exit(1)
 	except yaml.scanner.ScannerError as e:
-		print(("Incorrect config file '%s'" %(configfile)))
-		print((e.problem))
-		print((e.problem_mark))
+		print "Incorrect config file '%s'" %(configfile)
+		print e.problem
+		print e.problem_mark
 		exit(1)
 	try:
 		dataSources = parserConfig['DataSources']
 		output = parserConfig['Output']
 	except KeyError as e:
-		print(("Missing config key: %s" %(e.message)))
+		print "Missing config key: %s" %(e.message)
 		exit(1)
 
 
@@ -62,12 +62,12 @@ def main(call='external',configfile=''):
 			OUTDIR = OUTDIR + '/'
 	except (KeyError, TypeError):
 		OUTDIR = 'OUTPUT/'
-		print((" ** Default output directory: '%s'" %(OUTDIR)))
+		print " ** Default output directory: '%s'" %(OUTDIR)
 	try:
 		OUTSTATS = output['stats']
 	except (KeyError, TypeError):
 		OUTSTATS = 'stats.log'
-		print((" ** Default log file: '%s'" %(OUTSTATS)))
+		print " ** Default log file: '%s'" %(OUTSTATS)
 	try:
 		OUTW = output['weights']
 	except (KeyError, TypeError):
@@ -82,15 +82,15 @@ def main(call='external',configfile=''):
 			SOURCES[source]['CONFIG'] = getConfiguration(dataSources[source]['config'])
 			SOURCES[source]['FILES'] = glob.glob(dataSources[source]['data'])
 		except KeyError as e:
-			print(("Missing key '%s' in datasource '%s'." %(e.message, source)))
+			print "Missing key '%s' in datasource '%s'." %(e.message, source)
 			exit(1)
 		except IOError:
-			print(("No such config file '%s'" %(dataSources[source]['config'])))
+			print "No such config file '%s'" %(dataSources[source]['config'])
 			exit(1)
 		except yaml.scanner.ScannerError as e:
-			print(("Incorrect config file '%s'" %(dataSources[source]['config'])))
-			print((e.problem))
-			print((e.problem_mark))
+			print "Incorrect config file '%s'" %(dataSources[source]['config'])
+			print e.problem
+			print e.problem_mark
 			exit(1)
 	try:
 		Keys = parserConfig['Keys']
@@ -110,7 +110,7 @@ def main(call='external',configfile=''):
 				SEPARATOR[source] = SOURCES[source]['CONFIG']['separator']	
 
 	except KeyError as e:
-		print(("Missing config key: %s" %(e.message)))
+		print "Missing config key: %s" %(e.message)
 		exit(1)
 
 	# Preprocessing nfcapd files to obtain csv files.
@@ -136,45 +136,45 @@ def main(call='external',configfile=''):
 	# If there are split parameters, perform split procedure
 	if not (parserConfig['SPLIT']['Time']['window'] == None or parserConfig['SPLIT']['Time']['start'] == None or parserConfig['SPLIT']['Time']['end'] == None):
 		
-		print("\n\nSPLITTING DATA\n\n")
+		print "\n\nSPLITTING DATA\n\n"
 		retcode = subprocess.call("python "+ os.path.dirname(__file__) +"/splitData.py "+ configfile, shell=True)
 
 		if retcode == 0:
 			pass  # No exception, all is good!
 		else:
-			print("Error splitting data")
+			print "Error splitting data"
 			exit(1)
 		
 		for source in dataSources:
 		 	SOURCES[source]['FILES'] = glob.glob(str(parserConfig['SPLIT']['Output']) + source + "*" )
 
 	else:
-		print("\n\n**WARNING**: No split configuration, or split missconfiguration\n\n")
+		print "\n\n**WARNING**: No split configuration, or split missconfiguration\n\n"
 
 
 
 	# Print a summary of loaded parameters
-	print("-----------------------------------------------------------------------")
-	print("Data Sources:")
+	print "-----------------------------------------------------------------------"
+	print "Data Sources:"
 	for source in SOURCES:
-		print((" * %s %s variables   %s features" %((source).ljust(18), str(len(SOURCES[source]['CONFIG']['VARIABLES'])).ljust(2), str(len(SOURCES[source]['CONFIG']['FEATURES'])).ljust(3))))
-	print((" TOTAL %s features" %(str(sum(len(l) for l in list(FEATURES.values()))))))
-	print()
-	print("Key:") 	
+		print " * %s %s variables   %s features" %((source).ljust(18), str(len(SOURCES[source]['CONFIG']['VARIABLES'])).ljust(2), str(len(SOURCES[source]['CONFIG']['FEATURES'])).ljust(3))
+	print " TOTAL %s features" %(str(sum(len(l) for l in FEATURES.itervalues())))
+	print
+	print "Key:" 	
 	aggrStr = ', '.join(Keys) if isinstance(Keys,list) else Keys
-	print(aggrStr)
-	print()
-	print("Output:")
-	print(("  Directory: %s" %(OUTDIR)))
-	print(("  Stats file: %s" %(OUTSTATS)))
-	print(("  Weights file: %s" %(OUTW)))
-	print("-----------------------------------------------------------------------\n")
+	print aggrStr
+	print
+	print "Output:"
+	print "  Directory: %s" %(OUTDIR)
+	print "  Stats file: %s" %(OUTSTATS)
+	print "  Weights file: %s" %(OUTW)
+	print "-----------------------------------------------------------------------\n"
 	
 
 	# Create output directory
 	if not os.path.exists(OUTDIR):
 		os.mkdir(OUTDIR)
-		print(("** creating directory %s" %(OUTDIR)))
+		print "** creating directory %s" %(OUTDIR)
 
 
 	# Create log files
@@ -197,8 +197,8 @@ def main(call='external',configfile=''):
 			try:	
 				features.append(feat['name'])
 			except:
-				print(("FEATURES: missing config key (%s)" %(e.message)))
-				print((FEATURES[source][i]))
+				print "FEATURES: missing config key (%s)" %(e.message)
+				print FEATURES[source][i]
 				exit(1)				
 			try:
 				weigthts.append(str(feat['weight']))
@@ -256,19 +256,19 @@ def main(call='external',configfile=''):
 	# in order to calculate a percentage of used entries.
 		unused_lines = 0 
 		for source in unused_sources:
-			if source in list(lines.keys()):				
+			if source in lines.keys():				
 				unused_lines += lines[source]
 
 
 
 		if unused_sources:
-			print("\n\n###################################################################################################")
-			print("                                                                                                       ")
-			print("                   WARNING: DATASOURCES UNUSED DUE TO CHOOSEN KEY                                      ")
-			print(("                   UNUSED DATASOURCES:     " +str(unused_sources) +"                                   "))
-			print(("                   PERCENTAGE OF USED ENRIES: " +str(float(total_lines - unused_lines)*100/total_lines))) 
-			print("                                                                                                       ")
-			print("###################################################################################################\n\n")
+			print "\n\n###################################################################################################"
+			print "                                                                                                       "
+			print "                   WARNING: DATASOURCES UNUSED DUE TO CHOOSEN KEY                                      "
+			print "                   UNUSED DATASOURCES:     " +str(unused_sources) +"                                   "
+			print "                   PERCENTAGE OF USED ENRIES: " +str(float(total_lines - unused_lines)*100/total_lines) 
+			print "                                                                                                       "
+			print "###################################################################################################\n\n"
 			
 
 			statsLine = "#------------------------------------------------\n"
@@ -308,8 +308,8 @@ def main(call='external',configfile=''):
 
 		currentTime = time.time()
 
-		print("\n-----------------------------------------------------------------------\n")
-		print(("Elapsed: %s \n" %(prettyTime(currentTime - startTime))))	
+		print "\n-----------------------------------------------------------------------\n"
+		print "Elapsed: %s \n" %(prettyTime(currentTime - startTime))	
 
 		# Iterate through files.
 
@@ -323,7 +323,7 @@ def main(call='external',configfile=''):
 				tag = getTag(input_path)
 
 				# Print some progress stats
-				print(("%s  #%s / %s  %s" %(source, str(count), str(len(SOURCES[source]['FILES'])), tag)))	
+				print "%s  #%s / %s  %s" %(source, str(count), str(len(SOURCES[source]['FILES'])), tag)	
 				
 				# Loop for structured sources
 				if STRUCTURED[source]:
@@ -341,7 +341,7 @@ def main(call='external',configfile=''):
 					try:
 						obsBatch = faaclib.ObservationBatch()
 					except faaclib.ConfigError as e:
-						print((e.msg))
+						print e.msg
 						exit(1)
 
 					while line:
@@ -370,7 +370,7 @@ def main(call='external',configfile=''):
 						try:
 							obsBatch = faaclib.ObservationBatch()
 						except faaclib.ConfigError as e:
-							print((e.msg))
+							print e.msg
 							exit(1)
 
 						# Now, reading logs instead of lines, read until separator		
@@ -457,7 +457,7 @@ def main(call='external',configfile=''):
 			out_observations[tag]={}
 
 		for source in OBSERVATIONS:
-			if tag in list(OBSERVATIONS[source].keys()):
+			if tag in OBSERVATIONS[source].keys():
 
 				# if the tag is alreaady added to the diccionary aggregate the observations
 				if tag in out_observations:
@@ -497,7 +497,7 @@ def main(call='external',configfile=''):
 
 	if not (parserConfig['SPLIT']['Time']['window'] == None or parserConfig['SPLIT']['Time']['start'] == None or parserConfig['SPLIT']['Time']['end'] == None):
 
-		print("\n\n\nRemoving temporal files...")
+		print "\n\n\nRemoving temporal files..."
 		shutil.rmtree(parserConfig['SPLIT']['Output'], ignore_errors=True)
 	
 	if delete_nfcsv:
@@ -507,16 +507,16 @@ def main(call='external',configfile=''):
 	# Write outputs
 	# ==============
 
-	print("\n-----------------------------------------------------------------------\n")
-	print("Writing outputs...\n")
-	print(("Elapsed: %s" %(prettyTime(time.time() - startTime))))
+	print "\n-----------------------------------------------------------------------\n"
+	print "Writing outputs...\n"
+	print "Elapsed: %s" %(prettyTime(time.time() - startTime))
 
 
 	if not Keys:
 
 		# Write headers file with features.
 		outstream = open(OUTDIR + 'headers.dat', 'w')
-		next(iter(list(out_observations.values()))).writeLabels(outstream)
+		out_observations.itervalues().next().writeLabels(outstream)
 		outstream.close()
 		
 		# Write observation arrays
@@ -527,13 +527,13 @@ def main(call='external',configfile=''):
 				out_observations[tag].writeValues(outstream)
 				outstream.close()
 			else:
-				print(("  Aggregate %s(EMPTY-OUTPUT)" %("".ljust(32))))
+				print "  Aggregate %s(EMPTY-OUTPUT)" %("".ljust(32))
 
 	else:
 
 		# Write headers file with features.
 		outstream = open(OUTDIR + 'headers.dat', 'w')
-		next(iter(list(out_observations.values()))).next(itervalues()).writeLabels(outstream)
+		out_observations.itervalues().next().itervalues().next().writeLabels(outstream)
 		outstream.close()
 
 		# Write observation arrays		
@@ -552,14 +552,14 @@ def main(call='external',configfile=''):
 				outstream.close()
 
 
-	print("\n-----------------------------------------------------------------------\n")
-	print(("Finished: " + str(count_total) + " files analyzed "))
+	print "\n-----------------------------------------------------------------------\n"
+	print "Finished: " + str(count_total) + " files analyzed "
 
 
 
 	# 5. Write stats
 
-	print("Writing stats...\n")
+	print "Writing stats...\n"
 
 	total_lines = 0
 	total_unused_lines = 0
@@ -580,7 +580,7 @@ def main(call='external',configfile=''):
 	statsStream.write( "TOTAL -->  lines: "+ str(total_lines) + ", unused_lines: " + str(total_unused_lines) + ", files: " + str(total_files))
 	statsStream.close()
 
-	print(("Elapsed: %s" %(prettyTime(time.time() - startTime))))
+	print "Elapsed: %s" %(prettyTime(time.time() - startTime))
 
 
 
@@ -635,7 +635,7 @@ def prettyTime(elapsed):
 
 
 def getConfiguration(config_file):
-	stream = open(config_file, 'r')
+	stream = file(config_file, 'r')
 	conf = yaml.load(stream)
 	stream.close()
 	return conf

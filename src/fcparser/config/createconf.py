@@ -34,7 +34,7 @@ def main(call='external',jsonfile='',yamlfile='',structured='True',tformat='%m/%
     		with open(jsonfile, 'r') as f:
 			datastore = json.load(f)
 	except:
-    		print("File " + jsonfile +  " could not be open.")
+    		print "File " + jsonfile +  " could not be open."
     		quit()
 
 	# select the features according to the counts
@@ -105,7 +105,7 @@ def main(call='external',jsonfile='',yamlfile='',structured='True',tformat='%m/%
 		stream .write('\n\n')
 		yaml.dump(contentf, stream, default_flow_style=False)
 	except:
-    		print("Problem writing " + yamlfile)
+    		print "Problem writing " + yamlfile
     		quit()
 
 	

@@ -34,19 +34,19 @@ def main():
 	try:
 		deParserConfig = getConfiguration(args.config)
 	except IOError:
-		print("No such config file '%s'" %(args.config))
+		print "No such config file '%s'" %(args.config)
 		exit(1)
 	except yaml.scanner.ScannerError as e:
-		print("Incorrect config file '%s'" %(args.config))
-		print(e.problem)
-		print(e.problem_mark)
+		print "Incorrect config file '%s'" %(args.config)
+		print e.problem
+		print e.problem_mark
 		exit(1)
 	try:
 		dataSources = deParserConfig['DataSources']
 		output = deParserConfig['Deparsing_output']
 		threshold = output['threshold']
 	except KeyError as e:
-		print("Missing config key: %s" %(e.message))
+		print "Missing config key: %s" %(e.message)
 		exit(1)
 
 	# Sources settings	
@@ -80,7 +80,7 @@ def main():
 					delete_nfcsv = out_files
 
 		except:
-			print("Configuration file load error") 
+			print "Configuration file load error" 
 			exit(1)
 
 		# try:
@@ -103,14 +103,14 @@ def main():
  			try:
 				FEATURES[source][feature['name']] = feature
 			except:
-				print("Cofiguration file error: missing features")
+				print "Cofiguration file error: missing features"
 				exit(1)
 
  		for variable in sources_config[source]['VARIABLES']:
  			try:
 				VARIABLES[source][variable['name']] = variable
 			except:
-				print("Cofiguration file error: missing vriables")
+				print "Cofiguration file error: missing vriables"
 				exit(1)
 
 
@@ -134,24 +134,24 @@ def main():
 			OUTDIR = OUTDIR + '/'
 	except (KeyError, TypeError):
 		OUTDIR = 'OUTPUT/'
-		print(" ** Default output directory: '%s'" %(OUTDIR))
+		print " ** Default output directory: '%s'" %(OUTDIR)
 	try:
 		OUTSTATS = output['stats']
 	except (KeyError, TypeError):
 		OUTSTATS = 'stats.log'
-		print(" ** Default log file: '%s'" %(OUTSTATS))
+		print " ** Default log file: '%s'" %(OUTSTATS)
 
 	# Create output directory and file
 
 	if not os.path.exists(OUTDIR):
 		os.mkdir(OUTDIR)
-		print("** creating directory %s" %(OUTDIR))
+		print "** creating directory %s" %(OUTDIR)
 
 	try:
 		for source in dataSources:
 			open(OUTDIR + "output_" + tags[source],'w') 
 	except:
-		print("error creating output file")
+		print "error creating output file"
 		exit(1)
 
 
@@ -160,7 +160,7 @@ def main():
 	try:
 		input_file = open(args.input, 'r')
 	except IOError:
-		print("No such input file '%s'" %(args.input))
+		print "No such input file '%s'" %(args.input)
 		exit(1)
 
 
@@ -174,12 +174,12 @@ def main():
 					stream.close()
 
 				except IOError:
-					print("No such config file '%s'" %(source_file))
+					print "No such config file '%s'" %(source_file)
 					exit(1)
 	
 
 	#reverse tag dictionary to map tags into datasource files.
-	inverse_tags = {v: k for k, v in list(tags.items())}
+	inverse_tags = {v: k for k, v in tags.items()}
 	
 	#Extract features and timestams from the input file.
 	line = input_file.readline()
@@ -214,25 +214,25 @@ def main():
 
 
 	# Print a summary of loaded parameters
-	print("------------------------------------------------------------------------")
-	print("Data Sources:")
+	print "------------------------------------------------------------------------"
+	print "Data Sources:"
 	for source in sources_files:
-				print("	- " + str(tags[source]) + " --> Files: " + str(sources_files[source]['files']))
+				print "	- " + str(tags[source]) + " --> Files: " + str(sources_files[source]['files'])
 
-	print("FEATURES:")
-	print(" TOTAL " + (str(len(features))) + " features:  \n" + str(features) + "\n")
-	print("------------------------------------------------------------------------\n")
+	print "FEATURES:"
+	print " TOTAL " + (str(len(features))) + " features:  \n" + str(features) + "\n"
+	print "------------------------------------------------------------------------\n"
 
-	print("TIMESTAMPS")
-	print(" TOTAL " + (str(len(timestamps))) + " timestamps:  \n" + str(timestamps) + "\n")
-	print("------------------------------------------------------------------------\n")
+	print "TIMESTAMPS"
+	print " TOTAL " + (str(len(timestamps))) + " timestamps:  \n" + str(timestamps) + "\n"
+	print "------------------------------------------------------------------------\n"
 	
-	print("Output:")
-	print("  Directory: %s" %(OUTDIR))
-	print("  Stats file: %s" %(OUTSTATS))
-	print("\n------------------------------------------------------------------------\n")
-	print("Elapsed: %s" %(prettyTime(time.time() - startTime)))
-	print("\n------------------------------------------------------------------------\n")
+	print "Output:"
+	print "  Directory: %s" %(OUTDIR)
+	print "  Stats file: %s" %(OUTSTATS)
+	print "\n------------------------------------------------------------------------\n"
+	print "Elapsed: %s" %(prettyTime(time.time() - startTime))
+	print "\n------------------------------------------------------------------------\n"
 
 
 
@@ -241,7 +241,7 @@ def main():
 		sample_rate = deParserConfig['SPLIT']['Time']['window']
 
 	except:
-		print("Error configuration file: SPLIT")
+		print "Error configuration file: SPLIT"
 
 	if not (sample_rate == 60  or sample_rate == None):
 		temp = []
@@ -318,7 +318,7 @@ def main():
 	# iterate through features and timestams
 	if features:
 		for source in dataSources:
-			print(source)
+			print source
 			
 			count_source = 0
 			tag = tags[source]
@@ -477,9 +477,9 @@ def main():
 					input_file.close()
 				output_file.close()
 
-			print("\n---------------------------------------------------------------------------\n")
-			print("Elapsed: %s" %(prettyTime(time.time() - startTime)))
-			print("\n---------------------------------------------------------------------------\n")
+			print "\n---------------------------------------------------------------------------\n"
+			print "Elapsed: %s" %(prettyTime(time.time() - startTime))
+			print "\n---------------------------------------------------------------------------\n"
 
 	stats( count_structured, count_unstructured, OUTDIR, OUTSTATS, startTime)
 
@@ -490,13 +490,13 @@ def main():
 def stats( count_structured, count_unstructured, OUTDIR, OUTSTATS, startTime):
 
 	# Print stats
-	print("\n---------------------------------------------------------------------------")	
-	print("\nSearch finished:")
-	print("Elapsed: %s" %(prettyTime(time.time() - startTime)))
+	print "\n---------------------------------------------------------------------------"	
+	print "\nSearch finished:"
+	print "Elapsed: %s" %(prettyTime(time.time() - startTime))
 	# print "\n Nfdump queries: " + str(count_nf)
-	print(" Structured logs found:  " + str(count_structured))
-	print(" Unstructured logs found: " + str(count_unstructured))
-	print("\n---------------------------------------------------------------------------\n")
+	print " Structured logs found:  " + str(count_structured)
+	print " Unstructured logs found: " + str(count_unstructured)
+	print "\n---------------------------------------------------------------------------\n"
 
 	# Write stats in stats.log file.
 	try:
@@ -508,7 +508,7 @@ def stats( count_structured, count_unstructured, OUTDIR, OUTSTATS, startTime):
 		stats_file.write(" Unstructured logs found: " + str(count_unstructured))
 
 	except IOError as e:
-		print("Stats file error: " + e.msg())
+		print "Stats file error: " + e.msg()
 
 
 
@@ -558,7 +558,7 @@ def search_feature(FEATURES,VARIABLES,logExtract,features,source):
 	list_timetamps = []
 	varBol = False		
 
-	for feature in list(FEATURES[source].keys()):	
+	for feature in FEATURES[source].keys():	
 		if feature in features:			
 
 			fVariable = FEATURES[source][feature]['variable']

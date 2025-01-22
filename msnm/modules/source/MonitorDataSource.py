@@ -7,6 +7,7 @@ from datetime import datetime
 from msnm.modules.source.source import Source
 from msnm.modules.thread.thread import MSNMThread
 from msnm.exceptions.msnm_exception import DataSourceError
+from msnm.modules.config.configure import Configure
 from msnm.utils import dateutils
 import subprocess  # Para ejecutar monitor_v3.py
 
@@ -17,22 +18,13 @@ class MonitorDataSource(Source):
     *MonitorDataSource*. Contiene los métodos básicos para ejecutar `monitor_v3.py`, gestionar y parsear los datos generados.
     """
 
-    def __init__(self, config_path='sensor.yaml'):
-        super(MonitorDataSource, self).__init__()
-        self.config_path = config_path
-        self.config = self._load_config()
 
-    def _load_config(self):
-        """
-        Carga el archivo de configuración YAML.
-        """
-        try:
-            with open(self.config_path, 'r') as file:
-                config = yaml.safe_load(file)
-                #logging.debug(f"Configuración cargada: {config}")  # Imprimir configuración cargada
-                return config
-        except Exception as e:
-            raise Exception(f"Error loading configuration file: {str(e)}")
+
+    def __init__(self):
+        super(MonitorDataSource, self).__init__()
+        self.config = Configure()
+        
+
 
     def parse(self, file_to_parse, file_parsed, **kwargs):
         """
@@ -95,7 +87,8 @@ class MonitorDataSourceThread(MSNMThread):
     def __init__(self, monitor_instance):
         super(MonitorDataSourceThread, self).__init__()
         self._monitor_instance = monitor_instance
-        self.config = self._monitor_instance.config  # Configuración cargada desde sensor.yaml
+        self.config = self._monitor_instance.config # Configuración cargada desde sensor.yaml
+
 
     def run(self):
         method_name = "run()"
@@ -108,14 +101,14 @@ class MonitorDataSourceThread(MSNMThread):
                 
                 # Leer la configuración directamente desde el YAML cargado
                 try:
+                    script_path = self.config.get_config()['DataSources']['local']['MonitorDataSource']['script_path']
+                    log_folder = self.config.get_config()['DataSources']['local']['MonitorDataSource']['raw']
+                    parsed_folder = self.config.get_config()['DataSources']['local']['MonitorDataSource']['processed']
+                    monitoring_interval = self.config.get_config()['DataSources']['local']['MonitorDataSource']['monitoring_interval']
 
-                    script_path = self.config['NoParser']['MonitorDataSource']['script_path']
-                    log_folder = self.config['NoParser']['MonitorDataSource']['log_folder']
-                    parsed_folder = self.config['NoParser']['MonitorDataSource']['parsed_folder']
-                    monitoring_interval = self.config['NoParser']['MonitorDataSource']['monitoring_interval']
+                    ts = self.config.get_config()['GeneralParams']['ts_monitoring_interval']
 
-                    ts = self.config['GeneralParams']['ts_monitoring_interval']
-
+                 
                 except KeyError as e:
                     logging.error(f"Key error accessing configuration: {e}")
                     return  # O manejarlo de otra manera

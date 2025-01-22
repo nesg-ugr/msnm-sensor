@@ -51,7 +51,7 @@ def main(config_file):
 
         # Logging config
         logging.config.dictConfig(
-            yaml.load(open(sensor_config_params.get_config()['GeneralParams']['logConfigFile'], 'r')))
+            yaml.load(open(sensor_config_params.get_config()['GeneralParams']['logConfigFile'], 'r'),Loader=yaml.FullLoader))
     except ConfigError as ece:
         exc_type, exc_value, exc_traceback = sys.exc_info()
         traceback.print_exception(exc_type, exc_value, exc_traceback, limit=10, file=sys.stdout)
@@ -120,7 +120,6 @@ def main(config_file):
             logging.debug("Loading %s local sources %s.", len(src_local), list(src_local.keys()))
 
             for i in list(src_local.keys()):
-
                 # Create the associated directories
                 if not os.path.exists(rootDataPath + src_local[i]['raw']):
                     os.makedirs(rootDataPath + src_local[i]['raw'])

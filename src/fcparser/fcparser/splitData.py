@@ -20,10 +20,10 @@ def main():
 	try:
 		parserConfig = getConfiguration(args.config)
 	except IOError:
-		print("No such config file '%s'" %(args.config))
+		print "No such config file '%s'" %(args.config)
 		exit(1)
 	except yaml.scanner.ScannerError as e:
-		print("Incorrect config file '%s' (%s)" %(args.config, e.message))
+		print "Incorrect config file '%s' (%s)" %(args.config, e.message)
 		exit(1)
 	try:
 		timeWindow = timedelta(seconds=int(parserConfig['SPLIT']['Time']['window']))
@@ -32,16 +32,16 @@ def main():
 
 
 	except KeyError as e:
-		print("Missing config key (%s)" %(e.message))
+		print "Missing config key (%s)" %(e.message)
 		exit(1)
 	except ValueError as e:
-		print("Incorrect value (%s)" %(e.message))
+		print "Incorrect value (%s)" %(e.message)
 		exit(1)
 	if not isinstance(startTime, datetime):
-		print("Incorrect time format: '%s'" %(startTime))
+		print "Incorrect time format: '%s'" %(startTime)
 		exit(1)
 	if not isinstance(endTime, datetime):
-		print("Incorrect time format: '%s'" %(endTime))
+		print "Incorrect time format: '%s'" %(endTime)
 		exit(1)
 	
 	data = {}
@@ -49,7 +49,7 @@ def main():
 
 	for source in parserConfig['DataSources']:
 		data[source] = {}
-		print(source)
+		print source
 		
 		try:
 			config = getConfiguration(parserConfig['DataSources'][source]['config'])
@@ -67,10 +67,10 @@ def main():
 				data[source]['col'] = config['timearg']
 
 		except KeyError as e:
-			print("Missing config key in %s (%s)" %(source, e.message))
+			print "Missing config key in %s (%s)" %(source, e.message)
 			exit(1)
 		except ValueError as e:
-			print("Incorrect value in %s (%s)" %(source, e.message))
+			print "Incorrect value in %s (%s)" %(source, e.message)
 			exit(1)
 		try:
 			data[source]['prefix'] = parserConfig['DataSources'][source]['prefix']
@@ -78,11 +78,11 @@ def main():
 			data[source]['prefix'] = source
 	
 
-	print("-----------------------------------------------------------------------")
-	print(" Start:  %s" %(startTime))
-	print(" End:    %s" %(endTime))
-	print(" Window: %s" %(timeWindow))
-	print("-----------------------------------------------------------------------")
+	print "-----------------------------------------------------------------------"
+	print " Start:  %s" %(startTime)
+	print " End:    %s" %(endTime)
+	print " Window: %s" %(timeWindow)
+	print "-----------------------------------------------------------------------"
 
 	
 	# Create time bins
@@ -99,13 +99,13 @@ def main():
 		#os.mkdir(outputDir)
 		os.makedirs(outputDir)
 		if args.verbose:
-			print("** creating directory %s" %(outputDir))
+			print "** creating directory %s" %(outputDir)
 
 	# Split data
 	inputFiles = {}
 	prefix = {}
 	for source in data:
-		print("SOURCE: %s" %(source))
+		print "SOURCE: %s" %(source)
 	
 		try:
 			inputFiles[source] = glob.glob(data[source]['input'])
@@ -125,13 +125,13 @@ def main():
 		if inputFiles[source] == []:
 			data.pop(source)		
 
-	print(startTime)
+	print startTime
 	current_year = startTime.year
 	# Process of splitting 
 
 	for source in data:
 
-		print(source + ":")
+		print source + ":"
 
 		filecount = 0
 		for path in inputFiles[source]:
@@ -141,7 +141,7 @@ def main():
 				instream = open(path,'r')
 
 			filecount += 1
-			print("# %s/%s << %s" %(filecount, len(inputFiles[source]), os.path.split(path)[1]))
+			print "# %s/%s << %s" %(filecount, len(inputFiles[source]), os.path.split(path)[1])
 
 			if data[source]['struc']:
 				linecount = 0
@@ -160,7 +160,7 @@ def main():
 								openedStreams[pos] = open(outputFile, 'a')
 								order.append(pos)
 								if args.verbose:
-									print("   >> %s" %(os.path.split(outputFile)[1]))
+									print "   >> %s" %(os.path.split(outputFile)[1])
 								if len(openedStreams) > 500:
 									old = order[0]
 									openedStreams[old].close()
@@ -172,8 +172,8 @@ def main():
 					line = instream.readline()
 
 
-				print("   Exported %d lines" %(linecount))
-				print("   Elapsed: %s" %(prettyTime(time.time() - init)))
+				print "   Exported %d lines" %(linecount)
+				print "   Elapsed: %s" %(prettyTime(time.time() - init))
 
 			else:
 
@@ -205,7 +205,7 @@ def main():
 									order.append(pos)
 
 									if args.verbose:
-										print("   >> %s" %(os.path.split(outputFile)[1]))
+										print "   >> %s" %(os.path.split(outputFile)[1])
 									if len(openedStreams) > 500:
 										old = order[0]
 										openedStreams[old].close()
@@ -238,8 +238,8 @@ def main():
 					openedStreams[pos].write(log)
 					logcount += 1
 
-				print("   Exported %d logs" %(logcount))
-				print("   Elapsed: %s" %(prettyTime(time.time() - init)))
+				print "   Exported %d logs" %(logcount)
+				print "   Elapsed: %s" %(prettyTime(time.time() - init))
 
 		for s in openedStreams:
 			openedStreams[s].close()

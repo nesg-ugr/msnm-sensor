@@ -72,22 +72,23 @@ def generate_csv(output_directory):
     ts = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
     filename = os.path.join(output_directory, f"output_{ts}.csv")
 
-    head = [
-        "ts", "s_mem_available", "s_mem_used", "s_mem_free",
-        "s_swap_used", "s_swap_free", "s_swap_percent",
-        "s_disk_usage_used", "s_disk_usage_free", "s_disk_usage_percent",
-        "s_io_counters_read", "s_io_counters_write", "s_io_counters_read_bytes", "s_io_counters_write_bytes",
-        "s_io_counters_read_time", "s_io_counters_write_time", "s_syscalls_ctx_switches", "s_syscalls_interrupts",
-        "s_syscalls_soft_interrupts", "s_syscalls_syscalls", "s_cpu_percent"
-    ]
+    # head = [
+    #  "ts", "s_mem_available", "s_mem_used", "s_mem_free",
+    #  "s_swap_used", "s_swap_free", "s_swap_percent",
+    #   "s_disk_usage_used", "s_disk_usage_free", "s_disk_usage_percent",
+    #   "s_io_counters_read", "s_io_counters_write", "s_io_counters_read_bytes", "s_io_counters_write_bytes",
+    #   "s_io_counters_read_time", "s_io_counters_write_time", "s_syscalls_ctx_switches", "s_syscalls_interrupts",
+    #   "s_syscalls_soft_interrupts", "s_syscalls_syscalls", "s_cpu_percent"
+    #]
 
     with open(filename, "w", newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=head)
-        writer.writeheader()
-        writer.writerows(data_buffer)
+        writer = csv.writer(f)
+
+        for entry in data_buffer:
+            writer.writerow(entry.values())  # Escribir solo los valores del diccionario
 
     print(f"Fichero {filename} generado.")
-    data_buffer.clear()  # Clear the buffer after writing to CSV
+    data_buffer.clear()
 
 
 def start_monitoring(interval, output_directory):
@@ -96,10 +97,10 @@ def start_monitoring(interval, output_directory):
 
     :param interval: int, sample interval in minutes.
     """
-    schedule.every(1).seconds.do(read_data)
+    schedule.every(60).seconds.do(read_data) #TODO Que venga el dato del generalparams
     schedule.every(interval).minutes.do(generate_csv, output_directory)
 
-    print(f"Monitoring iniciado. Leyendo datos cada 1 segundo y generando fichero CSV cada {interval} minuto(s).")
+    print(f"Monitoring iniciado. Leyendo datos cada 60 segundo y generando fichero CSV cada {interval} minuto(s).")
 
     while True:
         schedule.run_pending()

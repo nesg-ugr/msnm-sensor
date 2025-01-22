@@ -34,6 +34,8 @@ class Netflow(Source):
         try:
             # Watch the new netflow generated files
             self._observer = Observer()
+            logging.debug("NetFlow capture folder path: %s", 
+              self.config.get_config()['DataSources'][self._type][self.__class__.__name__]['captures'])
             self._observer.schedule(event_handler, self.config.get_config()['DataSources'][self._type][self.__class__.__name__]['captures'], recursive=False)
             self._observer.setName("Netflow")
             self._observer.start()

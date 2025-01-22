@@ -547,9 +547,9 @@ class Observation(object):
 			# Show debug info
 			if debug:
 				if vType == 'regexp':
-					print(("%s%s %d" %(fName.ljust(25), (str(variable) + " == " + str("r'" + vValue + "'")).ljust(30), counter)))
+					print "%s%s %d" %(fName.ljust(25), (str(variable) + " == " + str("r'" + vValue + "'")).ljust(30), counter)
 				else:
-					print(("%s%s %d" %(fName.ljust(25), (str(variable) + " == " + str(vValue)).ljust(30), counter)))
+					print "%s%s %d" %(fName.ljust(25), (str(variable) + " == " + str(vValue)).ljust(30), counter)
 
 		# Manage default variables
 		for d in defaults:
@@ -725,7 +725,7 @@ class ObservationBatch(object):
 		"""
 		s = ""
 		if self.observations:
-			firstKey = list(self.observations.keys())[0]
+			firstKey = self.observations.keys()[0]
 			col1 = len(str(len(self.observations))) + 2
 			col2 = len(str(self.observations[firstKey].ID)) + 12
 			col3 = len(str(self.observations[firstKey].nObs)) + 5

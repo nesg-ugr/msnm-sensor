@@ -5,36 +5,36 @@
 
 DataSources:
   local:
-    Netflow:
+    MonitorDataSource:
       type: local
-      # Module containing the local data source class for managing it
-      moduleName: msnm.modules.source.netflow
-      # nfapd netflow captures
-      captures: /tmp/netflow_captures
-      # nfcapd netflow captures (a copyt of the previous ones)
-      raw: data/sources/local/netflow/raw/
-      # nfdump exported files (CSV)
-      processed: data/sources/local/netflow/processed/
-      # parser output
-      parsed: data/sources/local/netflow/parsed/
-      # parser general config
-      parserConfig: config/fcparser_configuration.yaml
-      # parser netflow config
-      parserContents: ./config/fcparser_netflow.yaml
-      # When True, tries to automatize start and stop nfcapd process
-      nfcapdAutomatize: False
-
-    NoParser:
-      MonitorDataSource:
-      type: NoParsed
       # Module containing the local data source class for managing it
       moduleName: msnm.modules.source.MonitorDataSource
       # nfdump exported files (CSV)
-      script_path: "./scripts/monitor_v3.py"
-      log_folder: "./data/sources/local/monitor/raw/"
-      parsed_folder: "data/sources/local/monitor/parsed/"
+      script_path: "scripts/monitor_v3.py"
+      raw: "data/sources/local/monitor/raw/"
+      processed: "data/sources/local/monitor/processed/"
+      parsed: "data/sources/local/monitor/parsed/"
       monitoring_interval: 1
-      parserContents: ./config/fcparser_monitor.yaml
+      parserContents: config/fcparser_monitor.yaml
+
+  #  Netflow:
+  #   type: local
+  #    # Module containing the local data source class for managing it
+  #    moduleName: msnm.modules.source.netflow
+  # nfapd netflow captures
+  #    captures: /tmp/netflow_captures
+  # nfcapd netflow captures (a copyt of the previous ones)
+  #    raw: data/sources/local/netflow/raw/
+  # nfdump exported files (CSV)
+  #    processed: data/sources/local/netflow/processed/
+  # parser output
+  #    parsed: data/sources/local/netflow/parsed/
+  # parser general config
+  #   parserConfig: config/fcparser_configuration.yaml
+  # parser netflow config
+  #    parserContents: ./config/fcparser_netflow.yaml
+  # When True, tries to automatize start and stop nfcapd process
+  #   nfcapdAutomatize: False
 
 Sensor:
   observation: data/monitoring/observation/
