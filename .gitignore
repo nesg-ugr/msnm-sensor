@@ -4,3 +4,5 @@
 .idea
 .spyproject
 settings.py
+data/
+logs/
