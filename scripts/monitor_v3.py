@@ -26,7 +26,9 @@ def read_data():
     """
     Read system monitoring data.
     """
-    ts = datetime.datetime.now()
+    #ts = datetime.datetime.now()
+    ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
+     # Formato actualizado
 
     s_mem_info = ps.virtual_memory()
     s_swap_info = ps.swap_memory()
@@ -35,7 +37,7 @@ def read_data():
     s_io_counters = ps.disk_io_counters()
 
     data = {
-        "ts": ts,
+        #"ts": ts,
         #"s_mem_total": s_mem_info.total,
         "s_mem_available": s_mem_info.available,
         "s_mem_used": s_mem_info.used,
@@ -70,7 +72,7 @@ def generate_csv(output_directory):
     Generate CSV with accumulated system monitoring data.
     """
     ts = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-    filename = os.path.join(output_directory, f"output_{ts}.csv")
+    filename = os.path.join(output_directory, f"monitor_.csv")
 
     # head = [
     #  "ts", "s_mem_available", "s_mem_used", "s_mem_free",

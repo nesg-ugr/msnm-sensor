@@ -10,6 +10,7 @@ from msnm.exceptions.msnm_exception import DataSourceError
 from msnm.modules.config.configure import Configure
 from msnm.utils import dateutils
 import subprocess  # Para ejecutar monitor_v3.py
+import shutil 
 
 
 
@@ -95,7 +96,7 @@ class MonitorDataSourceThread(MSNMThread):
 
         try:
             
-            while True: #TODO cambiar para que funcione el isset
+            #while True: #TODO cambiar para que funcione el isset
             #while not self._stopped_event.is_set():
                 logging.info("Running monitor data source thread ...")
                 
@@ -103,10 +104,11 @@ class MonitorDataSourceThread(MSNMThread):
                 try:
                     script_path = self.config.get_config()['DataSources']['local']['MonitorDataSource']['script_path']
                     log_folder = self.config.get_config()['DataSources']['local']['MonitorDataSource']['raw']
-                    parsed_folder = self.config.get_config()['DataSources']['local']['MonitorDataSource']['processed']
+                    processed_folder = self.config.get_config()['DataSources']['local']['MonitorDataSource']['processed']
+                    parsed_folder = self.config.get_config()['DataSources']['local']['MonitorDataSource']['parsed']
                     monitoring_interval = self.config.get_config()['DataSources']['local']['MonitorDataSource']['monitoring_interval']
 
-                    ts = self.config.get_config()['GeneralParams']['ts_monitoring_interval']
+                    
 
                  
                 except KeyError as e:
@@ -115,35 +117,50 @@ class MonitorDataSourceThread(MSNMThread):
 
                 # Ejecutar el script monitor_v3.py
                 logging.debug(f"Executing monitor_v3.py script at {script_path}")
-                process = subprocess.Popen(['python', script_path, str(monitoring_interval)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                #process = subprocess.Popen(['python', script_path, str(monitoring_interval)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-                stdout, stderr = process.communicate()
+                #stdout, stderr = process.communicate()
+                process = subprocess.Popen(['python', script_path, str(monitoring_interval)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                #stdout, stderr = process.communicate()
 
-                if process.returncode != 0:
-                    logging.error(f"Error executing monitor_v3.py: {stderr.decode('cp1252').strip()}")
+                #if process.returncode != 0:
+                    #logging.error(f"Error executing monitor_v3.py:")
 
-                    continue
+                    #continue
 
-                # Guardar la salida en un archivo
-                monitor_log_file = os.path.join(log_folder, f"monitor_{ts}.log")
-                with open(monitor_log_file, 'w') as log_file:
-                    log_file.write(stdout.decode().strip())
+                while True: #TODO cambiar para que funcione el isset
+                    original_csv_path = os.path.join(log_folder, "monitor_.csv")
+                    
+                    # Verificar si el archivo existe
+                    if os.path.exists(original_csv_path):
+                        ts = self.config.get_config()['GeneralParams']['ts_monitoring_interval'] 
+                        #ts = int(self.config.get_config()['GeneralParams']['ts_monitoring_interval']) - 1
+                        print(ts)
+                        # Nuevo nombre con timestamp
+                        renamed_csv_path = os.path.join(log_folder, f"monitor_{ts}.csv")
+                        
+                        # Renombrar el archivo
+                        os.rename(original_csv_path, renamed_csv_path)
+                        logging.info(f"Renamed CSV file: {renamed_csv_path}")
 
-                # Parsear el archivo generado
-                monitor_parsed_file = os.path.join(parsed_folder, f"monitor_{ts}.csv")
-                self._monitor_instance.parse(monitor_log_file, monitor_parsed_file)
+                        # Copiar el archivo a la carpeta parsed con formato .dat
+                        parsed_dat_path = os.path.join(parsed_folder, f"monitor_{ts}.dat")
+                        shutil.copy(renamed_csv_path, parsed_dat_path)
+                        logging.info(f"Copied CSV file to {parsed_dat_path} (DAT format)")
 
 
-                # Manejar el archivo CSV generado
-                logging.debug(f"Processed and saved parsed data to {monitor_parsed_file}")
+                         # Add the *.dat output from parser to the dict of generated files
+                        self._monitor_instance._files_generated[ts] = parsed_dat_path 
 
-                # Esperar antes de la siguiente ejecución
-                self._stopped_event.wait(monitoring_interval)
+
+
+                    # Esperar antes de la siguiente ejecución
+                    self._stopped_event.wait(monitoring_interval)
 
         except DataSourceError as edse:
-            logging.error("Error processing monitor data source: %s", edse.get_msg())
-            raise edse
+                logging.error("Error processing monitor data source: %s", edse.get_msg())
+                raise edse
         except Exception as e:
-            logging.error("General error in monitor data source thread: %s", str(e))
-            raise
+                logging.error("General error in monitor data source thread: %s", str(e))
+                raise
 

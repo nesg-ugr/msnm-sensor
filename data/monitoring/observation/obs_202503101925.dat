@@ -1,0 +1,2 @@
+#['mem_available', 'mem_used', 'mem_free', 'swap_total', 'swap_used', 'swap_percent', 'disk_used', 'disk_free', 'disk_used_percentage', 'counters_read', 'counters_write', 'counters_read_bytes', 'counters_write_bytes', 'counters_read_time', 'counters_write_bytes', 'syscalls_switches', 'syscalls_interrupts', 'syscalls_softinterrupts', 'syscalls_syscalls', 'cpu_percent']
+490.81667,501.10000,507.67667,484.89667,508.62667,526.52000,521.44667,503.74333,490.70333,499.75000,493.94667,525.93333,499.01000,477.22667,524.55333,477.38333,490.35667,491.41667,514.48000,524.97000

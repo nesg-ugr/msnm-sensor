@@ -9375,3 +9375,169 @@ KeyboardInterrupt
 2024-12-19 17:14:04,525 DEBUG - IntervalThread_5 - mod: manager, method: run, msg: Data sources not ready at interval 202412191713: ['MonitorDataSource']
 2024-12-19 17:14:05,526 DEBUG - IntervalThread_5 - mod: manager, method: run, msg: Data sources not ready at interval 202412191713: ['MonitorDataSource']
 2024-12-19 17:14:06,527 DEBUG - IntervalThread_5 - mod: manager, method: run, msg: Data sources not ready at interval 202412191713: ['MonitorDataSource']
+2025-03-10 19:25:44,960 WARNING - MainThread - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2025-03-10 19:25:44,961 DEBUG - MainThread - mod: datautils, method: getAllVarNames, msg: 20 variables found
+2025-03-10 19:25:44,967 DEBUG - MainThread - mod: model, method: calibrate, msg: UCLq obtained: 33.41336110851497
+2025-03-10 19:25:44,968 DEBUG - MainThread - mod: model, method: calibrate, msg: UCLd obtained: 9.0996303022771
+2025-03-10 19:25:44,969 INFO - MainThread - mod: datautils, method: model2json, msg: Packaging model json format.
+2025-03-10 19:25:45,003 INFO - MainThread - mod: datautils, method: save2json, msg: Saving json file in ./data/calibration/model_202503101925.json
+2025-03-10 19:25:45,277 DEBUG - MainThread - mod: msnmsensor, method: main, msg: UCLd = 9.0996303022771
+2025-03-10 19:25:45,277 DEBUG - MainThread - mod: msnmsensor, method: main, msg: UCLq = 33.41336110851497
+2025-03-10 19:25:45,277 DEBUG - MainThread - mod: msnmsensor, method: main, msg: Loading 1 local sources ['MonitorDataSource'].
+2025-03-10 19:25:45,284 INFO - MonitorDataSourceThread - mod: MonitorDataSource, method: run, msg: Running monitor data source thread ...
+2025-03-10 19:25:45,284 WARNING - MainThread - mod: msnmsensor, method: main, msg: There are no remote sources configured: 'remote'
+2025-03-10 19:25:45,284 DEBUG - MonitorDataSourceThread - mod: MonitorDataSource, method: run, msg: Executing monitor_v3.py script at scripts/monitor_v3.py
+2025-03-10 19:25:45,286 INFO - TCPServer - mod: networking, method: run, msg: Running the TCP server
+2025-03-10 19:25:45,286 INFO - MainThread - mod: datautils, method: sort_dictionary, msg: Sorting dict ...
+2025-03-10 19:25:45,286 INFO - MainThread - mod: datautils, method: sort_dictionary, msg: Ending sorting dict ...
+2025-03-10 19:25:45,287 INFO - SourceManagerMasterThread - mod: manager, method: run, msg: Running Source Master Manager ...
+2025-03-10 19:25:45,287 INFO - IntervalThread_1 - mod: manager, method: run, msg: Monitoring sources from 2025-03-10 19:25:45.287088 to 2025-03-10 19:26:45.287088 with maximum time until 2025-03-10 19:26:50.287088
+2025-03-10 19:25:45,287 DEBUG - SourceManagerMasterThread - mod: manager, method: run, msg: Waiting for the next interval ...
+2025-03-10 19:25:45,288 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Checking sources at 202503101925 time interval.
+2025-03-10 19:25:45,288 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:46,289 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:47,290 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:48,290 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:49,291 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:50,292 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:51,293 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:52,293 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:53,294 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:54,295 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:55,296 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:56,297 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:57,298 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:58,298 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:25:59,299 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:00,300 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:01,301 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:02,301 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:03,302 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:04,303 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:05,303 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:06,304 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:07,305 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:08,306 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:09,307 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:10,309 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:11,310 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:12,311 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:13,312 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:14,312 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:15,314 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:16,315 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:17,315 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:18,316 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:19,317 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:20,319 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:21,319 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:22,320 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:23,321 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:24,322 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:25,323 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:26,323 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:27,324 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:28,325 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:29,326 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:30,326 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:31,327 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:32,328 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:33,328 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:34,329 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:35,330 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:36,331 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:37,332 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:38,332 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:39,333 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:40,334 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:41,335 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:42,336 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:43,337 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:44,338 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:45,289 INFO - IntervalThread_2 - mod: manager, method: run, msg: Monitoring sources from 2025-03-10 19:26:45.288750 to 2025-03-10 19:27:45.288750 with maximum time until 2025-03-10 19:27:50.288750
+2025-03-10 19:26:45,289 DEBUG - SourceManagerMasterThread - mod: manager, method: run, msg: Waiting for the next interval ...
+2025-03-10 19:26:45,289 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Checking sources at 202503101926 time interval.
+2025-03-10 19:26:45,289 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 202503101926: ['MonitorDataSource']
+2025-03-10 19:26:45,339 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:46,290 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 202503101926: ['MonitorDataSource']
+2025-03-10 19:26:46,339 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:46,632 INFO - MonitorDataSourceThread - mod: MonitorDataSource, method: run, msg: Renamed CSV file: data/sources/local/monitor/raw/monitor_202503101926.csv
+2025-03-10 19:26:46,642 INFO - MonitorDataSourceThread - mod: MonitorDataSource, method: run, msg: Copied CSV file to data/sources/local/monitor/parsed/monitor_202503101926.dat (DAT format)
+2025-03-10 19:26:47,291 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready at interval 202503101926: ['MonitorDataSource']
+2025-03-10 19:26:47,292 DEBUG - IntervalThread_2 - mod: manager, method: run, msg: Data sources not ready: []
+2025-03-10 19:26:47,292 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: Launch monitoring for 202503101926 
+2025-03-10 19:26:47,292 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: Building the observation at 202503101926 for ['MonitorDataSource'] sources.
+2025-03-10 19:26:47,293 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: Source MonitorDataSource has 20 variables.
+2025-03-10 19:26:47,293 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: File generated of source MonitorDataSource at 202503101926: data/sources/local/monitor/parsed/monitor_202503101926.dat
+2025-03-10 19:26:47,294 WARNING - IntervalThread_2 - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2025-03-10 19:26:47,295 DEBUG - IntervalThread_2 - mod: datautils, method: getAllVarNames, msg: 20 variables found
+2025-03-10 19:26:47,296 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: Observation generated of 20 variables at 202503101926.
+2025-03-10 19:26:47,296 INFO - IntervalThread_2 - mod: sensor, method: do_monitoring, msg: Running do_monitoring ...
+2025-03-10 19:26:47,296 DEBUG - IntervalThread_2 - mod: sensor, method: do_monitoring, msg: Preprocessing the observation of (1, 20).
+2025-03-10 19:26:47,297 DEBUG - IntervalThread_2 - mod: sensor, method: do_monitoring, msg: Computing statistics ...
+2025-03-10 19:26:47,297 DEBUG - IntervalThread_2 - mod: sensor, method: do_monitoring, msg: Qst obtained: 2.3039370660293384e+18
+2025-03-10 19:26:47,297 DEBUG - IntervalThread_2 - mod: sensor, method: do_monitoring, msg: Dst obtained: 1.8004053935198608e+17
+2025-03-10 19:26:47,298 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: MONITORING --> UCLd: 9.0996303022771 | Dst: 1.8004053935198608e+17
+2025-03-10 19:26:47,298 DEBUG - IntervalThread_2 - mod: manager, method: launch_monitoring, msg: MONITORING --> UCLq: 33.41336110851497 | Qst: 2.3039370660293384e+18
+2025-03-10 19:26:47,299 INFO - IntervalThread_2 - mod: sensor, method: do_diagnosis, msg: Running do_monitoring ...
+2025-03-10 19:26:47,299 DEBUG - IntervalThread_2 - mod: sensor, method: do_diagnosis, msg: Preprocessing the observation of (1, 20).
+2025-03-10 19:26:47,299 DEBUG - IntervalThread_2 - mod: sensor, method: do_diagnosis, msg: Computing oMEDA ...
+2025-03-10 19:26:47,300 WARNING - IntervalThread_2 - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2025-03-10 19:26:47,300 DEBUG - IntervalThread_2 - mod: datautils, method: getAllVarNames, msg: 20 variables found
+2025-03-10 19:26:47,301 WARNING - IntervalThread_2 - mod: manager, method: run, msg: There are no remote addresses configured. This sensor should be the root in the sensor hierarchy.
+2025-03-10 19:26:47,340 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:48,341 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:49,342 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:50,343 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready at interval 202503101925: ['MonitorDataSource']
+2025-03-10 19:26:50,343 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Data sources not ready: ['MonitorDataSource']
+2025-03-10 19:26:50,344 DEBUG - IntervalThread_1 - mod: manager, method: run, msg: Files generated for source MonitorDataSource at 202503101925: {'202503101926': 'data/sources/local/monitor/parsed/monitor_202503101926.dat', '202503101925': None}
+2025-03-10 19:26:50,345 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: Launch monitoring for 202503101925 
+2025-03-10 19:26:50,345 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: Building the observation at 202503101925 for ['MonitorDataSource'] sources.
+2025-03-10 19:26:50,346 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: Source MonitorDataSource has 20 variables.
+2025-03-10 19:26:50,346 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: File generated of source MonitorDataSource at 202503101925: None
+2025-03-10 19:26:50,347 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: Invoking averageDataImputation method for data imputation for observation at 202503101925
+2025-03-10 19:26:50,347 DEBUG - IntervalThread_1 - mod: datautils, method: averageDataImputation, msg: Doing average based data imputation ...
+2025-03-10 19:26:50,349 WARNING - IntervalThread_1 - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2025-03-10 19:26:50,349 DEBUG - IntervalThread_1 - mod: datautils, method: getAllVarNames, msg: 20 variables found
+2025-03-10 19:26:50,351 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: Observation generated of 20 variables at 202503101925.
+2025-03-10 19:26:50,351 INFO - IntervalThread_1 - mod: sensor, method: do_monitoring, msg: Running do_monitoring ...
+2025-03-10 19:26:50,352 DEBUG - IntervalThread_1 - mod: sensor, method: do_monitoring, msg: Preprocessing the observation of (1, 20).
+2025-03-10 19:26:50,352 DEBUG - IntervalThread_1 - mod: sensor, method: do_monitoring, msg: Computing statistics ...
+2025-03-10 19:26:50,353 DEBUG - IntervalThread_1 - mod: sensor, method: do_monitoring, msg: Qst obtained: 0.0
+2025-03-10 19:26:50,354 DEBUG - IntervalThread_1 - mod: sensor, method: do_monitoring, msg: Dst obtained: 0.0
+2025-03-10 19:26:50,354 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: MONITORING --> UCLd: 9.0996303022771 | Dst: 0.0
+2025-03-10 19:26:50,355 DEBUG - IntervalThread_1 - mod: manager, method: launch_monitoring, msg: MONITORING --> UCLq: 33.41336110851497 | Qst: 0.0
+2025-03-10 19:26:50,356 INFO - IntervalThread_1 - mod: sensor, method: do_diagnosis, msg: Running do_monitoring ...
+2025-03-10 19:26:50,357 DEBUG - IntervalThread_1 - mod: sensor, method: do_diagnosis, msg: Preprocessing the observation of (1, 20).
+2025-03-10 19:26:50,357 DEBUG - IntervalThread_1 - mod: sensor, method: do_diagnosis, msg: Computing oMEDA ...
+2025-03-10 19:26:50,358 WARNING - IntervalThread_1 - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2025-03-10 19:26:50,358 DEBUG - IntervalThread_1 - mod: datautils, method: getAllVarNames, msg: 20 variables found
+2025-03-10 19:26:50,361 WARNING - IntervalThread_1 - mod: manager, method: run, msg: There are no remote addresses configured. This sensor should be the root in the sensor hierarchy.
+2025-03-10 19:27:45,290 INFO - IntervalThread_3 - mod: manager, method: run, msg: Monitoring sources from 2025-03-10 19:27:45.290412 to 2025-03-10 19:28:45.290412 with maximum time until 2025-03-10 19:28:50.290412
+2025-03-10 19:27:45,290 DEBUG - SourceManagerMasterThread - mod: manager, method: run, msg: Waiting for the next interval ...
+2025-03-10 19:27:45,290 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Checking sources at 202503101927 time interval.
+2025-03-10 19:27:45,291 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 202503101927: ['MonitorDataSource']
+2025-03-10 19:27:45,998 INFO - MonitorDataSourceThread - mod: MonitorDataSource, method: run, msg: Renamed CSV file: data/sources/local/monitor/raw/monitor_202503101927.csv
+2025-03-10 19:27:46,005 INFO - MonitorDataSourceThread - mod: MonitorDataSource, method: run, msg: Copied CSV file to data/sources/local/monitor/parsed/monitor_202503101927.dat (DAT format)
+2025-03-10 19:27:46,292 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready at interval 202503101927: ['MonitorDataSource']
+2025-03-10 19:27:46,293 DEBUG - IntervalThread_3 - mod: manager, method: run, msg: Data sources not ready: []
+2025-03-10 19:27:46,293 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: Launch monitoring for 202503101927 
+2025-03-10 19:27:46,293 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: Building the observation at 202503101927 for ['MonitorDataSource'] sources.
+2025-03-10 19:27:46,294 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: Source MonitorDataSource has 20 variables.
+2025-03-10 19:27:46,294 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: File generated of source MonitorDataSource at 202503101927: data/sources/local/monitor/parsed/monitor_202503101927.dat
+2025-03-10 19:27:46,295 WARNING - IntervalThread_3 - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2025-03-10 19:27:46,295 DEBUG - IntervalThread_3 - mod: datautils, method: getAllVarNames, msg: 20 variables found
+2025-03-10 19:27:46,296 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: Observation generated of 20 variables at 202503101927.
+2025-03-10 19:27:46,297 INFO - IntervalThread_3 - mod: sensor, method: do_monitoring, msg: Running do_monitoring ...
+2025-03-10 19:27:46,297 DEBUG - IntervalThread_3 - mod: sensor, method: do_monitoring, msg: Preprocessing the observation of (1, 20).
+2025-03-10 19:27:46,297 DEBUG - IntervalThread_3 - mod: sensor, method: do_monitoring, msg: Computing statistics ...
+2025-03-10 19:27:46,297 DEBUG - IntervalThread_3 - mod: sensor, method: do_monitoring, msg: Qst obtained: 2.3038518338019817e+18
+2025-03-10 19:27:46,298 DEBUG - IntervalThread_3 - mod: sensor, method: do_monitoring, msg: Dst obtained: 1.8008980778458614e+17
+2025-03-10 19:27:46,298 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: MONITORING --> UCLd: 9.0996303022771 | Dst: 1.8008980778458614e+17
+2025-03-10 19:27:46,299 DEBUG - IntervalThread_3 - mod: manager, method: launch_monitoring, msg: MONITORING --> UCLq: 33.41336110851497 | Qst: 2.3038518338019817e+18
+2025-03-10 19:27:46,300 INFO - IntervalThread_3 - mod: sensor, method: do_diagnosis, msg: Running do_monitoring ...
+2025-03-10 19:27:46,300 DEBUG - IntervalThread_3 - mod: sensor, method: do_diagnosis, msg: Preprocessing the observation of (1, 20).
+2025-03-10 19:27:46,300 DEBUG - IntervalThread_3 - mod: sensor, method: do_diagnosis, msg: Computing oMEDA ...
+2025-03-10 19:27:46,301 WARNING - IntervalThread_3 - mod: datautils, method: getAllVarNames, msg: There are no remote sources configured: 'remote'
+2025-03-10 19:27:46,301 DEBUG - IntervalThread_3 - mod: datautils, method: getAllVarNames, msg: 20 variables found
+2025-03-10 19:27:46,302 WARNING - IntervalThread_3 - mod: manager, method: run, msg: There are no remote addresses configured. This sensor should be the root in the sensor hierarchy.
