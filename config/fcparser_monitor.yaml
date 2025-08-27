@@ -102,15 +102,15 @@ VARIABLES:
   - name: syscalls_interrupts
     matchtype: number
     where: 17
-  - name: syscalls_softinterrupts
-    matchtype: number
-    where: 18
+# - name: syscalls_softinterrupts
+#    matchtype: number
+#    where: 18
   - name: syscalls_syscalls
     matchtype: number
-    where: 19
+    where: 18
   - name: cpu_percent
     matchtype: percentage
-    where: 20
+    where: 19
 
 ## Features Section
 FEATURES:
@@ -148,7 +148,7 @@ FEATURES:
 
   - name: syscalls_interrupts
 
-  - name: syscalls_softinterrupts
+  #- name: syscalls_softinterrupts
 
   - name: syscalls_syscalls
 

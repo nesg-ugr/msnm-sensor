@@ -72,11 +72,10 @@ Sensor:
   # Static calibration
   staticCalibration:
     # Random calibration?
-    randomCalibration: True
+    randomCalibration: False
     randomCalibrationObs: 300
-
     # This one is useless when randomCalibration is enabled
-    calibrationFile: examples/scenario_4/calibration_routerR1.csv
+    calibrationFile: ./Fichero_Calibracion.csv
 
   # EWMA dynamic calibration parameters
   dynamiCalibration:

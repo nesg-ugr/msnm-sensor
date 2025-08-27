@@ -1,11 +1,10 @@
+# base/templatetags/startswith.py
 from django import template
-from pyparsing import basestring
-
 register = template.Library()
 
-
-@register.filter('startswith')
-def startswith(text, starts):
-    if isinstance(text, basestring):
-        return text.startswith(starts)
-    return False
+@register.filter
+def startswith(text, prefix):
+    try:
+        return str(text).startswith(str(prefix))
+    except Exception:
+        return False

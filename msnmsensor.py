@@ -71,8 +71,59 @@ def main(config_file):
         x = datautils.generateRandomCalObsMatrix(nobs, len(var_names))
     else:
         # Get calibration matrix from a CSV file
-        x = pd.read_csv(sensor_config_params.get_config()['Sensor']['staticCalibration']['calibrationFile'],
-                        index_col=0).values
+        #x = pd.read_csv(sensor_config_params.get_config()['Sensor']['staticCalibration']['calibrationFile'],
+                        #index_col=0).values
+
+        # --- sustituto del bloque que lee el CSV de calibración ---
+        cal_path = sensor_config_params.get_config()['Sensor']['staticCalibration']['calibrationFile']
+        df_cal = pd.read_csv(cal_path, index_col=0)
+
+        print("\n=== CALIBRATION FILE INFO ===")
+        print(f"Ruta: {cal_path}")
+        print(f"Shape (rows, cols): {df_cal.shape}")
+        print("Columnas:", list(df_cal.columns))
+        print("\nHEAD:\n", df_cal.head().to_string())
+
+        # Detecta columnas constantes / casi constantes
+        const_cols = df_cal.columns[df_cal.nunique(dropna=False) <= 1].tolist()
+        # std numérica (NaN->0) para detectar casi-constantes
+        std_series = df_cal.std(numeric_only=True).fillna(0.0)
+        near_const_cols = std_series[std_series <= 1e-12].index.tolist()
+
+        # Heurística de columnas timestamp/ID por nombre
+        suspected_ts = [c for c in df_cal.columns
+                        if str(c).lower() in ("timestamp", "ts", "date", "time")
+                        or str(c).lower().startswith(("ts_", "time_", "date_"))]
+
+        print("\nConstantes:", const_cols)
+        print("Casi-constantes (std<=1e-12):", near_const_cols)
+        print("Posibles timestamp/ID:", suspected_ts)
+
+        # Si SOLO quieres verlas, para aquí.
+        # Si quieres asegurarte de que calibras sin esas columnas:
+        cols_to_drop = set(const_cols) | set(near_const_cols)
+        # (opcional) si sabes que hay timestamp en las columnas de data, quítalo también:
+        # cols_to_drop |= set(suspected_ts)
+
+        keep_cols = [c for c in df_cal.columns if c not in cols_to_drop]
+        print("\nColumnas usadas para calibrar:", keep_cols)
+        print(f"Número de columnas usadas: {len(keep_cols)}")
+
+        df_used = df_cal[keep_cols]
+        x = df_used.values  # <-- esto es lo que pasas a sensor.set_data(x)
+
+        # Guarda la lista de columnas usadas junto al modelo para alinear el test luego
+        rootDataPath = sensor_config_params.get_config()['GeneralParams']['rootPath']
+        model_dir = sensor_config_params.get_config()['Sensor']['model']
+        ts_cols = dateutils.get_timestamp()
+        cols_file = os.path.join(rootDataPath, model_dir, f"columns_{ts_cols}.txt")
+        os.makedirs(os.path.join(rootDataPath, model_dir), exist_ok=True)
+        with open(cols_file, "w", encoding="utf-8") as f:
+            f.write("\n".join(keep_cols))
+        print(f"Listado de columnas usadas guardado en: {cols_file}")
+        # --- fin sustituto ---
+
+
 
     # Get root path for creating data files
     rootDataPath = sensor_config_params.get_config()['GeneralParams']['rootPath']

@@ -59,7 +59,8 @@ def launch_show_output(staticFiles="./data/monitoring/output/",logscale=True, uc
     q_values = []
     #d_values 
     d_values = []
-    
+    print(q_values)
+    print(d_values)
     
     for i in outputList:
         try:
@@ -79,7 +80,7 @@ def launch_show_output(staticFiles="./data/monitoring/output/",logscale=True, uc
     
     ax = plt.subplot(2, 1, 1)
     if logscale:
-        ax.set_yscale("log", nonposy='clip')
+        ax.set_yscale("log", nonpositive='clip')
     plt.axhline(y=float(uclq), xmin=np.min(q_range), xmax=np.max(q_range), color='red', linestyle='--')
     plt.bar(q_range, q_values)
     #plt.ylim(0,5)    
@@ -89,7 +90,7 @@ def launch_show_output(staticFiles="./data/monitoring/output/",logscale=True, uc
 
     ax = plt.subplot(2, 1, 2)
     if logscale:
-        ax.set_yscale("log", nonposy='clip')
+        ax.set_yscale("log", nonpositive='clip')
     plt.axhline(y=float(ucld), xmin=np.min(d_range), xmax=np.max(d_range), color='red', linestyle='--')
     plt.bar(d_range, d_values)    
     plt.xlabel(r'Obs')

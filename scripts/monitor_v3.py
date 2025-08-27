@@ -58,7 +58,7 @@ def read_data():
         "s_io_counters_write_time": s_io_counters.write_time,
         "s_syscalls_ctx_switches": s_syscalls.ctx_switches,
         "s_syscalls_interrupts": s_syscalls.interrupts,
-        "s_syscalls_soft_interrupts": s_syscalls.soft_interrupts,
+        #"s_syscalls_soft_interrupts": s_syscalls.soft_interrupts,
         "s_syscalls_syscalls": s_syscalls.syscalls,
         "s_cpu_percent": ps.cpu_percent()
     }
